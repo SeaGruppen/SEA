@@ -12,4 +12,6 @@ using Answer;
         IGetAnswer GetAnswer {get;}
     
         IGetQuestion GetPreviousQuestion {get;}
+
+        string GetSurveyName {get;}
     }
