@@ -1,6 +1,6 @@
-namespace FrontEndAPI;
+namespace Model.FrontEndAPI;
 
-using Survey;
+using Model.Survey;
 
     public static class FrontEndMainMenu {
         public static bool ValidateSuperUser(string username, string password) {
