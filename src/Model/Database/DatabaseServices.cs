@@ -90,9 +90,9 @@ public class DatabaseServices : IDatabase {
         return true;
     }
 
-public List<Result> GetResults(int id) {
-    throw new NotImplementedException();
-}
+    public List<Result> GetResults(int id) {
+        throw new NotImplementedException();
+    }
 
 
     public bool StoreResult (IResult result) {
