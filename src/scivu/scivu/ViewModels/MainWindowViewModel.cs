@@ -3,6 +3,7 @@ using System.Reactive;
 using ReactiveUI;
 using Model.FrontEndAPI;
 using Model.Survey;
+using Model.Database;
 
 
 namespace scivu.ViewModels;
@@ -15,13 +16,17 @@ public class MainWindowViewModel : ViewModelBase
 
     public ReactiveCommand<string, Unit> Change { get; }
 
+    private readonly IFrontEndMainMenu _mainMenuClient;
+
     public MainWindowViewModel()
     {
         Surveys = new SurveyViewModel();
         Change = ReactiveCommand.Create<string>(ChangeViewTo);
 
+        var database = new DatabaseServices();
+        _mainMenuClient = new FrontEndMainMenu(database);
 
-        _contentViewModel = new MainMenuViewModel(ChangeViewTo);
+        _contentViewModel = new MainMenuViewModel(ChangeViewTo, _mainMenuClient);
     }
 
     public ViewModelBase ContentViewModel
@@ -44,7 +49,7 @@ public class MainWindowViewModel : ViewModelBase
                 ContentViewModel = new ExperimenterMenuViewModel(survey, ChangeViewTo);
                 break;
             case "MainMenu":
-                ContentViewModel = new MainMenuViewModel(ChangeViewTo);
+                ContentViewModel = new MainMenuViewModel(ChangeViewTo, _mainMenuClient);
                 break;
             case "SuperUserMenu":
                 throw new NotImplementedException("Changing to super user menu");
