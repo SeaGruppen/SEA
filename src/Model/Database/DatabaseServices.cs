@@ -12,8 +12,6 @@ using Model.Answer;
 using System.Collections.Generic;
 
 internal class DatabaseServices : IDatabase {
-
-
     
     private string databasePath = "./surveyDatabase/";
     private string resultsPath;
@@ -36,31 +34,26 @@ internal class DatabaseServices : IDatabase {
         return true;
     }
 
-    public void StorePictureOverwrite(string src, int surveyId) {
+    public string StorePictureOverwrite(string src, int surveyId) {
         string surveyAssetsPath = GetSurveyAssetsPath(surveyId); 
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
         File.Copy(src, dest, true); //true -> overwrites automatically if dest already exists
+        return dest;
     }
 
-    public bool TryStorePicture(string src, int surveyId) {
+    public string TryStorePicture(string src, int surveyId) {
         string surveyAssetsPath = GetSurveyAssetsPath(surveyId); 
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
         if (!File.Exists(dest)) {
             File.Copy(src, dest);
-            return true;
+            return dest;
         } else {
-            return false;
+            throw new Exception("A file with this name already exists for this survey");
         }
     }
 
-    //tilføj eksisterende billede?
-    //hvis giver et billednavn der allerede eksisterer,
-
-    //filnavn: bare et eller andet garbage som vi finder på i backenden?
-    //ellers kan det nemt overskrives?
-    //
 
     private string GetSurveyPath(int surveyId) {
         return Path.Combine(databasePath, surveyId.ToString());
