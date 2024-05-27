@@ -13,6 +13,8 @@ using System.Collections.Generic;
 
 internal class DatabaseServices : IDatabase {
 
+
+    
     private string databasePath = "./surveyDatabase/";
     private string resultsPath;
     internal DatabaseServices() {
@@ -25,7 +27,6 @@ internal class DatabaseServices : IDatabase {
         if (!File.Exists(resultsPath)) {
             File.Create(resultsPath).Dispose();
         }
-        
     }
 
     public bool StoreSurvey(Survey survey) {
@@ -54,6 +55,13 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
+    //tilføj eksisterende billede?
+    //hvis giver et billednavn der allerede eksisterer,
+
+    //filnavn: bare et eller andet garbage som vi finder på i backenden?
+    //ellers kan det nemt overskrives?
+    //
+
     private string GetSurveyPath(int surveyId) {
         return Path.Combine(databasePath, surveyId.ToString());
     }
@@ -73,7 +81,6 @@ internal class DatabaseServices : IDatabase {
     public int GetNextSurveyID() {
         return tmpId++;
     }
-
 
     public Survey? GetSurvey(int sid) {
         // return (new Survey(surveyId)); //this was just for a dummy version right?
@@ -100,7 +107,6 @@ internal class DatabaseServices : IDatabase {
     public List<Result> GetResults(int id) {
         throw new NotImplementedException();
     }
-
 
     public bool StoreResult (IResult result) {
         try {

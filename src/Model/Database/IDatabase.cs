@@ -17,11 +17,12 @@ internal interface IDatabase {
     int GetNextSurveyID();
     bool StoreSurvey(Survey survey);
     Survey? GetSurvey(int surveyId);
+    
     SurveyWrapper GetSurveyWrapper(int surveyId);
     List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username);
     bool ExportSurvey(int id,string path);
     bool ImportSurvey(string path);
-    bool TryStorePicture(string path, int surveyId);
+    bool TryStorePicture(string path, int surveyId); //let it return final path to picture, om det eksisterer eller ej
     void StorePictureOverwrite(string path, int surveyId);
     List<Result> GetResults(int id);
     bool StoreResults(List<Result> results);
