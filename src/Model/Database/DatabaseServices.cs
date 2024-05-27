@@ -67,11 +67,6 @@ internal class DatabaseServices : IDatabase {
         File.WriteAllText(surveyPath, jsonString);
     }
 
-    // private List<Survey> LoadAllSurveysFromDatabase() {
-    //     string jsonString = File.ReadAllText(SurveyDatabasePath);
-    //     List<Survey> surveys = JsonSerializer.Deserialize<List<Survey>>(jsonString)!;
-    //     return surveys;
-    // }
 
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0; 
@@ -79,8 +74,19 @@ internal class DatabaseServices : IDatabase {
         return tmpId++;
     }
 
-    public Survey GetSurvey(int surveyId) {
-        return (new Survey(surveyId));
+
+    public Survey? GetSurvey(int sid) {
+        // return (new Survey(surveyId)); //this was just for a dummy version right?
+        string surveyPath = GetSurveyPath(sid);
+        if (!File.Exists(surveyPath)) {
+            return null;
+        } else {
+            return LoadSurveyFromFile(surveyPath);
+        }
+    }
+    private static Survey LoadSurveyFromFile(string surveyPath) {
+        string jsonString = File.ReadAllText(surveyPath);
+        return JsonSerializer.Deserialize<Survey>(jsonString)!;
     }
 
     public bool ExportSurvey(int id, string path) {
