@@ -23,8 +23,8 @@ internal interface IDatabase {
     List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username);
     bool ExportSurvey(int id,string path);
     bool ImportSurvey(string path);
-    string TryStorePicture(string path, int surveyId);
-    string StorePictureOverwrite(string path, int surveyId);
+    string TryStorePicture(int surveyId, string path);
+    string StorePictureOverwrite(int surveyId, string path);
     List<Result> GetResults(int id);
     bool StoreResults(List<Result> results);
     bool StoreResult(IResult result);

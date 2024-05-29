@@ -13,8 +13,8 @@ using System.Collections.Generic;
 
 internal class DatabaseServices : IDatabase {
     
-    private string databasePath = "./surveyDatabase/";
-    private string resultsPath;
+    private readonly string databasePath = "./surveyDatabase/";
+    private readonly string resultsPath;
     internal DatabaseServices() {
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "./results.csv");
@@ -34,7 +34,7 @@ internal class DatabaseServices : IDatabase {
         return true;
     }
 
-    public string StorePictureOverwrite(string src, int surveyId) {
+    public string StorePictureOverwrite(int surveyId, string src) {
         string surveyAssetsPath = GetSurveyAssetsPath(surveyId); 
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
@@ -42,7 +42,7 @@ internal class DatabaseServices : IDatabase {
         return dest;
     }
 
-    public string TryStorePicture(string src, int surveyId) {
+    public string TryStorePicture(int surveyId, string src) {
         string surveyAssetsPath = GetSurveyAssetsPath(surveyId); 
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
@@ -76,7 +76,7 @@ internal class DatabaseServices : IDatabase {
     }
 
     public Survey? GetSurvey(int sid) {
-        // return (new Survey(surveyId)); //this was just for a dummy version right?
+        // return (new Survey(surveyId));
         string surveyPath = GetSurveyPath(sid);
         if (!File.Exists(surveyPath)) {
             return null;
