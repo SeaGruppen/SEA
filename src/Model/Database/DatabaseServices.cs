@@ -57,12 +57,6 @@ internal class DatabaseServices : IDatabase {
         return JsonSerializer.Deserialize<SurveyWrapper>(jsonString)!;
     }
 
-    // public bool StoreSurvey(int SurveyWrapperId, Survey survey) {
-    //     string surveyWrapperPath = GetSurveyWrapperPath(survey.SurveyId);
-    //     SaveSurveyToFile(surveyWrapperPath, survey);
-    //     return true;
-    // }
-
     public string StorePictureOverwrite(int surveyWrapperId, string src) {
         string surveyAssetsPath = GetSurveyWrapperAssetsPath(surveyWrapperId); 
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
@@ -83,39 +77,15 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    // private string GetSurveyPath(int surveyId) {
-    //     return Path.Combine(databasePath, surveyId.ToString());
-    // }
-
     private string GetSurveyWrapperAssetsPath(int surveyWrapperId) {
         return Path.Combine( GetSurveyWrapperPath(surveyWrapperId), "assets");
     }
-
-    // private static void SaveSurveyToFile(string surveyPath, Survey survey) {
-    //     string jsonString = JsonSerializer.Serialize(survey);
-    //     File.WriteAllText(surveyPath, jsonString);
-    // }
-
 
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0;
     public int GetNextSurveyID() {
         return tmpId++;
     }
-
-    // public Survey? GetSurvey(int sid) {
-    //     // return (new Survey(surveyId));
-    //     string surveyPath = GetSurveyPath(sid);
-    //     if (!File.Exists(surveyPath)) {
-    //         return null;
-    //     } else {
-    //         return LoadSurveyFromFile(surveyPath);
-    //     }
-    // }
-    // private static Survey LoadSurveyFromFile(string surveyPath) {
-    //     string jsonString = File.ReadAllText(surveyPath);
-    //     return JsonSerializer.Deserialize<Survey>(jsonString)!;
-    // }
 
     public bool ExportSurvey(int id, string path) {
         return true;
@@ -155,12 +125,6 @@ internal class DatabaseServices : IDatabase {
             // Handle exceptions if needed
             return false;
         }
-    }
-
-    public SurveyWrapper GetSurveyWrapper(int surveyId) {
-        return surveyId == 123456
-            ? ExampleSurvey.GetSurvey()
-            : new SurveyWrapper(surveyId);
     }
 
     public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){

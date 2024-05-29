@@ -15,9 +15,7 @@ using Model.Survey;
 
 internal interface IDatabase {
     int GetNextSurveyID();
-    // bool StoreSurvey(int surveyWrapperId, Survey survey);
     bool StoreSurveyWrapper(SurveyWrapper surveyWrapper);
-    // Survey? GetSurvey(int surveyId);
     
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
     List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username);
