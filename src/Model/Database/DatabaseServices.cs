@@ -13,9 +13,17 @@ using System.Collections.Generic;
 
 internal class DatabaseServices : IDatabase {
     
-    private readonly string databasePath = "./surveyDatabase/";
+    private string databasePath = "./surveyDatabase/";
     private readonly string resultsPath;
     internal DatabaseServices() {
+        Directory.CreateDirectory(databasePath); //is only created if not exists
+        resultsPath = Path.Combine(databasePath, "./results.csv");
+        CreateResultsFileIfNotExisting(resultsPath);
+    }
+
+    //overloading constructor for testing purposes
+    internal DatabaseServices(string dataBasePath) {
+        this.databasePath = dataBasePath;
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "./results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
@@ -30,22 +38,24 @@ internal class DatabaseServices : IDatabase {
     public bool StoreSurveyWrapper(SurveyWrapper surveyWrapper) {
         string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapper.SurveyWrapperId);
         Directory.CreateDirectory(surveyWrapperPath);
-        SaveSurveyWrapperToFile(surveyWrapperPath, surveyWrapper);
+        string surveyWrapperFilePath = Path.Combine(surveyWrapperPath, surveyWrapper.SurveyWrapperId + ".json");
+        SaveSurveyWrapperToFile(surveyWrapperFilePath, surveyWrapper);
         return true;
     }
 
     public SurveyWrapper? GetSurveyWrapper(int surveyWrapperId) {
         string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapperId);
-        if (!File.Exists(surveyWrapperPath)) {
+        string surveyWrapperFile = Path.Combine(surveyWrapperPath, surveyWrapperId + ".json");
+        if (!File.Exists(surveyWrapperFile)) {
             return null;
         } else {
-            return LoadSurveyWrapperFromFile(surveyWrapperPath);
+            return LoadSurveyWrapperFromFile(surveyWrapperFile);
         }
     }
 
-    private static void SaveSurveyWrapperToFile(string surveyWrapperPath, SurveyWrapper surveyWrapper) {
+    private static void SaveSurveyWrapperToFile(string surveyWrapperFilePath, SurveyWrapper surveyWrapper) {
         string jsonString = JsonSerializer.Serialize(surveyWrapper);
-        File.WriteAllText(surveyWrapperPath, jsonString);
+        File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 
     private string GetSurveyWrapperPath(int surveyWrapperId) {
