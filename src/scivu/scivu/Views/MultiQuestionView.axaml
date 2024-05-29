@@ -3,33 +3,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:scivu.ViewModels"
-             xmlns:views="clr-namespace:scivu.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="scivu.Views.ScaleQuestionView"
-             x:DataType="vm:ScaleQuestionViewModel">
+             x:Class="scivu.Views.MultiQuestionView"
+             x:DataType="vm:MultiQuestionViewModel">
+    
     <Grid Margin="10 0 10 0"
           ColumnDefinitions="*,*">
         <TextBlock VerticalAlignment="Bottom"
                    HorizontalAlignment="Left"
                    Margin="0 0 0 7"
-                   Text="{Binding Text}"
+                   Text="{Binding QuestionText}"
                    Grid.Column="0" />
         
-        <!-- Add the toggle button using RadioButton -->
         <ItemsControl Margin="0 0 0 0"
-                      ItemsSource="{Binding Buttons}"
+                      ItemsSource="{Binding Toggles}"
                       Grid.Column="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <views:ScaleView />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
         </ItemsControl>
     </Grid>
 </UserControl>
