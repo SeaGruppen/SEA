@@ -8,8 +8,8 @@
              x:Class="scivu.Views.QuestionView"
              x:DataType="vm:QuestionViewModel">
 
-    <StackPanel Spacing="5" Margin="10 0 10 0">
-        <TextBlock HorizontalAlignment="Center" Text="{Binding Caption}" />
+    <StackPanel Spacing="5" Margin="0 10 0 10">
+        <TextBlock HorizontalAlignment="Center" Text="{Binding Caption}" FontWeight="Bold" FontSize="18"/>
         <Border CornerRadius="10" ClipToBounds="True">
             <Panel>
                 <Image Width="500" Stretch="Uniform" Source="{Binding Image}" />
@@ -24,7 +24,7 @@
                 </Panel>
             </Panel>
         </Border>
-        
+
         <ContentControl VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Content="{Binding Content}" />
