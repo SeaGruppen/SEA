@@ -1,9 +1,9 @@
-
 namespace Model.Database;
 using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using FrontEndAPI;
 using SurveyWrapper = Model.Survey.SurveyWrapper;
 using Survey = Model.Survey.Survey;
 using Result = Model.Result.Result;
@@ -98,7 +98,7 @@ internal class DatabaseServices : IDatabase {
 
 
     // Tmp int used to increment to get unique IDs, must be received from db.
-    private int tmpId = 0; 
+    private int tmpId = 0;
     public int GetNextSurveyID() {
         return tmpId++;
     }
@@ -157,7 +157,11 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    
+    public SurveyWrapper GetSurveyWrapper(int surveyId) {
+        return surveyId == 123456
+            ? ExampleSurvey.GetSurvey()
+            : new SurveyWrapper(surveyId);
+    }
 
     public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){
         return new List<SurveyWrapper>();
