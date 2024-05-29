@@ -27,46 +27,74 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public bool StoreSurvey(Survey survey) {
-        string surveyPath = GetSurveyPath(survey.SurveyId);
-        Directory.CreateDirectory(surveyPath);
-        SaveSurveyToFile(surveyPath, survey);
+    public bool StoreSurveyWrapper(SurveyWrapper surveyWrapper) {
+        string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapper.SurveyWrapperId);
+        Directory.CreateDirectory(surveyWrapperPath);
+        SaveSurveyWrapperToFile(surveyWrapperPath, surveyWrapper);
         return true;
     }
 
-    public string StorePictureOverwrite(int surveyId, string src) {
-        string surveyAssetsPath = GetSurveyAssetsPath(surveyId); 
+    public SurveyWrapper? GetSurveyWrapper(int surveyWrapperId) {
+        string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapperId);
+        if (!File.Exists(surveyWrapperPath)) {
+            return null;
+        } else {
+            return LoadSurveyWrapperFromFile(surveyWrapperPath);
+        }
+    }
+
+    private static void SaveSurveyWrapperToFile(string surveyWrapperPath, SurveyWrapper surveyWrapper) {
+        string jsonString = JsonSerializer.Serialize(surveyWrapper);
+        File.WriteAllText(surveyWrapperPath, jsonString);
+    }
+
+    private string GetSurveyWrapperPath(int surveyWrapperId) {
+        return Path.Combine(databasePath, surveyWrapperId.ToString());
+    }
+
+    private static SurveyWrapper LoadSurveyWrapperFromFile(string surveyWrapperPath) {
+        string jsonString = File.ReadAllText(surveyWrapperPath);
+        return JsonSerializer.Deserialize<SurveyWrapper>(jsonString)!;
+    }
+
+    // public bool StoreSurvey(int SurveyWrapperId, Survey survey) {
+    //     string surveyWrapperPath = GetSurveyWrapperPath(survey.SurveyId);
+    //     SaveSurveyToFile(surveyWrapperPath, survey);
+    //     return true;
+    // }
+
+    public string StorePictureOverwrite(int surveyWrapperId, string src) {
+        string surveyAssetsPath = GetSurveyWrapperAssetsPath(surveyWrapperId); 
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
         File.Copy(src, dest, true); //true -> overwrites automatically if dest already exists
         return dest;
     }
 
-    public string TryStorePicture(int surveyId, string src) {
-        string surveyAssetsPath = GetSurveyAssetsPath(surveyId); 
+    public string TryStorePicture(int surveyWrapperId, string src) {
+        string surveyAssetsPath = GetSurveyWrapperAssetsPath(surveyWrapperId); 
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
         if (!File.Exists(dest)) {
             File.Copy(src, dest);
             return dest;
         } else {
-            throw new Exception("A file with this name already exists for this survey");
+            throw new Exception("A file with this name already exists for this surveyWrapper");
         }
     }
 
+    // private string GetSurveyPath(int surveyId) {
+    //     return Path.Combine(databasePath, surveyId.ToString());
+    // }
 
-    private string GetSurveyPath(int surveyId) {
-        return Path.Combine(databasePath, surveyId.ToString());
+    private string GetSurveyWrapperAssetsPath(int surveyWrapperId) {
+        return Path.Combine( GetSurveyWrapperPath(surveyWrapperId), "assets");
     }
 
-    private string GetSurveyAssetsPath(int surveyId) {
-        return Path.Combine( GetSurveyPath(surveyId), "assets");
-    }
-
-    private static void SaveSurveyToFile(string surveyPath, Survey survey) {
-        string jsonString = JsonSerializer.Serialize(survey);
-        File.WriteAllText(surveyPath, jsonString);
-    }
+    // private static void SaveSurveyToFile(string surveyPath, Survey survey) {
+    //     string jsonString = JsonSerializer.Serialize(survey);
+    //     File.WriteAllText(surveyPath, jsonString);
+    // }
 
 
     // Tmp int used to increment to get unique IDs, must be received from db.
@@ -75,19 +103,19 @@ internal class DatabaseServices : IDatabase {
         return tmpId++;
     }
 
-    public Survey? GetSurvey(int sid) {
-        // return (new Survey(surveyId));
-        string surveyPath = GetSurveyPath(sid);
-        if (!File.Exists(surveyPath)) {
-            return null;
-        } else {
-            return LoadSurveyFromFile(surveyPath);
-        }
-    }
-    private static Survey LoadSurveyFromFile(string surveyPath) {
-        string jsonString = File.ReadAllText(surveyPath);
-        return JsonSerializer.Deserialize<Survey>(jsonString)!;
-    }
+    // public Survey? GetSurvey(int sid) {
+    //     // return (new Survey(surveyId));
+    //     string surveyPath = GetSurveyPath(sid);
+    //     if (!File.Exists(surveyPath)) {
+    //         return null;
+    //     } else {
+    //         return LoadSurveyFromFile(surveyPath);
+    //     }
+    // }
+    // private static Survey LoadSurveyFromFile(string surveyPath) {
+    //     string jsonString = File.ReadAllText(surveyPath);
+    //     return JsonSerializer.Deserialize<Survey>(jsonString)!;
+    // }
 
     public bool ExportSurvey(int id, string path) {
         return true;
@@ -129,9 +157,7 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public SurveyWrapper GetSurveyWrapper(int surveyId) {
-        return new SurveyWrapper(surveyId);
-    }
+    
 
     public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){
         return new List<SurveyWrapper>();
