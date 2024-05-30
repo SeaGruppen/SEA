@@ -34,7 +34,7 @@ public static class ExampleSurvey
         answer.ModifyAnswerType = AnswerType.MultipleChoice;
         return question;
     }
-    
+
     private static Question GetTextQuestion(string caption, string image, string text)
     {
         var question = new Question(_questionId++);
@@ -48,26 +48,48 @@ public static class ExampleSurvey
 
     internal static SurveyWrapper GetSurvey()
     {
+        var fullPathToWorkingDirectory = Directory.GetCurrentDirectory();
+        var projectRoot = Directory.GetParent(fullPathToWorkingDirectory).Parent.Parent.Parent.Parent.Parent.FullName;
         var q1 = GetScaleQuestion(
-            "Caption1",
+            "Question 1",
             string.Empty,
-            "Question1",
+            "How much do you like this survey example?",
             1,
-            8);
+            6);
         var q2 = GetScaleQuestion(
+            "Question 2",
+            string.Concat(projectRoot, "\\assets\\dog.jpg"),
+            "How much do you think this is a dog?",
+            1, 5);
+        var q3 = GetScaleQuestion(
             string.Empty,
             string.Empty,
-            "Question2",
-            1, 3);
-        var q3 = GetMultiQuestion(
-            "Multi Question example",
+            "How much are you enjoying this survey so far?",
+            1, 5);
+        var q4 = GetMultiQuestion(
+            "Question 3",
+            string.Concat(projectRoot, "\\assets\\dog2.png"),
+            "What animal is this?",
+            ["Dog", "Shell dog", "Water dog"]);
+        var q5 = GetMultiQuestion(
+            "Question 4",
             string.Empty,
-            "Question3",
-            ["This", "that", "Naah"]);
-        var q4 = GetTextQuestion(
-            "Text Caption",
+            "Did you like dog?",
+            ["Yes"]);
+        var q6 = GetTextQuestion(
+            "Question 5",
             string.Empty,
-            "What do you think?");
+            "Please elaborate on why you like dog");
+        var q7 = GetTextQuestion(
+            "Question 6",
+            string.Empty,
+            "Do you have any other reason for why you like dog?");
+        var q8 = GetMultiQuestion(
+            "Question 7",
+            string.Concat(projectRoot, "\\assets\\dog3.jpg"),
+            "Is this a good boy?",
+            ["Yes", "Yes"]);
+
 
 
 
@@ -76,10 +98,14 @@ public static class ExampleSurvey
         var page1 = survey.AddNewQuestion();
         ((List<Question>)page1).Add(q1);
         ((List<Question>)page1).Add(q2);
+        ((List<Question>)page1).Add(q3);
 
         var page2 = survey.AddNewQuestion();
-        ((List<Question>)page2).Add(q3);
         ((List<Question>)page2).Add(q4);
+        ((List<Question>)page2).Add(q5);
+        ((List<Question>)page2).Add(q6);
+        ((List<Question>)page2).Add(q7);
+        ((List<Question>)page2).Add(q8);
 
         return surveyWrap;
     }
