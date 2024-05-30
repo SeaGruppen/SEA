@@ -10,7 +10,7 @@ namespace backend.UserValidation
     {
         bool ValidateSuperUser(string username, string password);
 
-        void AddSuperUserCredentials(string username, string password);
+        bool AddSuperUserCredentials(string username, string password);
 
         void RemoveSuperUserCredentials(string username);
     }

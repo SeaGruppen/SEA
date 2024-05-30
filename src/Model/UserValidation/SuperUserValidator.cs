@@ -4,19 +4,21 @@ using System.Text;
 
 namespace backend.UserValidation
 {
-    public class SuperUserValidator : ISuperUserValidator
+    internal class SuperUserValidator : ISuperUserValidator
     {
         public static IReadOnlyDictionary<string, string> SuperUserCredentials => superUserCredentials;
 
         private static Dictionary<string, string> superUserCredentials = new Dictionary<string, string>();
 
-        public void AddSuperUserCredentials(string username, string password)
+        public bool AddSuperUserCredentials(string username, string password)
         {
             // Check if user already exists
             if (!superUserCredentials.TryGetValue(username, out _))
             {
                 superUserCredentials[username] = HashPassword(password);
+                return true;
             }
+            return false;
         }
 
         public void RemoveSuperUserCredentials(string username)
