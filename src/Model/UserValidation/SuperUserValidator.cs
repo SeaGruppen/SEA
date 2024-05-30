@@ -6,6 +6,7 @@ namespace backend.UserValidation
 {
     internal class SuperUserValidator : ISuperUserValidator
     {
+        // Created for testing purposes. Contains hashed passwords.
         public static IReadOnlyDictionary<string, string> SuperUserCredentials => superUserCredentials;
 
         private static Dictionary<string, string> superUserCredentials = new Dictionary<string, string>();
