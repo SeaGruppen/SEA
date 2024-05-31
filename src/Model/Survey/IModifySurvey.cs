@@ -4,7 +4,7 @@ using Model.Answer;
 
 public interface IModifySurvey {
 
-    int SurveyId {get;}
+    string SurveyId {get;}
     string SurveyName {get; set;}
     IEnumerable<IModifyQuestion>? TryGetModifyQuestion(int index);
     IEnumerable<IModifyQuestion>? TryGetNextModifyQuestion();

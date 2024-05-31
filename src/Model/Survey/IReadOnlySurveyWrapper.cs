@@ -10,6 +10,6 @@ public interface IReadOnlySurveyWrapper {
     int GetVersionCount(); // Return number of versions
 
     string SurveyWrapperName { get; }
-    int SurveyWrapperId { get; }
+    string SurveyWrapperId { get; }
 
 }

@@ -4,7 +4,7 @@ using System.Net.Mime;
 using Model.Answer;
 
 public class Question : IReadOnlyQuestion, IModifyQuestion {
-    private int id;
+    private readonly string id;
 
     private string caption;
 
@@ -24,14 +24,14 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
 
     public IReadOnlyAnswer ReadOnlyAnswer => answer;
 
-    public int QuestionId => id;
+    public string QuestionId => id;
 
     public string ModifyCaption { get => caption; set => caption = value; }
     public string ModifyPicture { get => picture; set => picture = value; }
     public string ModifyText { get => text; set => text = value; }
     public IModifyAnswer ModifyAnswer { get => answer; }
 
-    public Question(int id) {
+    public Question(string id) {
         this.id = id;
         caption = string.Empty;
         questionText = string.Empty;

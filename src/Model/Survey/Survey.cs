@@ -6,15 +6,16 @@ using Model.Answer;
 using System.Collections.Generic;
 
 internal class Survey : IReadOnlySurvey, IModifySurvey {
-    public int SurveyId {get;}
+    public string SurveyId {get;}
 
     public string SurveyName {get; set;}
 
-    private List<List<Question>> surveyQuestions = new List<List<Question>>();
+    private List<MultiQuestion> surveyQuestions = new List<MultiQuestion>();
 
     private int current = -1;
+    private int nextMultiQuestionId = 0;
 
-    public Survey(int surveyId) {
+    public Survey(string surveyId) {
         SurveyId = surveyId;
         SurveyName = string.Empty;
     }
@@ -75,15 +76,19 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
     }
 
     public IEnumerable<Question> AddNewQuestion() {
-        List<Question> result = new List<Question>();
+        MultiQuestion result = new MultiQuestion(GetNextMultiQuestionId());
         surveyQuestions.Add(result);
         return result;
     }
 
-    public IEnumerable<Question> InsertNewQuestion(int index)
-    {
-        List<Question> result = new List<Question>();
+
+    public IEnumerable<Question> InsertNewQuestion(int index) {
+        MultiQuestion result = new MultiQuestion(GetNextMultiQuestionId());
         surveyQuestions.Insert(index, result);
         return result;
+    }
+    private string GetNextMultiQuestionId() {
+        string multiquestionId = (nextMultiQuestionId++).ToString();
+        return multiquestionId;
     }
 }

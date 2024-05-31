@@ -11,7 +11,7 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
 
     public IModifySurveyWrapper CreateSurvey() {
         int surveyId = db.GetNextSurveyID();
-        return new SurveyWrapper(surveyId);
+        return new SurveyWrapper(surveyId.ToString());
     }
 
     public bool ExportSurveyFromDatabase(int surveyId, string folderPath) {

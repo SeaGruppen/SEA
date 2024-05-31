@@ -1,22 +1,24 @@
+
 namespace Model.Survey;
 
 
 
 internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
 
-    private int surveyWrapperId;
+    private string surveyWrapperId;
 
     private string surveyWrapperName;
 
     private string[] surveyAssests;
 
-    public int SurveyWrapperId { get => surveyWrapperId;}
+    public string SurveyWrapperId { get => surveyWrapperId;}
     public string SurveyWrapperName { get => surveyWrapperName; set => surveyWrapperName = value;}
 
     private int current = 0;
     private List<Survey> surveyVersions = new List<Survey>();
+    private int nextSurveyId = 0;
 
-    public SurveyWrapper (int id) {
+    public SurveyWrapper (string id) {
         surveyWrapperId = id;
         SurveyWrapperName = string.Empty;
         surveyAssests = new string[] {};
@@ -28,12 +30,16 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
         // surveyVersions.Add(copiedVersion);
     }
 
-    public IModifySurvey AddNewVersion()
-    {
-        var id = surveyVersions.Count;
-        var survey = new Survey(id);
+    public IModifySurvey AddNewVersion() {
+        string surveyId = GetNextSurveyId();
+        var survey = new Survey(surveyId);
         surveyVersions.Add(survey);
         return survey;
+    }
+
+    private string GetNextSurveyId() {
+        int surveyId =  nextSurveyId++;
+        return string.Concat(surveyWrapperId, "-", surveyId);
     }
 
     public void DeleteVersion(int index) {
