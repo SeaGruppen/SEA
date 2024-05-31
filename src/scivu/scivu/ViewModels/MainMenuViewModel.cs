@@ -166,8 +166,8 @@ public class MainMenuViewModel : ViewModelBase
 
         // if (Int32.TryParse(Password, out var pin))
         // {
-            var survey = _client.GetSurvey(Password);
             System.Console.WriteLine("Line 170");
+            var survey = _client.GetSurvey(Password);
             if (survey != null)
             {
                 _changeViewCommand.Invoke("ExperimenterMenu", survey!);
