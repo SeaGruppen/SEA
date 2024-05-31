@@ -13,6 +13,4 @@ public interface IModifySurvey {
     IEnumerable<Question> AddNewQuestion(); // Add new question at the end of the Enumerable
     IEnumerable<Question> InsertNewQuestion(int index); // Add new question at position 'index'
 
-    
-
 }

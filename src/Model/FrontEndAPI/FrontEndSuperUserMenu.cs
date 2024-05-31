@@ -26,8 +26,8 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         return db.GetSurveyWrapper(surveyId);
     }
 
-    public void StorePicture(string surveyId, string filePath) {
-        //To be implemented
+    public string StorePicture(string surveyId, string filePath) {
+        return db.TryStorePicture(surveyId, filePath);
     }
 
     public void StorePicture(string surveyId, string filePath, string optionalPrefix) {

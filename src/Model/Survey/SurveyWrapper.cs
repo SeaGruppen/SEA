@@ -18,8 +18,8 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
     private List<Survey> surveyVersions = new List<Survey>();
     private int nextSurveyId = 0;
 
-    public SurveyWrapper (string id) {
-        surveyWrapperId = id;
+    public SurveyWrapper (string surveyWrapperId) {
+        this.surveyWrapperId = surveyWrapperId;
         SurveyWrapperName = string.Empty;
         surveyAssests = new string[] {};
         surveyWrapperName = string.Empty;

@@ -10,6 +10,6 @@ public interface IFrontEndSuperUser {
 
     bool ExportSurveyFromDatabase(string surveyId, string folderPath);
 
-    void StorePicture(string surveyId, string filePath);
+    string StorePicture(string surveyId, string filePath);
     void StorePicture(string surveyId, string filePath, string optionalPrefix); //filename prefix: eg version_A_fbpic1, version_B_fbpic1
 }
