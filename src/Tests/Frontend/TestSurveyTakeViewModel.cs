@@ -16,7 +16,7 @@ public class TestSurveyTakeViewModel
     {
         new ReadOnlyQuestionMock()
         {
-            QuestionId = 1,
+            QuestionId = "1",
             ReadOnlyCaption = "Caption1",
             ReadOnlyText = "Question1",
             ReadOnlyPicture = string.Empty,
@@ -28,7 +28,7 @@ public class TestSurveyTakeViewModel
         },
         new ReadOnlyQuestionMock()
         {
-            QuestionId = 2,
+            QuestionId = "2",
             ReadOnlyCaption = string.Empty,
             ReadOnlyText = "Question2",
             ReadOnlyPicture = string.Empty,
@@ -44,7 +44,7 @@ public class TestSurveyTakeViewModel
     {
         new ReadOnlyQuestionMock()
         {
-            QuestionId = 3,
+            QuestionId = "3",
             ReadOnlyCaption = "Caption2",
             ReadOnlyText = "Question3",
             ReadOnlyPicture = string.Empty,

@@ -17,7 +17,7 @@ public class TestScaleViewModel
         };
         var question = new ReadOnlyQuestionMock()
         {
-            QuestionId = 42,
+            QuestionId = "42",
             ReadOnlyCaption = caption,
             ReadOnlyPicture = imagePath,
             ReadOnlyText = text,

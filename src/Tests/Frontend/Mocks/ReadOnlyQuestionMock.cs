@@ -8,7 +8,7 @@ using Answer = Model.Answer.Answer;
 internal class ReadOnlyQuestionMock : IReadOnlyQuestion
 {
 
-    public int QuestionId {get; set; }
+    public string QuestionId {get; set; }
     public string ReadOnlyCaption {get; set; }
     public string ReadOnlyPicture {get; set; }
     public string ReadOnlyText{get; set; }

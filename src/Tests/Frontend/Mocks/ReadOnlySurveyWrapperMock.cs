@@ -11,7 +11,7 @@ public class ReadOnlySurveyWrapperMock : IReadOnlySurveyWrapper
 
     public string SurveyWrapperName { get; }
 
-    public int SurveyWrapperId { get; }
+    public string SurveyWrapperId { get; }
 
 
     public ReadOnlySurveyWrapperMock(IReadOnlySurvey survey)

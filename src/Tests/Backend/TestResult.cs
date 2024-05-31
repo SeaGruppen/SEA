@@ -5,8 +5,8 @@ using Model.Answer;
 
 public class TestResult
 {
-    private const int sid = 0;
-    private const int qid = 0;
+    private const string sid = "0";
+    private const string qid = "0";
     private const int uid = 0;
 
     [Test]

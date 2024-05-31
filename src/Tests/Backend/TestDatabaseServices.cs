@@ -35,8 +35,8 @@ public class TestDatabaseServices
         string testDbPath = "surveyDatabase/";
         DatabaseServices db = new DatabaseServices(testDbPath); 
 
-        int id1 = 1111;
-        int id2 = 2222;
+        string id1 = "1111";
+        string id2 = "2222";
         SurveyWrapper surveyWrapper1 = new(id1);
         string surveyWrapper1Path = Path.Combine(testDbPath, id1.ToString());
         string surveyWrapper1File = Path.Combine(surveyWrapper1Path, id1 + ".json");
@@ -71,9 +71,9 @@ public class TestDatabaseServices
         string testDbPath = "surveyDatabase/";
         DatabaseServices db = new DatabaseServices(testDbPath); 
 
-        int id3 = 3333;
-        int id4 = 4444;
-        int id5 = 5555;
+        string id3 = "3333";
+        string id4 = "4444";
+        string id5 = "5555";
         SurveyWrapper surveyWrapper3 = new(id3);
         string surveyWrapper3Path = Path.Combine(testDbPath, id3.ToString());
         string surveyWrapper3File = Path.Combine(surveyWrapper3Path, id3 +".json");
@@ -116,10 +116,10 @@ public class TestDatabaseServices
     [Test]
     public void TestStorePicture() {
 
-        string testDbPath = "surveyDatabase/";
+        string testDbPath = "surveyDatabase";
         DatabaseServices db = new DatabaseServices(testDbPath); 
         
-        int id1 = 6666;
+        string id1 = "6666";
         SurveyWrapper surveyWrapper1 = new(id1);
 
         string fileName = "pic1.jpeg";
