@@ -35,14 +35,14 @@ internal class DatabaseServices : IDatabase {
         return true;
     }
 
-    public void StorePictureOverwrite(string src, int surveyId) {
+    public void StorePictureOverwrite(string src, string surveyId) {
         string surveyAssetsPath = GetSurveyAssetsPath(surveyId);
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
         File.Copy(src, dest, true); //true -> overwrites automatically if dest already exists
     }
 
-    public bool TryStorePicture(string src, int surveyId) {
+    public bool TryStorePicture(string src, string surveyId) {
         string surveyAssetsPath = GetSurveyAssetsPath(surveyId);
         string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
         Directory.CreateDirectory(surveyAssetsPath);
@@ -54,11 +54,11 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    private string GetSurveyPath(int surveyId) {
+    private string GetSurveyPath(string surveyId) {
         return Path.Combine(databasePath, surveyId.ToString());
     }
 
-    private string GetSurveyAssetsPath(int surveyId) {
+    private string GetSurveyAssetsPath(string surveyId) {
         return Path.Combine( GetSurveyPath(surveyId), "assets");
     }
 
@@ -75,15 +75,15 @@ internal class DatabaseServices : IDatabase {
 
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0;
-    public int GetNextSurveyID() {
-        return tmpId++;
+    public string GetNextSurveyWrapperID() {
+        return (tmpId++).ToString();
     }
 
-    public Survey GetSurvey(int surveyId) {
-        return (new Survey(surveyId));
-    }
+    // public Survey GetSurvey(string surveyId) {
+    //     return (new Survey(surveyId));
+    // }
 
-    public bool ExportSurvey(int id, string path) {
+    public bool ExportSurvey(string id, string path) {
         return true;
     }
 
@@ -91,7 +91,7 @@ internal class DatabaseServices : IDatabase {
         return false;
     }
 
-    public List<Result> GetResults(int id) {
+    public List<Result> GetResults(string id) {
         throw new NotImplementedException();
     }
 
@@ -124,8 +124,8 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public SurveyWrapper GetSurveyWrapper(int surveyId) {
-        return surveyId == 123456
+    public SurveyWrapper GetSurveyWrapper(string surveyId) {
+        return surveyId == "123456"
             ? ExampleSurvey.GetSurvey()
             : new SurveyWrapper(surveyId);
     }

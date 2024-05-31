@@ -5,8 +5,8 @@ public interface IResult
     AnswerType AnswerType {get;}
     List<string> QuestionResult {get; set;}
     int UserId {get;}
-    int QuestionId {get;}
-    int SurveyId {get;}
+    string QuestionId {get;}
+    string SurveyId {get;}
 }
 
 //     void StoreResultFromQuestion(int surveyID, int questionsID, int userID, Result result);

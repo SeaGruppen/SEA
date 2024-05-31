@@ -13,7 +13,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
         db = database;
     }
 
-    public bool ExportResults(int surveyId, string folderPath) {
+    public bool ExportResults(string surveyId, string folderPath) {
         List<Result> results = db.GetResults(surveyId);
         string path = Path.Combine(folderPath, $"{surveyId}.csv");
         try {
@@ -28,7 +28,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
             return false;
         } 
     }
-    public IReadOnlySurveyWrapper GetSurvey(int surveyId) {
+    public IReadOnlySurveyWrapper GetSurvey(string surveyId) {
         return db.GetSurveyWrapper(surveyId);
     }
 

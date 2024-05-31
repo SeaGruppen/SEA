@@ -10,11 +10,11 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
     }
 
     public IModifySurveyWrapper CreateSurvey() {
-        int surveyId = db.GetNextSurveyID();
+        string surveyId = db.GetNextSurveyWrapperID();
         return new SurveyWrapper(surveyId.ToString());
     }
 
-    public bool ExportSurveyFromDatabase(int surveyId, string folderPath) {
+    public bool ExportSurveyFromDatabase(string surveyId, string folderPath) {
         if (db.ExportSurvey(surveyId, folderPath)) {
             return true;
         } else {
@@ -22,15 +22,15 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         }
     }
 
-    public IModifySurveyWrapper ModifySurvey(int surveyId) {
+    public IModifySurveyWrapper ModifySurvey(string surveyId) {
         return db.GetSurveyWrapper(surveyId);
     }
 
-    public void StorePicture(int surveyId, string filePath) {
+    public void StorePicture(string surveyId, string filePath) {
         //To be implemented
     }
 
-    public void StorePicture(int surveyId, string filePath, string optionalPrefix) {
+    public void StorePicture(string surveyId, string filePath, string optionalPrefix) {
         //To be implemented
     }
 
