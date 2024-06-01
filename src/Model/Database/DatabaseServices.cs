@@ -107,11 +107,11 @@ internal class DatabaseServices : IDatabase {
 
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0;
-    public int GetNextSurveyID() {
+    public int GetNextSurveyWrapperID() {
         return tmpId++;
     }
 
-    public bool ExportSurvey(int id, string path) {
+    public bool ExportSurveyWrapper(int id, string path) {
         string surveyWrapperPath = GetSurveyWrapperPath(id);
         string zipFilePath = Path.Combine(path, $"{id}.zip");
         System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
@@ -125,7 +125,7 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public bool ImportSurvey(string filePathAndName) {
+    public bool ImportSurveyWrapper(string filePathAndName) {
         try {
             ZipFile.ExtractToDirectory(filePathAndName, Path.Combine(databasePath, Path.GetFileNameWithoutExtension(filePathAndName)));
             return true;
@@ -137,7 +137,7 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public List<Result> GetResults(int id) {
+    public List<Result> GetResults(int surveyWrapperId) {
         throw new NotImplementedException();
     }
 
