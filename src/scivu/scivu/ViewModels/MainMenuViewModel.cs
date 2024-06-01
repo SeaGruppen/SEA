@@ -164,10 +164,9 @@ public class MainMenuViewModel : ViewModelBase
     {
         Debug.Assert(IsExperimenterLogin);
 
-        // if (Int32.TryParse(Password, out var pin))
-        // {
-            System.Console.WriteLine("Line 170");
-            var survey = _client.GetSurvey(Password);
+        if (Int32.TryParse(Password, out var pin))
+        {
+            var survey = _client.GetSurvey(pin.ToString());
             if (survey != null)
             {
                 _changeViewCommand.Invoke("ExperimenterMenu", survey!);
@@ -175,6 +174,6 @@ public class MainMenuViewModel : ViewModelBase
             }
 
             ErrorMessage = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.ERR_PinCodeNotFound);
-        // }
+        }
     }
 }
