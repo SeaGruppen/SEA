@@ -9,7 +9,7 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         this.db = databaseServices;
     }
 
-    public IModifySurveyWrapper CreateSurvey() {
+    public IModifySurveyWrapper CreateSurveyWrapper() {
         int surveyId = db.GetNextSurveyWrapperID();
         return new SurveyWrapper(surveyId);
     }
@@ -22,7 +22,7 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         }
     }
 
-    public IModifySurveyWrapper ModifySurvey(int surveyId) {
+    public IModifySurveyWrapper? ModifySurveyWrapper(int surveyId) {
         return db.GetSurveyWrapper(surveyId);
     }
 

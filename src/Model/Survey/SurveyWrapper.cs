@@ -48,7 +48,7 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
         return surveyVersions.Count();
     }
 
-    public IModifySurvey TryGetModifySurveyVersion(int index)
+    public IModifySurvey? TryGetModifySurveyVersion(int index)
     {
         if(0 <= index && index < surveyVersions.Count) {
             current = index;
@@ -58,7 +58,7 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
         }
     }
 
-    public IReadOnlySurvey TryGetReadOnlySurveyVersion(int index)
+    public IReadOnlySurvey? TryGetReadOnlySurveyVersion(int index)
     {
         if(0 <= index && index < surveyVersions.Count) {
             current = index;

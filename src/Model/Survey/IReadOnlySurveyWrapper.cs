@@ -5,7 +5,7 @@ public interface IReadOnlySurveyWrapper {
 
     // List<SurveyA,SurveyB>
 
-    IReadOnlySurvey TryGetReadOnlySurveyVersion(int index); // Return survey index'
+    IReadOnlySurvey? TryGetReadOnlySurveyVersion(int index); // Return survey index'
 
     int GetVersionCount(); // Return number of versions
 
