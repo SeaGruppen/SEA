@@ -41,13 +41,6 @@ internal class DatabaseServices : IDatabase {
         CreateResultsFileIfNotExisting(resultsPath);
     }
 
-    //overloading constructor for testing purposes
-    internal DatabaseServices(string dataBasePath) {
-        this.databasePath = dataBasePath;
-        Directory.CreateDirectory(databasePath); //is only created if not exists
-        resultsPath = Path.Combine(databasePath, "./results.csv");
-        CreateResultsFileIfNotExisting(resultsPath);
-    }
 
     private static void CreateResultsFileIfNotExisting(string resultsPath) {
         if (!File.Exists(resultsPath)) {
