@@ -10,12 +10,12 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
     }
 
     public IModifySurveyWrapper CreateSurvey() {
-        int surveyId = db.GetNextSurveyID();
+        int surveyId = db.GetNextSurveyWrapperID();
         return new SurveyWrapper(surveyId);
     }
 
-    public bool ExportSurveyFromDatabase(int surveyId, string folderPath) {
-        if (db.ExportSurvey(surveyId, folderPath)) {
+    public bool ExportSurveyWrapperFromDatabase(int surveyId, string folderPath) {
+        if (db.ExportSurveyWrapper(surveyId, folderPath)) {
             return true;
         } else {
             return false;
@@ -34,7 +34,7 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         //To be implemented
     }
 
-    public void StoreSurveyInDatabase(IModifySurveyWrapper modifySurveyWrapper) {
+    public void StoreSurveyWrapperInDatabase(IModifySurveyWrapper modifySurveyWrapper) {
         //Try downcasting to SurveyWrapper
         if (modifySurveyWrapper is SurveyWrapper surveyWrapper)
             db.StoreSurveyWrapper(surveyWrapper as SurveyWrapper);
