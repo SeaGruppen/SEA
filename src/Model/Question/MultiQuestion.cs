@@ -8,9 +8,7 @@ using System.Text.Json.Serialization;
 
 internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<IReadOnlyQuestion> {
 
-    [JsonInclude]
     private string multiquestionId;
-    [JsonInclude]
     internal List<Question> questions;
     
     [JsonInclude]

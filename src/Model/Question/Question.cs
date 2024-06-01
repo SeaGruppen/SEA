@@ -5,16 +5,20 @@ using Model.Answer;
 using System.Text.Json.Serialization;
 
 public class Question : IReadOnlyQuestion, IModifyQuestion {
+    
+    [JsonInclude]
     private string id;
 
+    [JsonInclude]
     private string caption;
 
+    [JsonInclude]
     private string questionText;
-    
+    [JsonInclude]
     private string picture;
-    
+    [JsonInclude]
     private string text;
-    
+    [JsonInclude]
     private Answer answer;
 
     public string ReadOnlyCaption => caption;

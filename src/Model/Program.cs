@@ -78,10 +78,31 @@ question4.ModifyAnswer.AddAnswerOption("Kat");
             // Add 3 questions to MultiQuestion[1]    
         // AddMultiQuestion       (multiquestion 2)
             // Add 2 questions to MultiQuestion2
+
 //StoreSurvey
 
 IFrontEndSuperUser SUMenu = FrontEndFactory.CreateSuperUserMenu();
 SUMenu.StoreSurveyWrapperInDatabase(surveyWrapper);
+
+//Loading stored surveywrapper
+IModifySurveyWrapper storedSurveyWrapper = SUMenu.ModifySurveyWrapper(3797);
+
+Console.WriteLine($"storedSurveyWrapper's version count = {storedSurveyWrapper.GetVersionCount()}");
+
+//adding another version to the stored surveyWrapper after loading it
+IModifySurvey new_version = storedSurveyWrapper.AddNewVersion();
+IMultiQuestion<IModifyQuestion> new_multiQuestion = new_version.AddNewMultiQuestion();
+IModifyQuestion new_question = new_multiQuestion.AddQuestion();
+new_question.ModifyCaption = "What's up?";
+new_question.ModifyAnswer.AddAnswerOption("Nothing");
+new_question.ModifyAnswer.AddAnswerOption("Not much");
+
+Console.WriteLine($"storedSurveyWrapper's version count after adding new version = {storedSurveyWrapper.GetVersionCount()}");
+
+//storing the loaded and modified survey again.
+SUMenu.StoreSurveyWrapperInDatabase(storedSurveyWrapper);
+
+//example of survey export and import 
 System.Console.WriteLine(SUMenu.ExportSurveyWrapperFromDatabase(surveyWrapper.SurveyWrapperId, Path.Combine( Model.Utilities.FileIO.GetProjectPath(), ".."))); 
 IFrontEndMainMenu mainMenu = FrontEndFactory.CreateMainMenu();
 System.Console.WriteLine($"Path to import from: {Path.Combine( Model.Utilities.FileIO.GetProjectPath(), "..", "3799.zip")}");
