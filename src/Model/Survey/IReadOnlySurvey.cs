@@ -4,7 +4,7 @@ using Model.Question;
 using Model.Answer;
 
 public interface IReadOnlySurvey {
-    int SurveyId {get;}
+    string SurveyId {get;}
     string SurveyName {get;}
     bool PreviousQuestionExist();
     bool NextQuestionExist();

@@ -20,8 +20,8 @@ public static class FrontEndFactory {
     }
 
     public static IResult CreateResult(
-        int surveyId,
-        int questionId,
+        string surveyId,
+        string questionId,
         AnswerType type,
         int userId,
         List<string> questionResult) => new Result(surveyId, questionId, type, userId, questionResult);

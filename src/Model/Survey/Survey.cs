@@ -4,17 +4,22 @@ using System;
 using Model.Question;
 using Model.Answer;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 internal class Survey : IReadOnlySurvey, IModifySurvey {
-    public int SurveyId {get;}
+    public string SurveyId {get;}
 
     public string SurveyName {get; set;}
 
-    private List<List<Question>> surveyQuestions = new List<List<Question>>();
+    [JsonInclude]
+    private List<MultiQuestion> surveyQuestions = new List<MultiQuestion>();
+
+    [JsonInclude]
+    int nextMultiQuestionId = 0;
 
     private int current = -1;
 
-    public Survey(int surveyId) {
+    public Survey(string surveyId) {
         SurveyId = surveyId;
         SurveyName = string.Empty;
     }
@@ -41,28 +46,28 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         current = -1;
     }
 
-    public IEnumerable<IModifyQuestion>? TryGetModifyQuestion(int index) {
+    public IMultiQuestion<IModifyQuestion>? TryGetModifyMultiQuestion(int index) {
         if(0 <= index && index < surveyQuestions.Count) {
             current = index;
-            return surveyQuestions[index];
+            return (IMultiQuestion<IModifyQuestion>) surveyQuestions[index];
         } else {
             return null;
         }
     }
-    public IEnumerable<IModifyQuestion>? TryGetNextModifyQuestion()
+    public IMultiQuestion<IModifyQuestion>? TryGetNextModifyMultiQuestion()
     {
         if(0 <= current && NextQuestionExist()) {
             current++;
-            return surveyQuestions[current];
+            return (IMultiQuestion<IModifyQuestion>) surveyQuestions[current];
         } else {
             return null;
         }
     }
 
-    public IEnumerable<IModifyQuestion>? TryGetPreviousModifyQuestion() {
+    public IMultiQuestion<IModifyQuestion>? TryGetPreviousModifyMultiQuestion() {
         if(PreviousQuestionExist() && current < surveyQuestions.Count) {
             current--;
-            return surveyQuestions[current];
+            return (IMultiQuestion<IModifyQuestion>) surveyQuestions[current];
         } else {
             return null;
         }
@@ -74,16 +79,17 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         }
     }
 
-    public IEnumerable<Question> AddNewQuestion() {
-        List<Question> result = new List<Question>();
+    public IMultiQuestion<IModifyQuestion> AddNewMultiQuestion() {
+        string multiQuestionId = (nextMultiQuestionId++).ToString();
+        MultiQuestion result = new MultiQuestion(string.Concat( SurveyId, ".", multiQuestionId));
         surveyQuestions.Add(result);
-        return result;
+        return (IMultiQuestion<IModifyQuestion>) result;
     }
 
-    public IEnumerable<Question> InsertNewQuestion(int index)
-    {
-        List<Question> result = new List<Question>();
+    public IMultiQuestion<IModifyQuestion> InsertNewMultiQuestion(int index) {
+        string multiQuestionId = (nextMultiQuestionId++).ToString();
+        MultiQuestion result = new MultiQuestion(string.Concat( SurveyId, ".", multiQuestionId));
         surveyQuestions.Insert(index, result);
-        return result;
+        return (IMultiQuestion<IModifyQuestion>) result;
     }
 }
