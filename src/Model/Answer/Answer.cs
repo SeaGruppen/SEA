@@ -23,7 +23,10 @@ public class Answer : IModifyAnswer, IReadOnlyAnswer {
     }
     
     public void AddAnswerOption(string answer, int index) {
-        modifyAnswers.Insert(index, answer);
+        if (index >= modifyAnswers.Count)
+            modifyAnswers.Insert(modifyAnswers.Count, answer);
+        else
+            modifyAnswers.Insert(index, answer);
     }
     
     public bool TryDeleteAnswerOption(int index) {
