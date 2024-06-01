@@ -95,12 +95,12 @@ public static class ExampleSurvey
 
         var surveyWrap = new SurveyWrapper(123456);
         var survey = surveyWrap.AddNewVersion();
-        var page1 = survey.AddNewQuestion();
+        var page1 = survey.AddNewMultiQuestion();
         ((List<Question>)page1).Add(q1);
         ((List<Question>)page1).Add(q2);
         ((List<Question>)page1).Add(q3);
 
-        var page2 = survey.AddNewQuestion();
+        var page2 = survey.AddNewMultiQuestion();
         ((List<Question>)page2).Add(q4);
         ((List<Question>)page2).Add(q5);
         ((List<Question>)page2).Add(q6);

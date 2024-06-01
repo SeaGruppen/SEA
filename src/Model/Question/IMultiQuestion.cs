@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 
 public interface IMultiQuestion<T> : IEnumerable<T> {
-    void AddQuestion();
+    string MultiQuestionId {get;}
+    T? AddQuestion();
     void DeleteQuestion(int i);
     void InsertQuestion(int i);
 }

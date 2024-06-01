@@ -14,6 +14,7 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
     public string SurveyWrapperName { get => surveyWrapperName; set => surveyWrapperName = value;}
 
     private int current = 0;
+    private int nextSurveyId  = 0;
     private List<Survey> surveyVersions = new List<Survey>();
 
     public SurveyWrapper (int surveyWrapperId) {
@@ -28,10 +29,9 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
         // surveyVersions.Add(copiedVersion);
     }
 
-    public IModifySurvey AddNewVersion()
-    {
-        var id = surveyVersions.Count;
-        var survey = new Survey(id);
+    public IModifySurvey AddNewVersion() {
+        var survey = new Survey(surveyWrapperId + "." + nextSurveyId++); // 3797.0
+        //nextSurveyId++;
         surveyVersions.Add(survey);
         return survey;
     }

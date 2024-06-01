@@ -18,7 +18,6 @@ namespace Model.Utilities {
                         while (dir.Parent != null && dir.Name != "src") {
                             dir = dir.Parent;
                         }
-                        dir = dir.Parent;
                     }
                     return dir?.FullName;
                 }

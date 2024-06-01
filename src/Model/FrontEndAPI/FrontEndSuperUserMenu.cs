@@ -34,8 +34,13 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         //To be implemented
     }
 
-    public void StoreSurveyInDatabase(IModifySurvey survey) {
-        
+    public void StoreSurveyInDatabase(IModifySurveyWrapper modifySurveyWrapper) {
+        //Try downcasting to SurveyWrapper
+        if (modifySurveyWrapper is SurveyWrapper surveyWrapper)
+            db.StoreSurveyWrapper(surveyWrapper as SurveyWrapper);
+        else {
+            // Downcast failed, handle accordingly
+            throw new InvalidCastException("The provided surveyWrapper is not of type SurveyWrapper, Have you gotten hacked?");
+        }
     }
-
 }
