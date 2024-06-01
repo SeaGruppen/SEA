@@ -28,7 +28,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
             return false;
         } 
     }
-    public IReadOnlySurveyWrapper GetSurveyWrapper(int surveyId) {
+    public IReadOnlySurveyWrapper? GetSurveyWrapper(int surveyId) {
         return db.GetSurveyWrapper(surveyId);
     }
 
