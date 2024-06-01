@@ -16,10 +16,17 @@ internal class DatabaseServices : IDatabase {
     private string databasePath;
     private string resultsPath;
     internal DatabaseServices() {
+        SetUpLocalDatabase();
+    }
+
+    private void SetUpLocalDatabase() {
         string? projectPath = FileIO.GetProjectPath();
-        if (projectPath != null) {
+        if (projectPath != null)
+        {
             databasePath = Path.Combine(projectPath, "surveyDatabase");
-        } else {
+        }
+        else
+        {
             databasePath = "./surveyDatabase/";
         }
         Directory.CreateDirectory(databasePath); //is only created if not exists
