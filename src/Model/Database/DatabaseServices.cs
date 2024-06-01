@@ -72,7 +72,6 @@ internal class DatabaseServices : IDatabase {
         var options = new JsonSerializerOptions { WriteIndented = true }; //pretty printing of json strings
         options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
         string jsonString = JsonSerializer.Serialize(surveyWrapper, options);
-        Console.WriteLine(jsonString);
         File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 

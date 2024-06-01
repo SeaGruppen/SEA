@@ -80,5 +80,9 @@ question4.ModifyAnswer.AddAnswerOption("Kat");
             // Add 2 questions to MultiQuestion2
 //StoreSurvey
 
-IFrontEndSuperUser db = FrontEndFactory.CreateSuperUserMenu();
-db.StoreSurveyInDatabase(surveyWrapper);
+IFrontEndSuperUser SUMenu = FrontEndFactory.CreateSuperUserMenu();
+SUMenu.StoreSurveyWrapperInDatabase(surveyWrapper);
+System.Console.WriteLine(SUMenu.ExportSurveyWrapperFromDatabase(surveyWrapper.SurveyWrapperId, Path.Combine( Model.Utilities.FileIO.GetProjectPath(), ".."))); 
+IFrontEndMainMenu mainMenu = FrontEndFactory.CreateMainMenu();
+System.Console.WriteLine($"Path to import from: {Path.Combine( Model.Utilities.FileIO.GetProjectPath(), "..", "3799.zip")}");
+System.Console.WriteLine( mainMenu.ImportSurveyWrapper(Path.Combine( Model.Utilities.FileIO.GetProjectPath(), "..", "3799.zip")));
