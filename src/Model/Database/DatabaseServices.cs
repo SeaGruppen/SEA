@@ -10,6 +10,7 @@ using Result = Model.Result.Result;
 using Model.Result;
 using System.Collections.Generic;
 using Model.Utilities;
+using System.IO.Compression;
 
 internal class DatabaseServices : IDatabase {
 
@@ -111,11 +112,29 @@ internal class DatabaseServices : IDatabase {
     }
 
     public bool ExportSurvey(int id, string path) {
-        return true;
+        string surveyWrapperPath = GetSurveyWrapperPath(id);
+        string zipFilePath = Path.Combine(path, $"{id}.zip");
+        System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
+        System.Console.WriteLine($"ZipFilePath = {zipFilePath}");
+        try {
+            ZipFile.CreateFromDirectory(surveyWrapperPath, zipFilePath);
+            return true;
+        } catch (Exception) {
+            // Survey doesn't exist, or zipfile already exists
+            return false;
+        }
     }
 
-    public bool ImportSurvey(string path) {
-        return false;
+    public bool ImportSurvey(string filePathAndName) {
+        try {
+            ZipFile.ExtractToDirectory(filePathAndName, Path.Combine(databasePath, Path.GetFileNameWithoutExtension(filePathAndName)));
+            return true;
+        }
+        catch (Exception)
+        {
+            // Handle exceptions if needed
+            return false;
+        }
     }
 
     public List<Result> GetResults(int id) {
