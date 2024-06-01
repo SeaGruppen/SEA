@@ -14,16 +14,16 @@ using Model.Result;
 using Model.Survey;
 
 internal interface IDatabase {
-    int GetNextSurveyID();
+    int GetNextSurveyWrapperID();
     bool StoreSurveyWrapper(SurveyWrapper surveyWrapper);
     
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
     List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username);
-    bool ExportSurvey(int id,string path);
-    bool ImportSurvey(string path);
+    bool ExportSurveyWrapper(int surveyWrapperid,string path);
+    bool ImportSurveyWrapper(string path);
     string TryStorePicture(int surveyWrapperId, string path);
     string StorePictureOverwrite(int surveyWrapperId, string path);
-    List<Result> GetResults(int id);
+    List<Result> GetResults(int surveyWrapperid);
     bool StoreResults(List<Result> results);
     bool StoreResult(IResult result);
 }

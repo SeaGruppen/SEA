@@ -3,7 +3,7 @@ namespace Model.Survey;
 using System.Collections.Generic;
 
 public interface IModifySurveyWrapper {
-    IModifySurvey TryGetModifySurveyVersion(int index); // Return survey index'
+    IModifySurvey? TryGetModifySurveyVersion(int index); // Return survey index'
 
     IModifySurvey AddNewVersion();
 

@@ -11,7 +11,8 @@ using Result = Model.Result.Result;
 using Model.Result;
 using System.Collections.Generic;
 using Model.Utilities;
-using Model.Question;
+using Model.Question;using System.IO.Compression;
+
 internal class DatabaseServices : IDatabase {
     
     private string databasePath;
@@ -110,19 +111,37 @@ internal class DatabaseServices : IDatabase {
 
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0;
-    public int GetNextSurveyID() {
+    public int GetNextSurveyWrapperID() {
         return tmpId++;
     }
 
-    public bool ExportSurvey(int id, string path) {
-        return true;
+    public bool ExportSurveyWrapper(int id, string path) {
+        string surveyWrapperPath = GetSurveyWrapperPath(id);
+        string zipFilePath = Path.Combine(path, $"{id}.zip");
+        System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
+        System.Console.WriteLine($"ZipFilePath = {zipFilePath}");
+        try {
+            ZipFile.CreateFromDirectory(surveyWrapperPath, zipFilePath);
+            return true;
+        } catch (Exception) {
+            // Survey doesn't exist, or zipfile already exists
+            return false;
+        }
     }
 
-    public bool ImportSurvey(string path) {
-        return false;
+    public bool ImportSurveyWrapper(string filePathAndName) {
+        try {
+            ZipFile.ExtractToDirectory(filePathAndName, Path.Combine(databasePath, Path.GetFileNameWithoutExtension(filePathAndName)));
+            return true;
+        }
+        catch (Exception)
+        {
+            // Handle exceptions if needed
+            return false;
+        }
     }
 
-    public List<Result> GetResults(int id) {
+    public List<Result> GetResults(int surveyWrapperId) {
         throw new NotImplementedException();
     }
 

@@ -3,9 +3,9 @@ using Model.Survey;
 
 public interface IFrontEndMainMenu {
     List<IModifySurveyWrapper>? ValidateSuperUser(string username, string password);
-    bool ImportSurvey(string filePath);
+    bool ImportSurveyWrapper(string filePath);
 
-    bool ExportResults(int surveyId, string folderPath);
-    IReadOnlySurveyWrapper? GetSurvey(int pincode);
+    bool ExportResults(int surveyWrapperId, string folderPath);
+    IReadOnlySurveyWrapper? GetSurveyWrapper(int pincode);
 
 }
