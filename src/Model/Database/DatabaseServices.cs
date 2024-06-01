@@ -8,16 +8,22 @@ using SurveyWrapper = Model.Survey.SurveyWrapper;
 using Survey = Model.Survey.Survey;
 using Result = Model.Result.Result;
 using Model.Result;
-using Model.Answer;
 using System.Collections.Generic;
+using Model.Utilities;
 
 internal class DatabaseServices : IDatabase {
 
-    private string databasePath = "./surveyDatabase/";
+    private string databasePath;
     private string resultsPath;
     internal DatabaseServices() {
+        string? projectPath = FileIO.GetProjectPath();
+        if (projectPath != null) {
+            databasePath = Path.Combine(projectPath, "surveyDatabase");
+        } else {
+            databasePath = "./surveyDatabase/";
+        }
         Directory.CreateDirectory(databasePath); //is only created if not exists
-        resultsPath = Path.Combine(databasePath, "./results.csv");
+        resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
     }
 
