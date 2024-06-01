@@ -3,12 +3,21 @@ namespace Model.Question;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
 
 internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<IReadOnlyQuestion> {
-    readonly string multiquestionId;
-    private List<Question> questions;
+
+    [JsonInclude]
+    private string multiquestionId;
+    [JsonInclude]
+    internal List<Question> questions;
+    
+    [JsonInclude]
     private int nextQuestionId = 0;
-    public string MultiQuestionId {get => multiquestionId;}
+    internal int NextQuestionId {get => nextQuestionId; set => nextQuestionId = value;}
+    [JsonInclude]    
+    public string MultiQuestionId => multiquestionId;
     internal MultiQuestion(string multiquestionId) {
         this.multiquestionId = multiquestionId;
         questions = new List<Question>();

@@ -4,14 +4,17 @@ using System;
 using Model.Question;
 using Model.Answer;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 internal class Survey : IReadOnlySurvey, IModifySurvey {
     public string SurveyId {get;}
 
     public string SurveyName {get; set;}
 
+    [JsonInclude]
     private List<MultiQuestion> surveyQuestions = new List<MultiQuestion>();
 
+    [JsonInclude]
     int nextMultiQuestionId = 0;
 
     private int current = -1;

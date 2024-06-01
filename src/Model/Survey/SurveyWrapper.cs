@@ -1,4 +1,6 @@
 namespace Model.Survey;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 
@@ -8,19 +10,24 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
 
     private string surveyWrapperName;
 
+    [JsonInclude]
     private string[] surveyAssests;
 
     public int SurveyWrapperId { get => surveyWrapperId;}
     public string SurveyWrapperName { get => surveyWrapperName; set => surveyWrapperName = value;}
 
     private int current = 0;
+    [JsonInclude]
     private int nextSurveyId  = 0;
+
+    [JsonInclude]
     private List<Survey> surveyVersions = new List<Survey>();
+    
 
     public SurveyWrapper (int surveyWrapperId) {
         this.surveyWrapperId = surveyWrapperId;
-        SurveyWrapperName = string.Empty;
-        surveyAssests = new string[] {};
+        // SurveyWrapperName = string.Empty;
+        surveyAssests = [];
         surveyWrapperName = string.Empty;
     }
 

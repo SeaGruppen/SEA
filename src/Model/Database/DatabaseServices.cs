@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using FrontEndAPI;
 using SurveyWrapper = Model.Survey.SurveyWrapper;
 using Survey = Model.Survey.Survey;
@@ -10,11 +11,8 @@ using Result = Model.Result.Result;
 using Model.Result;
 using System.Collections.Generic;
 using Model.Utilities;
-
+using Model.Question;
 internal class DatabaseServices : IDatabase {
-
-    // private string databasePath;
-    // private string resultsPath;
     
     private string databasePath;
     private readonly string resultsPath;
@@ -41,6 +39,8 @@ internal class DatabaseServices : IDatabase {
         CreateResultsFileIfNotExisting(resultsPath);
     }
 
+    
+
 
     private static void CreateResultsFileIfNotExisting(string resultsPath) {
         if (!File.Exists(resultsPath)) {
@@ -65,9 +65,13 @@ internal class DatabaseServices : IDatabase {
             return LoadSurveyWrapperFromFile(surveyWrapperFile);
         }
     }
-
+    
+    
     private static void SaveSurveyWrapperToFile(string surveyWrapperFilePath, SurveyWrapper surveyWrapper) {
-        string jsonString = JsonSerializer.Serialize(surveyWrapper);
+        var options = new JsonSerializerOptions { WriteIndented = true }; //pretty printing of json strings
+        options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
+        string jsonString = JsonSerializer.Serialize(surveyWrapper, options);
+        Console.WriteLine(jsonString);
         File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 

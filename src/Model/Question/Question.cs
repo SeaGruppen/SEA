@@ -2,6 +2,7 @@ namespace Model.Question;
 
 using System.Net.Mime;
 using Model.Answer;
+using System.Text.Json.Serialization;
 
 public class Question : IReadOnlyQuestion, IModifyQuestion {
     private string id;
