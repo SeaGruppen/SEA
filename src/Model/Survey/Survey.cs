@@ -10,7 +10,9 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
 
     public string SurveyName {get; set;}
 
-    private List<List<Question>> surveyQuestions = new List<List<Question>>();
+    private List<MultiQuestion> surveyQuestions = new List<MultiQuestion>();
+
+    int nextMultiQuestionId = 0;
 
     private int current = -1;
 
@@ -41,28 +43,28 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         current = -1;
     }
 
-    public IEnumerable<IModifyQuestion>? TryGetModifyQuestion(int index) {
+    public IMultiQuestion<IModifyQuestion>? TryGetModifyQuestion(int index) {
         if(0 <= index && index < surveyQuestions.Count) {
             current = index;
-            return surveyQuestions[index];
+            return (IMultiQuestion<IModifyQuestion>) surveyQuestions[index];
         } else {
             return null;
         }
     }
-    public IEnumerable<IModifyQuestion>? TryGetNextModifyQuestion()
+    public IMultiQuestion<IModifyQuestion>? TryGetNextModifyQuestion()
     {
         if(0 <= current && NextQuestionExist()) {
             current++;
-            return surveyQuestions[current];
+            return (IMultiQuestion<IModifyQuestion>) surveyQuestions[current];
         } else {
             return null;
         }
     }
 
-    public IEnumerable<IModifyQuestion>? TryGetPreviousModifyQuestion() {
+    public IMultiQuestion<IModifyQuestion>? TryGetPreviousModifyQuestion() {
         if(PreviousQuestionExist() && current < surveyQuestions.Count) {
             current--;
-            return surveyQuestions[current];
+            return (IMultiQuestion<IModifyQuestion>) surveyQuestions[current];
         } else {
             return null;
         }
@@ -74,16 +76,17 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         }
     }
 
-    public IEnumerable<Question> AddNewQuestion() {
-        List<Question> result = new List<Question>();
+    public IMultiQuestion<IModifyQuestion> AddNewQuestion() {
+        string multiQuestionId = (nextMultiQuestionId++).ToString();
+        MultiQuestion result = new MultiQuestion(string.Concat( SurveyId.ToString(), ".", multiQuestionId));
         surveyQuestions.Add(result);
-        return result;
+        return (IMultiQuestion<IModifyQuestion>) result;
     }
 
-    public IEnumerable<Question> InsertNewQuestion(int index)
-    {
-        List<Question> result = new List<Question>();
+    public IMultiQuestion<IModifyQuestion> InsertNewQuestion(int index) {
+        string multiQuestionId = (nextMultiQuestionId++).ToString();
+        MultiQuestion result = new MultiQuestion(string.Concat( SurveyId.ToString(), ".", multiQuestionId));
         surveyQuestions.Insert(index, result);
-        return result;
+        return (IMultiQuestion<IModifyQuestion>) result;
     }
 }

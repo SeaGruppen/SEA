@@ -116,7 +116,7 @@ public class TestDatabaseServices
     [Test]
     public void TestStorePicture() {
 
-        string testDbPath = "surveyDatabase/";
+        string testDbPath = "surveyDatabase";
         DatabaseServices db = new DatabaseServices(testDbPath); 
         
         int id1 = 6666;

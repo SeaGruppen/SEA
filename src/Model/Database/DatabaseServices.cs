@@ -26,7 +26,7 @@ internal class DatabaseServices : IDatabase {
         }
         else
         {
-            databasePath = "./surveyDatabase/";
+            databasePath = "surveyDatabase";
         }
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "results.csv");
@@ -37,7 +37,7 @@ internal class DatabaseServices : IDatabase {
     internal DatabaseServices(string dataBasePath) {
         this.databasePath = dataBasePath;
         Directory.CreateDirectory(databasePath); //is only created if not exists
-        resultsPath = Path.Combine(databasePath, "./results.csv");
+        resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
     }
 

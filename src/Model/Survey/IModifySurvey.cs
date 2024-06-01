@@ -6,11 +6,11 @@ public interface IModifySurvey {
 
     int SurveyId {get;}
     string SurveyName {get; set;}
-    IEnumerable<IModifyQuestion>? TryGetModifyQuestion(int index);
-    IEnumerable<IModifyQuestion>? TryGetNextModifyQuestion();
-    IEnumerable<IModifyQuestion>? TryGetPreviousModifyQuestion();
+    IMultiQuestion<IModifyQuestion>? TryGetModifyQuestion(int index);
+    IMultiQuestion<IModifyQuestion>? TryGetNextModifyQuestion();
+    IMultiQuestion<IModifyQuestion>? TryGetPreviousModifyQuestion();
     void DeleteQuestion(int index);
-    IEnumerable<Question> AddNewQuestion(); // Add new question at the end of the Enumerable
-    IEnumerable<Question> InsertNewQuestion(int index); // Add new question at position 'index'
+    IMultiQuestion<IModifyQuestion> AddNewQuestion(); // Add new question at the end of the Enumerable
+    IMultiQuestion<IModifyQuestion> InsertNewQuestion(int index); // Add new question at position 'index'
 
 }
