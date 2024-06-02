@@ -1,8 +1,6 @@
-﻿
+﻿using Answer = Model.Answer.Answer;
 
-using Model.Answer;
-
-namespace tests.Backend.Answer
+namespace tests.Backend.AnswerTests
 {
     internal class AnswerTests
     {
@@ -12,7 +10,7 @@ namespace tests.Backend.Answer
         [Test]
         public void TestAddAnswerOption()
         {
-            var sut = new Model.Answer.Answer();
+            var sut = new Answer();
 
             sut.AddAnswerOption("A");
             sut.AddAnswerOption("B");
@@ -27,7 +25,7 @@ namespace tests.Backend.Answer
         [Test]
         public void TestAddAnswerOptionIndex()
         {
-            var sut = new Model.Answer.Answer();
+            var sut = new Answer();
 
             sut.AddAnswerOption("A");
             sut.AddAnswerOption("B");
@@ -46,7 +44,7 @@ namespace tests.Backend.Answer
         [Test]
         public void TestDeleteAnswerOption()
         {
-            var sut = new Model.Answer.Answer();
+            var sut = new Answer();
 
             sut.AddAnswerOption("A");
             sut.AddAnswerOption("B");

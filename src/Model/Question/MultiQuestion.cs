@@ -9,6 +9,10 @@ using System.Text.Json.Serialization;
 internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<IReadOnlyQuestion> {
 
     private string multiquestionId;
+
+    // Added for testing purposes.
+    public IReadOnlyList<Question> Questions => questions;
+
     internal List<Question> questions;
     
     [JsonInclude]
@@ -28,8 +32,8 @@ internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<I
     }
 
     public void InsertQuestion(int i) {
-        if (i >= 0 && i < questions.Count) {
-            string questionId = string.Concat(multiquestionId, "-", nextQuestionId++);
+        if (i >= 0 && i < questions.Count + 1) {
+            string questionId = string.Concat(multiquestionId, ".", nextQuestionId++);
             questions.Insert(i, new Question(questionId));
         }
     }

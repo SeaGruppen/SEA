@@ -22,7 +22,11 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
 
     [JsonInclude]
     private List<Survey> surveyVersions = new List<Survey>();
-    
+
+    // Created for testing purposes.
+    public IReadOnlyList<Survey> SurveyVersions => surveyVersions;
+
+
 
     public SurveyWrapper (int surveyWrapperId) {
         this.surveyWrapperId = surveyWrapperId;
@@ -34,6 +38,8 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
     public void CopyVersion(int index) {
         // var copiedVersion = surveyVersions[index];
         // surveyVersions.Add(copiedVersion);
+
+        // TODO: Unit tests
     }
 
     public IModifySurvey AddNewVersion() {

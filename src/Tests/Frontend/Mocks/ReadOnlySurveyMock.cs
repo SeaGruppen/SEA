@@ -10,6 +10,8 @@ public class ReadOnlySurveyMock : IReadOnlySurvey
     public int SurveyId {get; set; }
     public string SurveyName {get; set; }
 
+    string IReadOnlySurvey.SurveyId => throw new NotImplementedException();
+
     public bool PreviousQuestionExist() => i > 0;
 
     public bool NextQuestionExist() => i + 1 < Questions.Count;

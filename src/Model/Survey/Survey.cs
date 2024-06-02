@@ -14,6 +14,8 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
     [JsonInclude]
     private List<MultiQuestion> surveyQuestions = new List<MultiQuestion>();
 
+    public IReadOnlyList<MultiQuestion> SurveyQuestions => surveyQuestions;
+
     [JsonInclude]
     int nextMultiQuestionId = 0;
 
@@ -56,7 +58,7 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
     }
     public IMultiQuestion<IModifyQuestion>? TryGetNextModifyMultiQuestion()
     {
-        if(0 <= current && NextQuestionExist()) {
+        if(-1 <= current && NextQuestionExist()) {
             current++;
             return (IMultiQuestion<IModifyQuestion>) surveyQuestions[current];
         } else {
