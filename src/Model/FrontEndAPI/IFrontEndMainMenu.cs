@@ -6,6 +6,6 @@ public interface IFrontEndMainMenu {
     bool ImportSurvey(string filePath);
 
     bool ExportResults(int surveyId, string folderPath);
-    IReadOnlySurveyWrapper? GetSurvey(int pincode);
+    IReadOnlySurveyWrapper? GetSurveyWrapper(int pincode);
 
 }

@@ -12,7 +12,7 @@ public class Statistics : IStatistics{
     internal Statistics(DatabaseServices databaseServices) {
         this.databaseServices = databaseServices;
     }
-    public int StartedSurveys(int surveyWrapperId) {
+    public int StartedSurveyWrappers(int surveyWrapperId) {
         List<Result> surveyWrapperResults = GetSurveyWrapperResultsFromDatabase(surveyWrapperId);
         List<int> userIds =[];
         for (int i = 0; i < surveyWrapperResults.Count; i++) {
@@ -23,7 +23,7 @@ public class Statistics : IStatistics{
         return userIds.Count;
     }
 
-    public int FinishedSurveys(int surveyWrapperId) {
+    public int FinishedSurveyWrappers(int surveyWrapperId) {
         //Need to create NumberOfQuestionsInSurvey() method to match against it.
         return 0;
     }
