@@ -31,6 +31,8 @@ IModifyQuestion question1 = multiQuestion1.AddQuestion();
 
 System.Console.WriteLine($"QuestionId1 = {question1.QuestionId}");
 question1.ModifyCaption = "Hvilket dyr tror du det er?";
+question1.ModifyText = "Dette er spørgsmål 1's tekst";
+question1.ModifyAnswer.ModifyAnswerType = AnswerType.MultipleChoice;
 question1.ModifyAnswer.AddAnswerOption("Hund");
 question1.ModifyAnswer.AddAnswerOption("Kat");
         // Add 3 questions to MultiQuestion[1]
@@ -41,7 +43,9 @@ System.Console.WriteLine($"MultiQuestionId2 = {multiQuestion2.MultiQuestionId}")
 
 IModifyQuestion question2 = multiQuestion2.AddQuestion();
 System.Console.WriteLine($"QuestionId2 = {question2.QuestionId}");
-question2.ModifyCaption = "Hvilket dyr tror du det er?";
+question2.ModifyCaption = "Dette er spørgsmål 2's caption";
+question2.ModifyText = "Dette er spørgsmål 2's tekst";
+question2.ModifyAnswer.ModifyAnswerType = AnswerType.MultipleChoice;
 question2.ModifyAnswer.AddAnswerOption("Hund");
 question2.ModifyAnswer.AddAnswerOption("Kat");
 
@@ -61,6 +65,8 @@ System.Console.WriteLine($"MultiQuestionId3 = {multiQuestion3.MultiQuestionId}")
 IModifyQuestion question3 = multiQuestion3.AddQuestion();
 System.Console.WriteLine($"QuestionId3 = {question3.QuestionId}");
 question3.ModifyCaption = "Hvilket dyr tror du det er?";
+question3.ModifyText = $"Dette er spørgsmål 3's tekst{question3.QuestionId}";
+question3.ModifyAnswer.ModifyAnswerType = AnswerType.MultipleChoice;
 question3.ModifyAnswer.AddAnswerOption("Hund");
 question3.ModifyAnswer.AddAnswerOption("Kat");
 
@@ -70,6 +76,7 @@ System.Console.WriteLine($"MultiQuestionId4 = {multiQuestion4.MultiQuestionId}")
 IModifyQuestion question4 = multiQuestion4.AddQuestion();
 System.Console.WriteLine($"QuestionId4 = {question4.QuestionId}");
 question4.ModifyCaption = "Hvilket dyr tror du det er?";
+question4.ModifyText = "Dette er spørgsmål 4's tekst";
 question4.ModifyAnswer.AddAnswerOption("Hund");
 question4.ModifyAnswer.AddAnswerOption("Kat");
 
