@@ -39,9 +39,9 @@ question1.ModifyAnswer.AddAnswerOption("Kat");
     // Edit MultiQuestion[1]
         // Add 2 questions to MultiQuestion1
 IMultiQuestion<IModifyQuestion> multiQuestion2 = version_test.AddNewMultiQuestion();
-System.Console.WriteLine($"MultiQuestionId2 = {multiQuestion2.MultiQuestionId}");
+System.Console.WriteLine($"MultiQuestionId2 = {multiQuestion1.MultiQuestionId}");
 
-IModifyQuestion question2 = multiQuestion2.AddQuestion();
+IModifyQuestion question2 = multiQuestion1.AddQuestion();
 System.Console.WriteLine($"QuestionId2 = {question2.QuestionId}");
 question2.ModifyCaption = "Dette er spørgsmål 2's caption";
 question2.ModifyText = "Dette er spørgsmål 2's tekst";
