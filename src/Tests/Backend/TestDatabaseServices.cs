@@ -126,7 +126,7 @@ public class TestDatabaseServices
         string projectPath =  Model.Utilities.FileIO.GetProjectPath() ;
         // C:\Users\Johan\OneDrive\Universitet\Datalogi\8. semester\SEA\sea_git\SEA\src\Tests\Model\testPictures
         // C:\Users\Johan\OneDrive\Universitet\Datalogi\8. semester\SEA\sea_git\SEA\src\Tests\Backend\testPictures\pic1.jpeg
-        string src = Path.Combine(projectPath, "Tests", "Model", "testPictures", fileName);
+        string src = Path.Combine(projectPath, "Tests", "Backend", "testPictures", fileName);
         string dest = Path.Combine("surveyDatabase", id1.ToString(), "assets", fileName);   
 
         db.StoreSurveyWrapper(surveyWrapper1);
