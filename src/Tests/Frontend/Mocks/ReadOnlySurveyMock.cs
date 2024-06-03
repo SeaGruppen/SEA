@@ -7,8 +7,9 @@ public class ReadOnlySurveyMock : IReadOnlySurvey
 {
     public List<List<IReadOnlyQuestion>> Questions;
     private int i = -1;
-    public int SurveyId {get; set; }
-    public string SurveyName {get; set; }
+    public string SurveyId { get; set; }
+    public string SurveyName { get; set; }
+
 
     public bool PreviousQuestionExist() => i > 0;
 

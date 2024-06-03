@@ -10,11 +10,11 @@ internal class Result : IResult {
 
     public int UserId {get; private set;}
 
-    public int QuestionId {get; private set;}
+    public string QuestionId {get; private set;}
 
-    public int SurveyId {get; private set;}
+    public string SurveyId {get; private set;}
 
-    public Result (int surveyId, int questionId, AnswerType type, int userId, List<string> questionResult) {
+    public Result (string surveyId, string questionId, AnswerType type, int userId, List<string> questionResult) {
         AnswerType = type;
         QuestionResult = questionResult;
         UserId = userId;
