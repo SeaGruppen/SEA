@@ -2,10 +2,10 @@ namespace Model.StatisticsModule;
 
 public interface IStatistics {
     /// Number of surveys that have been started to answer but not finished.
-    int StartedSurveyWrappers(int surveyWrapperId);
+    int StartedSurveysInWrapper(int surveyWrapperId);
 
     /// Number of surveys that have been fully answered.
-    int FinishedSurveyWrappers(int surveyWrapperId);
+    int FinishedSurveysInWrappers(int surveyWrapperId);
 
     /// Completion rate for all surveys in a specific SurveyWrapper.
     double CompletionRateSurveyWrapper(int surveyWrapperId);

@@ -1,5 +1,6 @@
 namespace Model.StatisticsModule;
 
+using System;
 using System.Collections.Generic;
 using Model.Database;
 using Model.Result;
@@ -14,9 +15,10 @@ public class Statistics : IStatistics{
     }
 
     public int NumberOfQuestionsInSurvey(string surveyId) {
+        // To be implemented
         return 10;
     }    
-    public int StartedSurveyWrappers(int surveyWrapperId) {
+    public int StartedSurveysInWrapper(int surveyWrapperId) {
         List<Result> surveyWrapperResults = GetSurveyWrapperResultsFromDatabase(surveyWrapperId);
         List<int> userIds =[];
         for (int i = 0; i < surveyWrapperResults.Count; i++) {
@@ -27,20 +29,22 @@ public class Statistics : IStatistics{
         return userIds.Count;
     }
 
-    public int FinishedSurveyWrappers(int surveyWrapperId) {
-        List<Result> surveyWrapperResults = GetSurveyWrapperResultsFromDatabase(surveyWrapperId);
-        Dictionary<int,int> questionsAnsweredPrUser = new Dictionary<int, int>();
-        // Create Dictionary of userIds and number of questions answered
-        for (int i = 0; i < surveyWrapperResults.Count; i++) {
-            if (questionsAnsweredPrUser.ContainsKey(surveyWrapperResults[i].UserId)) {
-                questionsAnsweredPrUser[surveyWrapperResults[i].UserId]++;
-            } else {
-                questionsAnsweredPrUser[surveyWrapperResults[i].UserId] = 1;
-            }
-        }
-        int totalQuestions = NumberOfQuestionsInSurvey(surveyWrapperId.ToString());
+    public int FinishedSurveysInWrappers(int surveyWrapperId) {
+        // List<Result> surveyWrapperResults = GetSurveyWrapperResultsFromDatabase(surveyWrapperId);
         int result = 0;
-        // Count number of users who have answered all questions
+        List<Survey> surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
+        foreach (Survey survey in surveys) {
+            result += FinishedSurveys(survey.SurveyId);
+        }
+        return result;
+    }
+
+    private int FinishedSurveys(string surveyId) {
+        int surveyWrapperId = ExtractSurveyDetails.GetSurveyWrapperId(surveyId);
+        List<Result> surveyReults = GetSurveyResultsFromDatabase(surveyId);
+        Dictionary<int, int> questionsAnsweredPrUser = QuestionsAnsweredPrUser(surveyReults);
+        int totalQuestions = NumberOfQuestionsInSurvey(surveyId);
+        int result = 0;
         foreach (KeyValuePair<int, int> entry in questionsAnsweredPrUser) {
             if (entry.Value >= totalQuestions) {
                 result++;
@@ -48,30 +52,32 @@ public class Statistics : IStatistics{
         }
         return result;
     }
-
     public double CompletionRateSurveyWrapper(int surveyWrapperId) {
-        int startedSurveys = StartedSurveyWrappers(surveyWrapperId);
-        int completedSurveys = FinishedSurveyWrappers(surveyWrapperId);
+        int startedSurveys = StartedSurveysInWrapper(surveyWrapperId);
+        int completedSurveys = FinishedSurveysInWrappers(surveyWrapperId);
         // Calculate completion rate
         double result = completedSurveys * 100 / startedSurveys;
         return result;
     }
 
     public double CompletionRateSurvey(string surveyId) {
-        // List<Result> resultsFromSurveyWrapper = GetSurveyResultsFromDatabase(surveyId);
-        return 0;
+        int startedSurveys = StartedSurveys(surveyId);
+        int completedSurveys = FinishedSurveys(surveyId);
+        double result = completedSurveys * 100 / startedSurveys;
+        return result;
     }
 
     public double AverageCompletionRateCombined() {
         //Create dictionary of all folder names in the database
         List<int> surveyWrappersInDB =  databaseServices.GetAllSurveyWrapperIds();
 
-        Dictionary<int, double> completionRatePrSurveyWrapper = new Dictionary<int, double>();
+        int StartedSurveys = 0;
+        int FinishedSurveys = 0;
         for (int i = 0; i < surveyWrappersInDB.Count; i++) {
-            completionRatePrSurveyWrapper[surveyWrappersInDB[i]] =
-                AverageCompletionRateSurveyWrapper(surveyWrappersInDB[i]);
+            StartedSurveys += StartedSurveysInWrapper(surveyWrappersInDB[i]);
+            FinishedSurveys += FinishedSurveysInWrappers(surveyWrappersInDB[i]);    
         }
-        double result = completionRatePrSurveyWrapper.Values.Average();
+        double result = FinishedSurveys * 100 / StartedSurveys;
         return result;
     }
 
@@ -137,5 +143,26 @@ public class Statistics : IStatistics{
         }
 
         return questionsAnsweredPrUser;
+    }
+
+    private List<Survey> GetSurveysInSurveyWrapper(int surveyWrapperId) {
+        SurveyWrapper? surveyWrapper = databaseServices.GetSurveyWrapper(surveyWrapperId);   
+        List<Survey> result = new List<Survey>();
+        for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
+            result.Add((Survey) surveyWrapper.TryGetModifySurveyVersion(i));
+        }
+        return result;
+    }
+
+    /// Helper function to get surveys started for a single survey, inside a SurveyWrapper
+    private int StartedSurveys(string surveyId) {
+        List<Result> surveyWrapperResults = GetSurveyResultsFromDatabase(surveyId);
+        List<int> userIds =[];
+        for (int i = 0; i < surveyWrapperResults.Count; i++) {
+            if (userIds.Contains(surveyWrapperResults[i].UserId)) {
+                userIds.Add(surveyWrapperResults[i].UserId);
+            }
+        }
+        return userIds.Count;
     }
 }

@@ -149,7 +149,7 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public List<Result> GetSurveyWrapperResults(int id) {
+    public List<Result> GetSurveyWrapperResults(int surveyWrapperId) {
         throw new NotImplementedException();
     }
 
@@ -182,12 +182,14 @@ internal class DatabaseServices : IDatabase {
     }
 
     public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){
+        // Missing implementation
         return new List<SurveyWrapper>();
     }
 
     public List<int> GetAllSurveyWrapperIds() {
         List<string> directories = Directory.GetDirectories(databasePath).ToList();
         List<int> result = new List<int>();
+        // Validate that all folders are just integers
         foreach (var directory in directories) {
             try {
                 result.Add(int.Parse(Path.GetFileName(directory)));

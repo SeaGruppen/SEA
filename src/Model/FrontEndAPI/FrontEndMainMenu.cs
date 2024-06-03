@@ -13,9 +13,9 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
         db = database;
     }
 
-    public bool ExportResults(int surveyId, string folderPath) {
-        List<Result> results = db.GetSurveyWrapperResults(surveyId);
-        string path = Path.Combine(folderPath, $"{surveyId}.csv");
+    public bool ExportResults(int surveyWrapperId, string folderPath) {
+        List<Result> results = db.GetSurveyWrapperResults(surveyWrapperId);
+        string path = Path.Combine(folderPath, $"{surveyWrapperId}.csv");
         try {
             using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8)) {
                 foreach (var result in results) {
