@@ -145,5 +145,18 @@ internal class DatabaseServices : IDatabase {
     public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){
         return new List<SurveyWrapper>();
     }
+
+    public List<int> GetAllSurveyWrapperIds() {
+        List<string> directories = Directory.GetDirectories(databasePath).ToList();
+        List<int> result = new List<int>();
+        foreach (var directory in directories) {
+            try {
+                result.Add(int.Parse(Path.GetFileName(directory)));
+            } catch (Exception) {
+                System.Console.WriteLine("Error parsing directory name to int in DatabaseService.GetAllSurveyWrapperIds()");
+            }
+        }
+        return result;
+    }
 }
 

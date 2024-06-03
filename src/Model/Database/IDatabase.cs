@@ -26,4 +26,5 @@ internal interface IDatabase {
     List<Result> GetSurveyWrapperResults(int id);
     bool StoreResults(List<Result> results);
     bool StoreResult(IResult result);
+    List<int> GetAllSurveyWrapperIds();
 }
