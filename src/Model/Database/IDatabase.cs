@@ -14,7 +14,7 @@ using Model.Result;
 using Model.Survey;
 
 internal interface IDatabase {
-    int GetNextSurveyID();
+    int GetNextSurveyWrapperID();
     bool StoreSurveyWrapper(SurveyWrapper surveyWrapper);
     
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
@@ -23,7 +23,7 @@ internal interface IDatabase {
     bool ImportSurvey(string path);
     string TryStorePicture(int surveyWrapperId, string path);
     string StorePictureOverwrite(int surveyWrapperId, string path);
-    List<Result> GetResults(int id);
+    List<Result> GetSurveyWrapperResults(int id);
     bool StoreResults(List<Result> results);
     bool StoreResult(IResult result);
 }

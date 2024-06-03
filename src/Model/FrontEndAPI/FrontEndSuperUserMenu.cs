@@ -10,7 +10,7 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
     }
 
     public IModifySurveyWrapper CreateSurvey() {
-        int surveyId = db.GetNextSurveyID();
+        int surveyId = db.GetNextSurveyWrapperID();
         return new SurveyWrapper(surveyId);
     }
 

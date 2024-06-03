@@ -4,6 +4,7 @@ using Model.Database;
 using Model.FrontEndAPI;
 using Result;
 using Answer;
+using Model.StatisticsModule;
 
 public static class FrontEndFactory {
     private static DatabaseServices databaseServices = new DatabaseServices();
@@ -19,9 +20,13 @@ public static class FrontEndFactory {
         return new FrontEndSuperUserMenu(databaseServices);
     }
 
+    public static IStatistics CreateStatistics() {
+        return new Statistics(databaseServices);
+    }
+
     public static IResult CreateResult(
         int surveyId,
-        int questionId,
+        string questionId,
         AnswerType type,
         int userId,
         List<string> questionResult) => new Result(surveyId, questionId, type, userId, questionResult);

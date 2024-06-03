@@ -5,7 +5,7 @@ public interface IResult
     AnswerType AnswerType {get;}
     List<string> QuestionResult {get; set;}
     int UserId {get;}
-    int QuestionId {get;}
+    string QuestionId {get;}
     int SurveyId {get;}
 }
 

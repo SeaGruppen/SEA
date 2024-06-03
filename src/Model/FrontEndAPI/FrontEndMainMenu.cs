@@ -14,7 +14,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
     }
 
     public bool ExportResults(int surveyId, string folderPath) {
-        List<Result> results = db.GetResults(surveyId);
+        List<Result> results = db.GetSurveyWrapperResults(surveyId);
         string path = Path.Combine(folderPath, $"{surveyId}.csv");
         try {
             using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8)) {
@@ -28,7 +28,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
             return false;
         } 
     }
-    public IReadOnlySurveyWrapper GetSurvey(int surveyId) {
+    public IReadOnlySurveyWrapper GetSurveyWrapper(int surveyId) {
         return db.GetSurveyWrapper(surveyId);
     }
 

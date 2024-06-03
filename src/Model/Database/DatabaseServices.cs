@@ -10,11 +10,11 @@ using Result = Model.Result.Result;
 using Model.Result;
 using Model.Answer;
 using System.Collections.Generic;
-
 internal class DatabaseServices : IDatabase {
     
     private string databasePath = "./surveyDatabase/";
     private readonly string resultsPath;
+    private Random random = new Random();
     internal DatabaseServices() {
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "./results.csv");
@@ -93,8 +93,13 @@ internal class DatabaseServices : IDatabase {
 
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0;
-    public int GetNextSurveyID() {
-        return tmpId++;
+    public int GetNextSurveyWrapperID() {
+        int result = random.Next(100000);
+        // Ensure that Id isn't used already.
+        while (Directory.Exists(GetSurveyWrapperPath(result))) {
+            result = random.Next();
+        }
+        return result;
     }
 
     public bool ExportSurvey(int id, string path) {
@@ -105,7 +110,7 @@ internal class DatabaseServices : IDatabase {
         return false;
     }
 
-    public List<Result> GetResults(int id) {
+    public List<Result> GetSurveyWrapperResults(int id) {
         throw new NotImplementedException();
     }
 
