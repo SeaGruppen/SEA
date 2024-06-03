@@ -6,7 +6,7 @@ public interface IResult
     List<string> QuestionResult {get; set;}
     int UserId {get;}
     string QuestionId {get;}
-    int SurveyId {get;}
+    string SurveyId {get;}
 }
 
 //     void StoreResultFromQuestion(int surveyID, int questionsID, int userID, Result result);

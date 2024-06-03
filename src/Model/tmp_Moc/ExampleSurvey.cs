@@ -9,7 +9,7 @@ public static class ExampleSurvey
     private static int _questionId = 0;
     private static Question GetScaleQuestion(string caption, string image, string text, int min, int max)
     {
-        var question = new Question(_questionId++);
+        var question = new Question((_questionId++).ToString());
         question.ModifyCaption = caption;
         question.ModifyPicture = image;
         question.ModifyText = text;
@@ -22,7 +22,7 @@ public static class ExampleSurvey
 
     private static Question GetMultiQuestion(string caption, string image, string text, string[] options)
     {
-        var question = new Question(_questionId++);
+        var question = new Question((_questionId++).ToString());
         question.ModifyCaption = caption;
         question.ModifyPicture = image;
         question.ModifyText = text;
@@ -37,7 +37,7 @@ public static class ExampleSurvey
 
     private static Question GetTextQuestion(string caption, string image, string text)
     {
-        var question = new Question(_questionId++);
+        var question = new Question((_questionId++).ToString());
         question.ModifyCaption = caption;
         question.ModifyPicture = image;
         question.ModifyText = text;
@@ -95,12 +95,12 @@ public static class ExampleSurvey
 
         var surveyWrap = new SurveyWrapper(123456);
         var survey = surveyWrap.AddNewVersion();
-        var page1 = survey.AddNewQuestion();
+        var page1 = survey.AddNewMultiQuestion();
         ((List<Question>)page1).Add(q1);
         ((List<Question>)page1).Add(q2);
         ((List<Question>)page1).Add(q3);
 
-        var page2 = survey.AddNewQuestion();
+        var page2 = survey.AddNewMultiQuestion();
         ((List<Question>)page2).Add(q4);
         ((List<Question>)page2).Add(q5);
         ((List<Question>)page2).Add(q6);

@@ -3,21 +3,33 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using FrontEndAPI;
 using SurveyWrapper = Model.Survey.SurveyWrapper;
 using Survey = Model.Survey.Survey;
 using Result = Model.Result.Result;
 using Model.Result;
-using Model.Answer;
 using System.Collections.Generic;
+using Model.Utilities;
+using Model.Question;using System.IO.Compression;
+
 internal class DatabaseServices : IDatabase {
     
-    private string databasePath = "./surveyDatabase/";
+    private string databasePath;
     private readonly string resultsPath;
     private Random random = new Random();
     internal DatabaseServices() {
+        string? projectPath = FileIO.GetProjectPath();
+        if (projectPath != null)
+        {
+            databasePath = Path.Combine(projectPath, "surveyDatabase");
+        }
+        else
+        {
+            databasePath = "surveyDatabase";
+        }
         Directory.CreateDirectory(databasePath); //is only created if not exists
-        resultsPath = Path.Combine(databasePath, "./results.csv");
+        resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
     }
 
@@ -25,9 +37,12 @@ internal class DatabaseServices : IDatabase {
     internal DatabaseServices(string dataBasePath) {
         this.databasePath = dataBasePath;
         Directory.CreateDirectory(databasePath); //is only created if not exists
-        resultsPath = Path.Combine(databasePath, "./results.csv");
+        resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
     }
+
+    
+
 
     private static void CreateResultsFileIfNotExisting(string resultsPath) {
         if (!File.Exists(resultsPath)) {
@@ -52,9 +67,13 @@ internal class DatabaseServices : IDatabase {
             return LoadSurveyWrapperFromFile(surveyWrapperFile);
         }
     }
-
+    
+    
     private static void SaveSurveyWrapperToFile(string surveyWrapperFilePath, SurveyWrapper surveyWrapper) {
-        string jsonString = JsonSerializer.Serialize(surveyWrapper);
+        var options = new JsonSerializerOptions { WriteIndented = true }; //pretty printing of json strings
+        options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
+        string jsonString = JsonSerializer.Serialize(surveyWrapper, options);
+        // Console.WriteLine(jsonString);
         File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 
@@ -63,8 +82,10 @@ internal class DatabaseServices : IDatabase {
     }
 
     private static SurveyWrapper LoadSurveyWrapperFromFile(string surveyWrapperPath) {
+        var options = new JsonSerializerOptions {}; //pretty printing of json strings
+        options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
         string jsonString = File.ReadAllText(surveyWrapperPath);
-        return JsonSerializer.Deserialize<SurveyWrapper>(jsonString)!;
+        return JsonSerializer.Deserialize<SurveyWrapper>(jsonString, options)!;
     }
 
     public string StorePictureOverwrite(int surveyWrapperId, string src) {
@@ -102,12 +123,30 @@ internal class DatabaseServices : IDatabase {
         return result;
     }
 
-    public bool ExportSurvey(int id, string path) {
-        return true;
+    public bool ExportSurveyWrapper(int id, string path) {
+        string surveyWrapperPath = GetSurveyWrapperPath(id);
+        string zipFilePath = Path.Combine(path, $"{id}.zip");
+        System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
+        System.Console.WriteLine($"ZipFilePath = {zipFilePath}");
+        try {
+            ZipFile.CreateFromDirectory(surveyWrapperPath, zipFilePath);
+            return true;
+        } catch (Exception) {
+            // Survey doesn't exist, or zipfile already exists
+            return false;
+        }
     }
 
-    public bool ImportSurvey(string path) {
-        return false;
+    public bool ImportSurveyWrapper(string filePathAndName) {
+        try {
+            ZipFile.ExtractToDirectory(filePathAndName, Path.Combine(databasePath, Path.GetFileNameWithoutExtension(filePathAndName)));
+            return true;
+        }
+        catch (Exception)
+        {
+            // Handle exceptions if needed
+            return false;
+        }
     }
 
     public List<Result> GetSurveyWrapperResults(int id) {

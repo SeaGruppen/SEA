@@ -15,12 +15,13 @@ using Model.Survey;
 
 internal interface IDatabase {
     int GetNextSurveyWrapperID();
+    int GetNextSurveyWrapperID();
     bool StoreSurveyWrapper(SurveyWrapper surveyWrapper);
     
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
     List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username);
-    bool ExportSurvey(int id,string path);
-    bool ImportSurvey(string path);
+    bool ExportSurveyWrapper(int surveyWrapperid,string path);
+    bool ImportSurveyWrapper(string path);
     string TryStorePicture(int surveyWrapperId, string path);
     string StorePictureOverwrite(int surveyWrapperId, string path);
     List<Result> GetSurveyWrapperResults(int id);

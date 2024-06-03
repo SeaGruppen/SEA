@@ -84,7 +84,7 @@ public class MainMenuViewModel : ViewModelBase
         if (file != null)
         {
             var path = file.Path.ToString();
-            if (_client.ImportSurvey(path))
+            if (_client.ImportSurveyWrapper(path))
             {
                 return;
             }
@@ -166,7 +166,7 @@ public class MainMenuViewModel : ViewModelBase
 
         if (Int32.TryParse(Password, out var pin))
         {
-            var survey = _client.GetSurvey(pin);
+            var survey = _client.GetSurveyWrapper(pin);
             if (survey != null)
             {
                 _changeViewCommand.Invoke("ExperimenterMenu", survey!);

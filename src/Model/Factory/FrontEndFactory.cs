@@ -25,7 +25,7 @@ public static class FrontEndFactory {
     }
 
     public static IResult CreateResult(
-        int surveyId,
+        string surveyId,
         string questionId,
         AnswerType type,
         int userId,

@@ -21,7 +21,7 @@ public class QuestionViewModel : ViewModelBase
         get => _foundImage;
         private set => this.RaiseAndSetIfChanged(ref _foundImage, value);
     }
-    public int Id { get; }
+    public string Id { get; }
     public Bitmap? Image { get; }
     public string Caption { get; }
     public AnswerType Type { get; }

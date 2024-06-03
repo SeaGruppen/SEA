@@ -9,20 +9,20 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         this.db = databaseServices;
     }
 
-    public IModifySurveyWrapper CreateSurvey() {
+    public IModifySurveyWrapper CreateSurveyWrapper() {
         int surveyId = db.GetNextSurveyWrapperID();
         return new SurveyWrapper(surveyId);
     }
 
-    public bool ExportSurveyFromDatabase(int surveyId, string folderPath) {
-        if (db.ExportSurvey(surveyId, folderPath)) {
+    public bool ExportSurveyWrapperFromDatabase(int surveyId, string folderPath) {
+        if (db.ExportSurveyWrapper(surveyId, folderPath)) {
             return true;
         } else {
             return false;
         }
     }
 
-    public IModifySurveyWrapper ModifySurvey(int surveyId) {
+    public IModifySurveyWrapper? ModifySurveyWrapper(int surveyId) {
         return db.GetSurveyWrapper(surveyId);
     }
 
@@ -34,8 +34,13 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         //To be implemented
     }
 
-    public void StoreSurveyInDatabase(IModifySurvey survey) {
-        
+    public void StoreSurveyWrapperInDatabase(IModifySurveyWrapper modifySurveyWrapper) {
+        //Try downcasting to SurveyWrapper
+        if (modifySurveyWrapper is SurveyWrapper surveyWrapper)
+            db.StoreSurveyWrapper(surveyWrapper as SurveyWrapper);
+        else {
+            // Downcast failed, handle accordingly
+            throw new InvalidCastException("The provided surveyWrapper is not of type SurveyWrapper, Have you gotten hacked?");
+        }
     }
-
 }
