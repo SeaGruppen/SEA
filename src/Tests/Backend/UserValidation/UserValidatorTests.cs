@@ -1,6 +1,6 @@
 ﻿using backend.UserValidation;
 
-namespace tests.Backend.UserValidation
+namespace Tests.Backend.UserValidation
 {
     internal class UserValidatorTests
     {
