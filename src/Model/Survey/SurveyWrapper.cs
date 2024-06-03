@@ -50,7 +50,14 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
     }
 
     public void DeleteVersion(int index) {
-        surveyVersions.RemoveAt(index);
+        try
+        {
+            surveyVersions.RemoveAt(index);
+        } 
+        catch (Exception e)
+        {
+            // Caught exception index out of range.
+        }
     }
 
     public string[] GetSurveyAssets() {
