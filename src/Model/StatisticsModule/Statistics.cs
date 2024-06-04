@@ -66,7 +66,7 @@ public class Statistics : IStatistics{
     }
 
 
-    // Needs to be changed, it aggregates the average of the average, but it will give a result for now.
+    // It aggregates the average of the average, I dont know if that is the desired 'average', but it will give a result for now.
     public double AverageCompletionRateCombined() {
         // Create dictionary of all folder names in the database
         List<int> surveyWrappersInDB =  databaseServices.GetAllSurveyWrapperIds();
