@@ -69,10 +69,7 @@ internal class DatabaseServices : IDatabase {
     
     
     private static void SaveSurveyWrapperToFile(string surveyWrapperFilePath, SurveyWrapper surveyWrapper) {
-        var options = new JsonSerializerOptions { WriteIndented = true }; //pretty printing of json strings
-        options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
-        string jsonString = JsonSerializer.Serialize(surveyWrapper, options);
-        // Console.WriteLine(jsonString);
+        string jsonString = JsonSerializer.Serialize(surveyWrapper, Globals.OPTIONS);
         File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 
@@ -81,10 +78,8 @@ internal class DatabaseServices : IDatabase {
     }
 
     private static SurveyWrapper LoadSurveyWrapperFromFile(string surveyWrapperPath) {
-        var options = new JsonSerializerOptions {}; //pretty printing of json strings
-        options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
         string jsonString = File.ReadAllText(surveyWrapperPath);
-        return JsonSerializer.Deserialize<SurveyWrapper>(jsonString, options)!;
+        return JsonSerializer.Deserialize<SurveyWrapper>(jsonString, Globals.OPTIONS)!;
     }
 
     public string StorePictureOverwrite(int surveyWrapperId, string src) {
