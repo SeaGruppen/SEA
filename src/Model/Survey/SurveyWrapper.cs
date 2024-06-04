@@ -91,8 +91,6 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
     }
 
     private Survey CopySurvey(Survey surveyToCopy) {
-        // var options = new JsonSerializerOptions { WriteIndented = true };
-        // options.Converters.Add(new Model.Question.MultiQuestionConverter());
         string jsonString = JsonSerializer.Serialize(surveyToCopy, Globals.OPTIONS);
         return JsonSerializer.Deserialize<Survey>(jsonString, Globals.OPTIONS)!;
     }

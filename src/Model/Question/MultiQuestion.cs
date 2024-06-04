@@ -66,7 +66,7 @@ internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<I
         foreach (Question question in questions) {
             string currentQuestionId = question.QuestionId;
             string[] parts = currentQuestionId.Split(".");
-            string newQuestionId = multiquestionId + "." + parts[3];
+            string newQuestionId = multiquestionId + "." + parts.Last();
             question.UpdateId(newQuestionId);
         }
     }

@@ -100,7 +100,7 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         foreach (MultiQuestion mq in surveyQuestions) {
             string currentMqId = mq.MultiQuestionId;
             string[] parts = currentMqId.Split(".");
-            string newMqId = SurveyId + "." + parts[2];
+            string newMqId = SurveyId + "." + parts.Last();
             mq.UpdateId(newMqId);
         }
     }
