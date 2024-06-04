@@ -42,7 +42,6 @@ internal class Statistics : IStatistics{
 
     public int StartedSurveysInWrapper(int surveyWrapperId) {
         List<Result> surveyWrapperResults = databaseServices.GetSurveyWrapperResults(surveyWrapperId);
-        // System.Console.WriteLine($"surveyWrapperResults.Count = {surveyWrapperResults.Count}");
         List<int> userIds =[];
         for (int i = 0; i < surveyWrapperResults.Count; i++) {
             if (!userIds.Contains(surveyWrapperResults[i].UserId)) {
@@ -77,7 +76,6 @@ internal class Statistics : IStatistics{
         int startedSurveys = StartedSurveysInWrapper(surveyWrapperId);
         int completedSurveys = FinishedSurveysInWrappers(surveyWrapperId);
         // Calculate completion rate
-        System.Console.WriteLine($"SurveyWrapperId = {surveyWrapperId},  Started surveys: {startedSurveys}, Finished surveys: {completedSurveys}");
         if (startedSurveys == 0) {
             return 0;
         } else {
@@ -129,10 +127,6 @@ internal class Statistics : IStatistics{
 
     private double AverageCompletionRate(int numberOfQuestions, Dictionary<int, int> questionsAnsweredPrUser) {
         if (questionsAnsweredPrUser.Count == 0) return 0;
-        // foreach (KeyValuePair<int, int> entry in questionsAnsweredPrUser) {
-        //     System.Console.WriteLine($"userId = {entry.Key}, questionsAnswered = {entry.Value}");
-        // }
-        System.Console.WriteLine($"numberOfQuestions = {numberOfQuestions}, questionsAnsweredPrUser.Count = {questionsAnsweredPrUser.Values.Average()}");
         Dictionary<int, double> completionRatePrUser = new Dictionary<int, double>();
         // Count number of users who have answered all questions
         foreach (KeyValuePair<int, int> entry in questionsAnsweredPrUser) {

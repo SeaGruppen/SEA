@@ -73,7 +73,6 @@ internal class DatabaseServices : IDatabase {
         var options = new JsonSerializerOptions { WriteIndented = true }; //pretty printing of json strings
         options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
         string jsonString = JsonSerializer.Serialize(surveyWrapper, options);
-        // Console.WriteLine(jsonString);
         File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 
@@ -126,8 +125,6 @@ internal class DatabaseServices : IDatabase {
     public bool ExportSurveyWrapper(int id, string path) {
         string surveyWrapperPath = GetSurveyWrapperPath(id);
         string zipFilePath = Path.Combine(path, $"{id}.zip");
-        // System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
-        // System.Console.WriteLine($"ZipFilePath = {zipFilePath}");
         try {
             ZipFile.CreateFromDirectory(surveyWrapperPath, zipFilePath);
             return true;
@@ -160,7 +157,6 @@ internal class DatabaseServices : IDatabase {
                         result = Result.FromString(line);
                     } catch (Exception) {
                         // Skip line if it can't be parsed
-                        // System.Console.WriteLine($"Error parsing line in DatabaseService.GetSurveyWrapperResults() {line}");
                         continue;
                     }
                     if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.SurveyId) == surveyWrapperId) {
@@ -168,7 +164,6 @@ internal class DatabaseServices : IDatabase {
                     }
                 }
             }
-            // System.Console.WriteLine($"Found {results.Count} results for surveyWrapperId {surveyWrapperId}, resultspath = {resultsPath}");
             return results;
         }
         catch (Exception) {

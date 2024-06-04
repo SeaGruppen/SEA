@@ -22,15 +22,8 @@ internal class Result : IResult {
         SurveyId = surveyId;
     }
     public static Result FromString(string resultString) {
-        // System.Console.WriteLine($"resultString = {resultString}");
         string[] parts = resultString.Split(',');
-        // for (int i = 0; i < parts.Length; i++)
-        //     {
-        //         System.Console.WriteLine($"parts[{i}] = {parts[i]}");
-        //     }
-        // System.Console.WriteLine($"parts[0] = {parts[0]}");
         Result result =  new Result(parts[0], parts[1], (AnswerType)Enum.Parse(typeof(AnswerType), parts[2]), int.Parse(parts[3]), new List<string>(parts[4].Split(";")));
-        // System.Console.WriteLine($"Result.FromString() = {result}");
         return result;
     }
 
