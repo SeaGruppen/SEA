@@ -19,7 +19,7 @@ public class Statistics : IStatistics{
         return 10;
     }    
     public int StartedSurveysInWrapper(int surveyWrapperId) {
-        List<Result> surveyWrapperResults = GetSurveyWrapperResultsFromDatabase(surveyWrapperId);
+        List<Result> surveyWrapperResults = databaseServices.GetSurveyWrapperResults(surveyWrapperId);
         List<int> userIds =[];
         for (int i = 0; i < surveyWrapperResults.Count; i++) {
             if (userIds.Contains(surveyWrapperResults[i].UserId)) {
@@ -30,7 +30,6 @@ public class Statistics : IStatistics{
     }
 
     public int FinishedSurveysInWrappers(int surveyWrapperId) {
-        // List<Result> surveyWrapperResults = GetSurveyWrapperResultsFromDatabase(surveyWrapperId);
         int result = 0;
         List<Survey> surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
         foreach (Survey survey in surveys) {
@@ -40,7 +39,6 @@ public class Statistics : IStatistics{
     }
 
     private int FinishedSurveys(string surveyId) {
-        int surveyWrapperId = ExtractSurveyDetails.GetSurveyWrapperId(surveyId);
         List<Result> surveyReults = GetSurveyResultsFromDatabase(surveyId);
         Dictionary<int, int> questionsAnsweredPrUser = QuestionsAnsweredPrUser(surveyReults);
         int totalQuestions = NumberOfQuestionsInSurvey(surveyId);
@@ -67,17 +65,17 @@ public class Statistics : IStatistics{
         return result;
     }
 
+
+    // Needs to be changed, it aggregates the average of the average, but it will give a result for now.
     public double AverageCompletionRateCombined() {
-        //Create dictionary of all folder names in the database
+        // Create dictionary of all folder names in the database
         List<int> surveyWrappersInDB =  databaseServices.GetAllSurveyWrapperIds();
 
-        int StartedSurveys = 0;
-        int FinishedSurveys = 0;
+        Dictionary<string, double> surveyWrapperCompletionRate = new Dictionary<string, double>();
         for (int i = 0; i < surveyWrappersInDB.Count; i++) {
-            StartedSurveys += StartedSurveysInWrapper(surveyWrappersInDB[i]);
-            FinishedSurveys += FinishedSurveysInWrappers(surveyWrappersInDB[i]);    
+            surveyWrapperCompletionRate[surveyWrappersInDB[i].ToString()] = CompletionRateSurveyWrapper(surveyWrappersInDB[i]);
         }
-        double result = FinishedSurveys * 100 / StartedSurveys;
+        double result = surveyWrapperCompletionRate.Values.Average();
         return result;
     }
 
@@ -110,11 +108,6 @@ public class Statistics : IStatistics{
         }
         double result = completionRatePrUser.Values.Average() * 100;
         return result;
-    }
-
-
-    private List<Result> GetSurveyWrapperResultsFromDatabase(int surveyWrapperId) {
-        return databaseServices.GetSurveyWrapperResults(surveyWrapperId);
     }
 
     // OBS: SurveyId, not SurveyWrapperId.
