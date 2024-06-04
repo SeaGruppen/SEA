@@ -5,7 +5,7 @@ using Model.Question;
 public static class ExtractSurveyDetails {
 
     /// Use to get surveyWrapperId from sub-element's Id
-    public static int GetSurveyWrapperId(string subElement) {
+    public static int TryGetSurveyWrapperId(string subElement) {
         if (string.IsNullOrWhiteSpace(subElement) || !subElement.Contains('.')) {
             throw new ArgumentException("Invalid subElement", nameof(subElement));
         }
@@ -16,7 +16,7 @@ public static class ExtractSurveyDetails {
         }
         return result;
     }
-    public static string GetSurveyId(string subElement) {
+    public static string TryGetSurveyId(string subElement) {
         // Check that subElement is not null and that it contains a period
         if (string.IsNullOrWhiteSpace(subElement) || !subElement.Contains('.')) {
             throw new ArgumentException("Invalid subElement", nameof(subElement));
@@ -29,7 +29,7 @@ public static class ExtractSurveyDetails {
         string result = string.Join(".", parts.Take(2));
         return result;
     }    
-    public static string GetMultiQuestionId(string subElement) {
+    public static string TryGetMultiQuestionId(string subElement) {
         //Check that subElement is not null and that it contains a period
         if (string.IsNullOrWhiteSpace(subElement) || !subElement.Contains('.')) {
             throw new ArgumentException("Invalid subElement", nameof(subElement));

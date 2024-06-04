@@ -8,6 +8,7 @@ using Model.Answer;
 using Model.Result;
 using Model.Factory;
 using Model.FrontEndAPI;
+using Model.StatisticsModule;
 
 // lav SurveyWrapper
 SurveyWrapper surveyWrapper = new SurveyWrapper(3797);
@@ -114,3 +115,28 @@ System.Console.WriteLine(SUMenu.ExportSurveyWrapperFromDatabase(surveyWrapper.Su
 IFrontEndMainMenu mainMenu = FrontEndFactory.CreateMainMenu();
 System.Console.WriteLine($"Path to import from: {Path.Combine( Model.Utilities.FileIO.GetProjectPath(), "..", "3799.zip")}");
 System.Console.WriteLine( mainMenu.ImportSurveyWrapper(Path.Combine( Model.Utilities.FileIO.GetProjectPath(), "..", "3799.zip")));
+
+IStatistics statistics = FrontEndFactory.CreateStatistics();
+System.Console.WriteLine(statistics.NumberOfQuestionsInSurvey("3797.0"));
+
+List<string> resultAnswered = new List<string>();
+resultAnswered.Add("Hund");
+resultAnswered.Add("Kat");
+
+IFrontEndExperimenter experimenter = FrontEndFactory.CreateExperimenterMenu();
+
+Random random = new Random();
+
+for (int k = 0; k < 50; k++) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < random.Next(30); j++) {
+            IResult result = FrontEndFactory.CreateResult("3797." + i.ToString(), $"3797.0.{i}.{j}", AnswerType.Text, k, resultAnswered);
+            experimenter.StoreResultFromQuestion(result);
+        }
+    }
+}
+
+System.Console.WriteLine($"Number of started surveys in surveywrapper 3797: {statistics.StartedSurveysInWrapper(3797)}");
+System.Console.WriteLine($"Completionrate of SurveyWrapper 3797: {statistics.CompletionRateSurveyWrapper(3797)}");
+System.Console.WriteLine($"AverageCompletionrate of SurveyWrapper 3797: {statistics.AverageCompletionRateSurveyWrapper(3797)}");
+System.Console.WriteLine($"AverageCompletionRate overall: {statistics.AverageCompletionRateCombined()}");

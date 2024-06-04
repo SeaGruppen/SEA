@@ -126,8 +126,8 @@ internal class DatabaseServices : IDatabase {
     public bool ExportSurveyWrapper(int id, string path) {
         string surveyWrapperPath = GetSurveyWrapperPath(id);
         string zipFilePath = Path.Combine(path, $"{id}.zip");
-        System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
-        System.Console.WriteLine($"ZipFilePath = {zipFilePath}");
+        // System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
+        // System.Console.WriteLine($"ZipFilePath = {zipFilePath}");
         try {
             ZipFile.CreateFromDirectory(surveyWrapperPath, zipFilePath);
             return true;
@@ -150,7 +150,31 @@ internal class DatabaseServices : IDatabase {
     }
 
     public List<Result> GetSurveyWrapperResults(int surveyWrapperId) {
-        throw new NotImplementedException();
+        List<Result> results = new List<Result>();
+        try {
+            using (StreamReader reader = new StreamReader(resultsPath, Encoding.UTF8)) {
+                string line;
+                while ((line = reader.ReadLine()) != null) {
+                    Result result;
+                    try {
+                        result = Result.FromString(line);
+                    } catch (Exception) {
+                        // Skip line if it can't be parsed
+                        // System.Console.WriteLine($"Error parsing line in DatabaseService.GetSurveyWrapperResults() {line}");
+                        continue;
+                    }
+                    if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.SurveyId) == surveyWrapperId) {
+                        results.Add(result);
+                    }
+                }
+            }
+            // System.Console.WriteLine($"Found {results.Count} results for surveyWrapperId {surveyWrapperId}, resultspath = {resultsPath}");
+            return results;
+        }
+        catch (Exception) {
+            // Handle exceptions if needed
+        }
+        return results;
     }
 
     public bool StoreResult (IResult result) {
