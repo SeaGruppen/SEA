@@ -44,4 +44,8 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
         text = string.Empty;
         answer = new Answer();
     }
+
+    internal void UpdateId(string newQuestionId) {
+        id = newQuestionId;
+    }
 }

@@ -9,7 +9,7 @@ public interface IModifySurveyWrapper {
 
     int GetVersionCount(); // Return number of versions
 
-    void CopyVersion(int index);
+    IModifySurvey CopyVersion(int index);
 
     void DeleteVersion(int index);
     string[] GetSurveyAssets(); // Get pictures from the survey

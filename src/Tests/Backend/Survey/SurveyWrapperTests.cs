@@ -100,5 +100,43 @@ namespace Tests.Backend.SurveyTests
 
             Assert.That(res, Is.EqualTo(null));
         }
+
+
+        [Test]
+        public void TestCopyVersion()
+        {
+            var sw = new SurveyWrapper(0);
+            var s1 = sw.AddNewVersion();
+            var mq1 = s1.AddNewMultiQuestion();
+            var q1 = mq1.AddQuestion();
+            q1.ModifyCaption = "How do you test?";
+            q1.ModifyAnswer.AddAnswerOption("Badly");
+            q1.ModifyAnswer.AddAnswerOption("Not at all");
+            // System.Console.WriteLine(q1.ModifyCaption);
+            // System.Console.WriteLine(q1.ModifyAnswer.ModifyAnswers[0]);
+            // System.Console.WriteLine(q1.ModifyAnswer.ModifyAnswers[1]);
+            // System.Console.WriteLine(sw);
+            
+            var s2 = sw.CopyVersion(0);
+            Console.WriteLine($"s1 surveyId: {s1.SurveyId}");
+            Console.WriteLine($"s2 surveyId: {s2.SurveyId}");
+
+            // Console.WriteLine($"s1 survey.mqId: {s1}");
+            // Console.WriteLine($"s2 surveyId: {s2.SurveyId}");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(s1.SurveyId, Is.EqualTo("0.0"));
+                Assert.That(s2.SurveyId, Is.EqualTo("0.1"));
+
+                Assert.That(s1.TryGetNextModifyMultiQuestion().MultiQuestionId, Is.EqualTo("0.0.0"));
+                Assert.That(s2.TryGetNextModifyMultiQuestion().MultiQuestionId, Is.EqualTo("0.1.0"));
+
+                // Assert.That(s1.TryGetNextModifyMultiQuestion().GetEnumerator[0].QuestionId, Is.EqualTo("0.0.0.0"));
+                // Assert.That(s2.TryGetNextModifyMultiQuestion()[0].QuestionId, Is.EqualTo("0.1.0.0"));
+
+                // Assert.AreNotEqual(s1.)
+            });
+        }
     }
 }
