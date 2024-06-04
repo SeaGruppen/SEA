@@ -105,38 +105,50 @@ namespace Tests.Backend.SurveyTests
         [Test]
         public void TestCopyVersion()
         {
+            var qCaption = "What animal is this?";
+            var qAnswerOption1 = "Cat";
+            var qAnswerOption2 = "Dog";
+
             var sw = new SurveyWrapper(0);
             var s1 = sw.AddNewVersion();
-            var mq1 = s1.AddNewMultiQuestion();
-            var q1 = mq1.AddQuestion();
-            q1.ModifyCaption = "How do you test?";
-            q1.ModifyAnswer.AddAnswerOption("Badly");
-            q1.ModifyAnswer.AddAnswerOption("Not at all");
-            // System.Console.WriteLine(q1.ModifyCaption);
-            // System.Console.WriteLine(q1.ModifyAnswer.ModifyAnswers[0]);
-            // System.Console.WriteLine(q1.ModifyAnswer.ModifyAnswers[1]);
-            // System.Console.WriteLine(sw);
+            var s1mq1 = s1.AddNewMultiQuestion();
+            var s1mq1q1 = s1mq1.AddQuestion();
+            s1mq1q1.ModifyCaption = qCaption;
+            s1mq1q1.ModifyAnswer.AddAnswerOption(qAnswerOption1);
+            s1mq1q1.ModifyAnswer.AddAnswerOption(qAnswerOption2);
             
             var s2 = sw.CopyVersion(0);
-            Console.WriteLine($"s1 surveyId: {s1.SurveyId}");
-            Console.WriteLine($"s2 surveyId: {s2.SurveyId}");
-
-            // Console.WriteLine($"s1 survey.mqId: {s1}");
-            // Console.WriteLine($"s2 surveyId: {s2.SurveyId}");
+            var s2mq1 = s2.TryGetNextModifyMultiQuestion();
+            var s2mq1E = s2mq1.GetEnumerator();
+            s2mq1E.MoveNext();
+            var s2mq1q1 = s2mq1E.Current; 
 
             Assert.Multiple(() =>
             {
                 Assert.That(s1.SurveyId, Is.EqualTo("0.0"));
                 Assert.That(s2.SurveyId, Is.EqualTo("0.1"));
 
-                Assert.That(s1.TryGetNextModifyMultiQuestion().MultiQuestionId, Is.EqualTo("0.0.0"));
-                Assert.That(s2.TryGetNextModifyMultiQuestion().MultiQuestionId, Is.EqualTo("0.1.0"));
+                Assert.That(s1mq1.MultiQuestionId, Is.EqualTo("0.0.0"));
+                Assert.That(s2mq1.MultiQuestionId, Is.EqualTo("0.1.0"));
 
-                // Assert.That(s1.TryGetNextModifyMultiQuestion().GetEnumerator[0].QuestionId, Is.EqualTo("0.0.0.0"));
-                // Assert.That(s2.TryGetNextModifyMultiQuestion()[0].QuestionId, Is.EqualTo("0.1.0.0"));
+                Assert.That(s1mq1q1.QuestionId, Is.EqualTo("0.0.0.0"));
+                Assert.That(s2mq1q1.QuestionId, Is.EqualTo("0.1.0.0"));
 
-                // Assert.AreNotEqual(s1.)
+
+                Assert.That(s2mq1q1.ModifyCaption, Is.EqualTo(qCaption));
+                Assert.That(s2mq1q1.ModifyAnswer.ModifyAnswers[0], Is.EqualTo(qAnswerOption1));
+                Assert.That(s2mq1q1.ModifyAnswer.ModifyAnswers[1], Is.EqualTo(qAnswerOption2));
             });
+
+            var newCaption = "Which animal do you prefer?";
+            s2mq1q1.ModifyCaption = newCaption;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(s1mq1q1.ModifyCaption, Is.EqualTo(qCaption));
+                Assert.That(s2mq1q1.ModifyCaption, Is.EqualTo(newCaption));
+            });
+
         }
     }
 }
