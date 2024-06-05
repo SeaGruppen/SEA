@@ -3,7 +3,7 @@ using Model.Database;
 using Model.FrontEndAPI;
 using Moq;
 
-namespace tests.Backend.FrontEndAPI
+namespace Tests.Backend.FrontEndAPI
 {
     internal class FrontEndMainMenuTests
     {
