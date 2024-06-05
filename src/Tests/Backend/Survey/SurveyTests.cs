@@ -36,14 +36,14 @@ namespace Tests.Backend.SurveyTests
         }
 
         [Test]
-        public void TestDeleteQuestion()
+        public void TestDeleteMultiQuestion()
         {
             var sut = new Survey("1");
 
             var res = sut.AddNewMultiQuestion();
             sut.AddNewMultiQuestion();
 
-            sut.DeleteQuestion(0);
+            sut.DeleteMultiQuestion(0);
 
             Assert.That(sut.SurveyQuestions[0].MultiQuestionId, Is.EqualTo(res.MultiQuestionId));
         }
