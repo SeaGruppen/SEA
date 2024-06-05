@@ -11,7 +11,7 @@ internal class Statistics : IStatistics{
 
     private IDatabase databaseServices;
 
-    internal Statistics(DatabaseServices databaseServices) {
+    internal Statistics(IDatabase databaseServices) {
         this.databaseServices = databaseServices;
     }
 
@@ -51,9 +51,10 @@ internal class Statistics : IStatistics{
         return userIds.Count;
     }
 
-    public int FinishedSurveysInWrappers(int surveyWrapperId) {
+    public int FinishedSurveysInWrapper(int surveyWrapperId) {
         int result = 0;
         List<Survey> surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
+        if (surveys == null) return 0; // SurveyWrapper not found
         foreach (Survey survey in surveys) {
             result += FinishedSurveys(survey.SurveyId);
         }
@@ -74,7 +75,7 @@ internal class Statistics : IStatistics{
     }
     public double CompletionRateSurveyWrapper(int surveyWrapperId) {
         int startedSurveys = StartedSurveysInWrapper(surveyWrapperId);
-        int completedSurveys = FinishedSurveysInWrappers(surveyWrapperId);
+        int completedSurveys = FinishedSurveysInWrapper(surveyWrapperId);
         // Calculate completion rate
         if (startedSurveys == 0) {
             return 0;
@@ -85,6 +86,7 @@ internal class Statistics : IStatistics{
 
     public double CompletionRateSurvey(string surveyId) {
         int startedSurveys = StartedSurveys(surveyId);
+        if (startedSurveys == 0) return 0;
         int completedSurveys = FinishedSurveys(surveyId);
         double result = completedSurveys * 100 / startedSurveys;
         return result;
@@ -98,7 +100,7 @@ internal class Statistics : IStatistics{
 
         Dictionary<string, double> surveyWrapperCompletionRate = new Dictionary<string, double>();
         for (int i = 0; i < surveyWrappersInDB.Count; i++) {
-            surveyWrapperCompletionRate[surveyWrappersInDB[i].ToString()] = CompletionRateSurveyWrapper(surveyWrappersInDB[i]);
+            surveyWrapperCompletionRate[surveyWrappersInDB[i].ToString()] = AverageCompletionRateSurveyWrapper(surveyWrappersInDB[i]);
         }
         double result = surveyWrapperCompletionRate.Values.Average();
         return result;
@@ -110,8 +112,9 @@ internal class Statistics : IStatistics{
 
         Dictionary<string, double> surveyCompletionRate = new Dictionary<string, double>();
         for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
-            string surveyId = surveyWrapper.TryGetModifySurveyVersion(i).SurveyId.ToString();
-            surveyCompletionRate[surveyId] = AverageCompletionRateSurvey(surveyId);
+            string surveyId = surveyWrapper.TryGetModifySurveyVersion(i).SurveyId;
+            var tmpresult = AverageCompletionRateSurvey(surveyId);
+            surveyCompletionRate[surveyId] = tmpresult;
         }
         double result = surveyCompletionRate.Values.Average();
         return result;
@@ -122,6 +125,8 @@ internal class Statistics : IStatistics{
         int totalQuestions = NumberOfQuestionsInSurvey(surveyId);
         List<Result> resultsFromSurvey = GetSurveyResultsFromDatabase(surveyId);
         Dictionary<int, int> questionsAnsweredPrUser = QuestionsAnsweredPrUser(resultsFromSurvey);
+        foreach (KeyValuePair<int, int> entry in questionsAnsweredPrUser) {
+        }
         return AverageCompletionRate(totalQuestions, questionsAnsweredPrUser);
     }
 
@@ -130,20 +135,20 @@ internal class Statistics : IStatistics{
         Dictionary<int, double> completionRatePrUser = new Dictionary<int, double>();
         // Count number of users who have answered all questions
         foreach (KeyValuePair<int, int> entry in questionsAnsweredPrUser) {
-            completionRatePrUser[entry.Key] = entry.Value / numberOfQuestions;
+            completionRatePrUser[entry.Key] = (double)entry.Value / (double)numberOfQuestions;
         }
         double result = completionRatePrUser.Values.Average() * 100;
         return result;
     }
 
     // OBS: SurveyId, not SurveyWrapperId.
-    private List<Result> GetSurveyResultsFromDatabase(string surveyId) {
+    private List<Result>? GetSurveyResultsFromDatabase(string surveyId) {
         
         int surveyWrapperId;
         try {
             surveyWrapperId = ExtractSurveyDetails.TryGetSurveyWrapperId(surveyId);
         } catch (ArgumentException) {
-            return new List<Result>(); // Invalid SurveyWrapperId
+            return null; // Invalid SurveyWrapperId
         }
         List<Result> allResults =  databaseServices.GetSurveyWrapperResults(surveyWrapperId);
         List<Result> results = new List<Result>();
@@ -152,7 +157,7 @@ internal class Statistics : IStatistics{
                 string surveyIdFromResult = ExtractSurveyDetails.TryGetSurveyId(result.QuestionId);
                 if (surveyIdFromResult == surveyId) {
                     results.Add(result);
-                }
+                } 
             } catch (ArgumentException) {
                 // QuestinId is invalid, it doesn't contain a valid surveyId
             }
@@ -174,8 +179,9 @@ internal class Statistics : IStatistics{
         return questionsAnsweredPrUser;
     }
 
-    private List<Survey> GetSurveysInSurveyWrapper(int surveyWrapperId) {
+    private List<Survey>? GetSurveysInSurveyWrapper(int surveyWrapperId) {
         SurveyWrapper? surveyWrapper = databaseServices.GetSurveyWrapper(surveyWrapperId);   
+        if (surveyWrapper == null) return null; // SurveyWrapper not found
         List<Survey> result = new List<Survey>();
         for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
             result.Add((Survey) surveyWrapper.TryGetModifySurveyVersion(i));
@@ -185,11 +191,12 @@ internal class Statistics : IStatistics{
 
     /// Helper function to get surveys started for a single survey, inside a SurveyWrapper
     private int StartedSurveys(string surveyId) {
-        List<Result> surveyWrapperResults = GetSurveyResultsFromDatabase(surveyId);
+        List<Result>? surveyResults = GetSurveyResultsFromDatabase(surveyId);
+        if (surveyResults == null) return 0; // Survey not found
         List<int> userIds =[];
-        for (int i = 0; i < surveyWrapperResults.Count; i++) {
-            if (userIds.Contains(surveyWrapperResults[i].UserId)) {
-                userIds.Add(surveyWrapperResults[i].UserId);
+        for (int i = 0; i < surveyResults.Count; i++) {
+            if (!userIds.Contains(surveyResults[i].UserId)) {
+                userIds.Add(surveyResults[i].UserId);
             }
         }
         return userIds.Count;

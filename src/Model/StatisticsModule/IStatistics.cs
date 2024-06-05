@@ -5,7 +5,7 @@ public interface IStatistics {
     int StartedSurveysInWrapper(int surveyWrapperId);
 
     /// Number of surveys that have been fully answered.
-    int FinishedSurveysInWrappers(int surveyWrapperId);
+    int FinishedSurveysInWrapper(int surveyWrapperId);
 
     /// Completion rate for all surveys in a specific SurveyWrapper.
     double CompletionRateSurveyWrapper(int surveyWrapperId);
