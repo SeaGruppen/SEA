@@ -17,6 +17,7 @@ internal class DatabaseServices : IDatabase {
     
     private string databasePath;
     private readonly string resultsPath;
+    private Random random = new Random();
     internal DatabaseServices() {
         string? projectPath = FileIO.GetProjectPath();
         if (projectPath != null)
@@ -72,7 +73,6 @@ internal class DatabaseServices : IDatabase {
         var options = new JsonSerializerOptions { WriteIndented = true }; //pretty printing of json strings
         options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
         string jsonString = JsonSerializer.Serialize(surveyWrapper, options);
-        // Console.WriteLine(jsonString);
         File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 
@@ -114,14 +114,17 @@ internal class DatabaseServices : IDatabase {
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0;
     public int GetNextSurveyWrapperID() {
-        return tmpId++;
+        int result = random.Next(100000);
+        // Ensure that Id isn't used already.
+        while (Directory.Exists(GetSurveyWrapperPath(result))) {
+            result = random.Next();
+        }
+        return result;
     }
 
     public bool ExportSurveyWrapper(int id, string path) {
         string surveyWrapperPath = GetSurveyWrapperPath(id);
         string zipFilePath = Path.Combine(path, $"{id}.zip");
-        System.Console.WriteLine($"SurveyWrapperPath = {surveyWrapperPath}");
-        System.Console.WriteLine($"ZipFilePath = {zipFilePath}");
         try {
             ZipFile.CreateFromDirectory(surveyWrapperPath, zipFilePath);
             return true;
@@ -143,8 +146,30 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public List<Result> GetResults(int surveyWrapperId) {
-        throw new NotImplementedException();
+    public List<Result> GetSurveyWrapperResults(int surveyWrapperId) {
+        List<Result> results = new List<Result>();
+        try {
+            using (StreamReader reader = new StreamReader(resultsPath, Encoding.UTF8)) {
+                string line;
+                while ((line = reader.ReadLine()) != null) {
+                    Result result;
+                    try {
+                        result = Result.FromString(line);
+                    } catch (Exception) {
+                        // Skip line if it can't be parsed
+                        continue;
+                    }
+                    if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.SurveyId) == surveyWrapperId) {
+                        results.Add(result);
+                    }
+                }
+            }
+            return results;
+        }
+        catch (Exception) {
+            // Handle exceptions if needed
+        }
+        return results;
     }
 
     public bool StoreResult (IResult result) {
@@ -176,7 +201,22 @@ internal class DatabaseServices : IDatabase {
     }
 
     public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){
+        // Missing implementation
         return new List<SurveyWrapper>();
+    }
+
+    public List<int> GetAllSurveyWrapperIds() {
+        List<string> directories = Directory.GetDirectories(databasePath).ToList();
+        List<int> result = new List<int>();
+        // Validate that all folders are just integers
+        foreach (var directory in directories) {
+            try {
+                result.Add(int.Parse(Path.GetFileName(directory)));
+            } catch (Exception) {
+                System.Console.WriteLine("Error parsing directory name to int in DatabaseService.GetAllSurveyWrapperIds()");
+            }
+        }
+        return result;
     }
 }
 

@@ -4,6 +4,7 @@ using Model.Database;
 using Model.FrontEndAPI;
 using Result;
 using Answer;
+using Model.StatisticsModule;
 
 public static class FrontEndFactory {
     private static DatabaseServices databaseServices = new DatabaseServices();
@@ -17,6 +18,10 @@ public static class FrontEndFactory {
 
     public static IFrontEndSuperUser CreateSuperUserMenu() {
         return new FrontEndSuperUserMenu(databaseServices);
+    }
+
+    public static IStatistics CreateStatistics() {
+        return new Statistics(databaseServices);
     }
 
     public static IResult CreateResult(
