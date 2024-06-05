@@ -47,4 +47,14 @@ internal class TestDeleteSurveyWrapper {
         // Assert
         Assert.That(database.GetSurveyWrapper(3), Is.Null);
     }
+
+    [Test]
+    public void TestDeleteSurveyWrapperThatDoesNotExist() {
+        // Arrange
+        Assert.That(database.GetSurveyWrapper(3), Is.Null);
+        // Act
+        database.DeleteSurveyWrapper(3);
+        // Assert
+        Assert.That(database.GetSurveyWrapper(3), Is.Null);
+    }
 }
