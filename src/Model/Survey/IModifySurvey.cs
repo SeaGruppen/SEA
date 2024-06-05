@@ -9,7 +9,7 @@ public interface IModifySurvey {
     IMultiQuestion<IModifyQuestion>? TryGetModifyMultiQuestion(int index);
     IMultiQuestion<IModifyQuestion>? TryGetNextModifyMultiQuestion();
     IMultiQuestion<IModifyQuestion>? TryGetPreviousModifyMultiQuestion();
-    void DeleteQuestion(int index);
+    void DeleteMultiQuestion(int index);
     IMultiQuestion<IModifyQuestion> AddNewMultiQuestion(); // Add new question at the end of the Enumerable
     IMultiQuestion<IModifyQuestion> InsertNewMultiQuestion(int index); // Add new question at position 'index'
 
