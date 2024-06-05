@@ -7,7 +7,6 @@ using Model.Factory;
 using Model.Answer;
 using Model.Survey;
 using Model.Question;
-// using Model.Utilities;
 
 [TestFixture]
 internal class TestStatisticsModule {
@@ -103,8 +102,6 @@ internal class TestStatisticsModule {
         // Act
         double completionRate = statistics.CompletionRateSurveyWrapper(surveyWrapper.SurveyWrapperId);
 
-        // List<Result> results = database.GetSurveyWrapperResults(surveyWrapper.SurveyWrapperId);
-        // Assert.AreEqual(15, results.Count());
         Assert.AreEqual(50.0, completionRate);
     }
 
@@ -127,8 +124,6 @@ internal class TestStatisticsModule {
         // Act
         double completionRate = statistics.CompletionRateSurvey("1.0");
 
-        // List<Result> results = database.GetSurveyWrapperResults(surveyWrapper.SurveyWrapperId);
-        // Assert.AreEqual(15, results.Count());
         Assert.AreEqual(50.0, completionRate);
     }
     [Test]
