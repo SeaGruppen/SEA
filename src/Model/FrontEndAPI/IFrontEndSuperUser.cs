@@ -3,7 +3,7 @@ using Model.Survey;
 
 public interface IFrontEndSuperUser {
     
-    IModifySurveyWrapper CreateSurveyWrapper();
+    IModifySurveyWrapper CreateSurveyWrapper(string superUserName);
     IModifySurveyWrapper? ModifySurveyWrapper(int surveyWrapperId); // Possibly (SuperUserId, SurveyId)?
 
     void StoreSurveyWrapperInDatabase (IModifySurveyWrapper surveyWrapper);

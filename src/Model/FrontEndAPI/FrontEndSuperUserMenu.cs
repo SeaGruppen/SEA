@@ -9,8 +9,8 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         this.db = databaseServices;
     }
 
-    public IModifySurveyWrapper CreateSurveyWrapper() {
-        int surveyId = db.GetNextSurveyWrapperID();
+    public IModifySurveyWrapper CreateSurveyWrapper(string superUserName) {
+        int surveyId = db.GetNextSurveyWrapperID(superUserName);
         return new SurveyWrapper(surveyId);
     }
 
