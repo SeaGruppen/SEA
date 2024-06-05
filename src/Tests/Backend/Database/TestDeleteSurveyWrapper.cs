@@ -1,4 +1,4 @@
-namespace Tests.Backend.StatisticsModule;
+namespace Tests.Backend.Database;
 
 using Model.StatisticsModule;
 using Model.Result;
