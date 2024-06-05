@@ -21,6 +21,11 @@ internal class Result : IResult {
         QuestionId = questionId;
         SurveyId = surveyId;
     }
+    public static Result FromString(string resultString) {
+        string[] parts = resultString.Split(',');
+        Result result =  new Result(parts[0], parts[1], (AnswerType)Enum.Parse(typeof(AnswerType), parts[2]), int.Parse(parts[3]), new List<string>(parts[4].Split(";")));
+        return result;
+    }
 
     public override string ToString() {
         return $"{SurveyId},{QuestionId},{AnswerType},{UserId},{Pretty(QuestionResult)}";
@@ -73,5 +78,3 @@ internal class Result : IResult {
         return sb.ToString();
     }
 }
-
-//     void StoreResultFromQuestion(int surveyID, int questionsID, int userID, Result result);

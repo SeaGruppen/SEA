@@ -23,7 +23,8 @@ internal interface IDatabase {
     bool ImportSurveyWrapper(string path);
     string TryStorePicture(int surveyWrapperId, string path);
     string StorePictureOverwrite(int surveyWrapperId, string path);
-    List<Result> GetResults(int surveyWrapperid);
+    List<Result> GetSurveyWrapperResults(int id);
     bool StoreResults(List<Result> results);
     bool StoreResult(IResult result);
+    List<int> GetAllSurveyWrapperIds();
 }
