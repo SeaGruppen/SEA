@@ -1,7 +1,7 @@
 ﻿using Model.Result;
 
 
-namespace tests.Backend.Result
+namespace Tests.Backend.Result
 {
     internal class ResultTests
     {
