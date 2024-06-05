@@ -60,4 +60,14 @@ internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<I
     IEnumerator<IReadOnlyQuestion> IEnumerable<IReadOnlyQuestion>.GetEnumerator() {
         return questions.GetEnumerator();
     }
+
+    internal void UpdateId(string newMqId) {
+        multiquestionId = newMqId;
+        foreach (Question question in questions) {
+            string currentQuestionId = question.QuestionId;
+            string[] parts = currentQuestionId.Split(".");
+            string newQuestionId = multiquestionId + "." + parts.Last();
+            question.UpdateId(newQuestionId);
+        }
+    }
 }

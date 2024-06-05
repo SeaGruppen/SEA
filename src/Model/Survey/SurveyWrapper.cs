@@ -35,11 +35,13 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
         surveyWrapperName = string.Empty;
     }
 
-    public void CopyVersion(int index) {
-        // var copiedVersion = surveyVersions[index];
-        // surveyVersions.Add(copiedVersion);
-
-        // TODO: Unit tests
+    public IModifySurvey CopyVersion(int index) {
+        Survey surveyToCopy = surveyVersions[index];
+        Survey copiedSurvey = CopySurvey(surveyToCopy);
+        string newSurveyId = SurveyWrapperId.ToString() + "." + nextSurveyId++;
+        copiedSurvey.UpdateId(newSurveyId);
+        surveyVersions.Add(copiedSurvey);
+        return copiedSurvey;
     }
 
     public IModifySurvey AddNewVersion() {
@@ -86,5 +88,10 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
         } else {
             return null;
         }
+    }
+
+    private Survey CopySurvey(Survey surveyToCopy) {
+        string jsonString = JsonSerializer.Serialize(surveyToCopy, Globals.OPTIONS);
+        return JsonSerializer.Deserialize<Survey>(jsonString, Globals.OPTIONS)!;
     }
 }
