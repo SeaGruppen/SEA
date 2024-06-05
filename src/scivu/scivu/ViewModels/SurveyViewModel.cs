@@ -1,36 +1,24 @@
 using Avalonia.Controls;
-
+using System;
+using Model.FrontEndAPI;
+using Model.Survey;
+using System.String;
 namespace scivu.ViewModels;
 
-public class SurveyViewModel : ViewModelBase
-{
-    
-}
 
-class Question
-{
-    public Image? image;
-    public string questionText;
-}
-
-class MultiChoice : Question
-{
-    // Which option do you prefer?
-    // A --- B --- C
-    // [] --[] ---[]
-    private string[] _choises;
-}
+private SurveyWrapper _surveyWrapper;
 
 
-class ScrollChoice : Question
+public class SurveyViewModel (SurveyWrapper survey) : ViewModelBase
 {
-    // Which option do you prefer?
-    // A --- B --- C
-    // [] --[] ---[]
-    private string[] _choises;
+    _surveyWrapper = survey;
 }
 
-class TextAnswer : Question
-{
-}
+public string SurveyName => _surveyWrapper.SurveyWrapperName;
+public int SuveryID => _surveyWrapper.surveyWrapperId;
+
+public SurveyWrapper SurveyWrapper => _surveyWrapper;
+
+
+
 
