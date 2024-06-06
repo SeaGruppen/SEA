@@ -9,9 +9,17 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         this.db = databaseServices;
     }
 
+    public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username) {
+        List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
+        List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
+        return result;
+    }
+
     public IModifySurveyWrapper CreateSurveyWrapper(string superUserName) {
         int surveyId = db.GetNextSurveyWrapperID(superUserName);
-        return new SurveyWrapper(surveyId);
+        SurveyWrapper newSurveyWrapper = new SurveyWrapper(surveyId);
+        db.StoreSurveyWrapper(newSurveyWrapper);
+        return newSurveyWrapper;
     }
 
     public bool ExportSurveyWrapperFromDatabase(int surveyId, string folderPath) {

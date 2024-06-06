@@ -42,6 +42,8 @@ internal class DatabaseServices : IDatabase {
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
+        creatorDictPath = Path.Combine(databasePath, "creatorDict.json");
+        CreateCreatorDictFileIfNotExisting(creatorDictPath);
     }
 
     private static void CreateResultsFileIfNotExisting(string resultsPath) {
@@ -127,15 +129,23 @@ internal class DatabaseServices : IDatabase {
     }
 
     private void StoreCreatorEntry(string superUserName, int surveyWrapperId) {
-        string jsonString = File.ReadAllText(creatorDictPath);
-        Dictionary<string, List<int>> creatorDict = JsonSerializer.Deserialize<Dictionary<string, List<int>>>(jsonString, Globals.OPTIONS)!;
+        Dictionary<string, List<int>> creatorDict = GetCreatorDict();
         if (!creatorDict.ContainsKey(superUserName)) {
             List<int> idList = new List<int>{surveyWrapperId};
             creatorDict.Add(superUserName, idList);
         } else {
             creatorDict[superUserName].Add(surveyWrapperId);
         }
-        jsonString = JsonSerializer.Serialize(creatorDict, Globals.OPTIONS);
+        StoreCreatorDict(creatorDict);
+    }
+
+    private Dictionary<string, List<int>> GetCreatorDict() {
+        string jsonString = File.ReadAllText(creatorDictPath);
+        return JsonSerializer.Deserialize<Dictionary<string, List<int>>>(jsonString, Globals.OPTIONS)!;
+    }
+
+    private void StoreCreatorDict(Dictionary<string, List<int>> creatorDict) {
+        string jsonString = JsonSerializer.Serialize(creatorDict, Globals.OPTIONS);
         File.WriteAllText(creatorDictPath, jsonString);
     }
 
@@ -217,9 +227,13 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){
-        // Missing implementation
-        return new List<SurveyWrapper>();
+    public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string superUserName){
+        Dictionary<string, List<int>> creatorDict = GetCreatorDict();
+        List<SurveyWrapper> surveyWrapperList = new List<SurveyWrapper>();
+        foreach (int surveyWrapperId in creatorDict[superUserName]) {
+            surveyWrapperList.Add(GetSurveyWrapper(surveyWrapperId));
+        }
+        return surveyWrapperList;
     }
 
     public List<int> GetAllSurveyWrapperIds() {

@@ -122,11 +122,9 @@ public class TestDatabaseServices
         int id1 = 6666;
         SurveyWrapper surveyWrapper1 = new(id1);
 
-        string fileName = "pic1.jpeg";
+        string fileName = "dog.jpg";
         string projectPath =  Model.Utilities.FileIO.GetProjectPath() ;
-        // C:\Users\Johan\OneDrive\Universitet\Datalogi\8. semester\SEA\sea_git\SEA\src\Tests\Model\testPictures
-        // C:\Users\Johan\OneDrive\Universitet\Datalogi\8. semester\SEA\sea_git\SEA\src\Tests\Backend\testPictures\pic1.jpeg
-        string src = Path.Combine(projectPath, "Tests", "Backend", "testPictures", fileName);
+        string src = Path.Combine(projectPath, "..", "assets", fileName);
         string dest = Path.Combine("surveyDatabase", id1.ToString(), "assets", fileName);   
 
         db.StoreSurveyWrapper(surveyWrapper1);
