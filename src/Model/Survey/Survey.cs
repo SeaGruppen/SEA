@@ -75,7 +75,7 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         }
     }
 
-    public void DeleteQuestion(int index) {
+    public void DeleteMultiQuestion(int index) {
         if(0 < current && current < surveyQuestions.Count) {
             surveyQuestions.RemoveAt(index);
         }

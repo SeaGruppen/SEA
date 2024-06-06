@@ -1,7 +1,5 @@
 namespace Model.Utilities;
-using Model.Survey;
-// using Model.Multiquestion;
-using Model.Question;
+
 public static class ExtractSurveyDetails {
 
     /// Use to get surveyWrapperId from sub-element's Id

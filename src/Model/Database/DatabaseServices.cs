@@ -69,6 +69,16 @@ internal class DatabaseServices : IDatabase {
         return true;
     }
 
+    public bool DeleteSurveyWrapper(int surveyWrapperId) {
+        string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapperId);
+        if (Directory.Exists(surveyWrapperPath)) {
+            Directory.Delete(surveyWrapperPath, true);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public SurveyWrapper? GetSurveyWrapper(int surveyWrapperId) {
         string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapperId);
         string surveyWrapperFile = Path.Combine(surveyWrapperPath, surveyWrapperId + ".json");
