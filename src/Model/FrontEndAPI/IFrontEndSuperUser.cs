@@ -5,6 +5,7 @@ public interface IFrontEndSuperUser {
     
     IModifySurveyWrapper CreateSurveyWrapper();
     IModifySurveyWrapper? ModifySurveyWrapper(int surveyWrapperId); // Possibly (SuperUserId, SurveyId)?
+    bool DeleteSurveyWrapper(int surveyWrapperId);
 
     void StoreSurveyWrapperInDatabase (IModifySurveyWrapper surveyWrapper);
 

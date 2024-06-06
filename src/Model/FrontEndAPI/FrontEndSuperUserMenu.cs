@@ -14,6 +14,13 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         return new SurveyWrapper(surveyId);
     }
 
+    public bool DeleteSurveyWrapper(int surveyId) {
+        if (db.DeleteSurveyWrapper(surveyId)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public bool ExportSurveyWrapperFromDatabase(int surveyId, string folderPath) {
         if (db.ExportSurveyWrapper(surveyId, folderPath)) {
             return true;
