@@ -2,6 +2,12 @@ namespace Model.Question;
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+/// <summary>
+/// This class is used to convert a MultiQuestion object to and from JSON.
+/// This class can be deleted if the DB changes from storing in JSON format.
+/// </summary>
+
 internal class MultiQuestionConverter : JsonConverter<MultiQuestion> {
     public override MultiQuestion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

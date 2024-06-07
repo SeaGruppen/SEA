@@ -1,5 +1,4 @@
 namespace Model.Survey;
-using System.Collections.Generic;
 
 public interface IReadOnlySurveyWrapper {
 

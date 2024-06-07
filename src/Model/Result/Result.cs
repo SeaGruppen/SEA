@@ -4,8 +4,7 @@ using Model.Answer;
 using System.Text;
 
 internal class Result : IResult {
-    public AnswerType AnswerType {get; private set;} // First: ResultType == AnswerType, so no need for 2 different. 2. If we store it as 'ResultType' it can crash if the enum doesn't match the input type.
-
+    public AnswerType AnswerType {get; private set;} 
     public List<string> QuestionResult {get; set;}
 
     public int UserId {get; private set;}

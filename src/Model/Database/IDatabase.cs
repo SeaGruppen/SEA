@@ -1,16 +1,8 @@
 namespace Model.Database;
-// using FrontEndAPI;
-// using Survey;
-// using Result;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using Survey = Model.Survey.Survey;
-using Result = Model.Result.Result;
 using Model.Result;
+using System.Collections.Generic;
+using Result = Result.Result;
 using Model.Survey;
 
 internal interface IDatabase {
