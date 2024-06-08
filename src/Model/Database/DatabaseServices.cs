@@ -94,20 +94,25 @@ internal class DatabaseServices : IDatabase {
     }
 
     public string StorePictureOverwrite(int surveyWrapperId, string src) {
+        string fileName = Path.GetFileName(src);
         string surveyAssetsPath = GetSurveyWrapperAssetsPath(surveyWrapperId); 
-        string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
+        string absoluteDest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
+        string relativeDest = GetRelativePicturePath(surveyWrapperId, fileName);
         Directory.CreateDirectory(surveyAssetsPath);
-        File.Copy(src, dest, true); //true -> overwrites automatically if dest already exists
-        return dest;
+        File.Copy(src, absoluteDest, true); //true -> overwrites automatically if dest already exists
+        return relativeDest;
     }
 
     public string TryStorePicture(int surveyWrapperId, string src) {
+        string fileName = Path.GetFileName(src);
         string surveyAssetsPath = GetSurveyWrapperAssetsPath(surveyWrapperId); 
-        string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
+        string absoluteDest = Path.Combine(surveyAssetsPath, fileName);
+        string relativeDest = GetRelativePicturePath(surveyWrapperId, fileName);
         Directory.CreateDirectory(surveyAssetsPath);
-        if (!File.Exists(dest)) {
-            File.Copy(src, dest);
-            return dest;
+        if (!File.Exists(absoluteDest)) {
+            File.Copy(src, absoluteDest);
+            System.Console.WriteLine($"Relative dest: {relativeDest}");
+            return relativeDest;
         } else {
             throw new Exception("A file with this name already exists for this surveyWrapper");
         }
@@ -116,6 +121,11 @@ internal class DatabaseServices : IDatabase {
     private string GetSurveyWrapperAssetsPath(int surveyWrapperId) {
         return Path.Combine( GetSurveyWrapperPath(surveyWrapperId), "assets");
     }
+
+    private string GetRelativePicturePath(int surveyWrapperId, string fileName) {
+        return Path.Combine(surveyWrapperId.ToString(), "assets", fileName);
+    }
+
 
     // Tmp int used to increment to get unique IDs, must be received from db.
     private int tmpId = 0;

@@ -1,4 +1,4 @@
-﻿using backend.UserValidation;
+﻿using Model.UserValidation;
 
 namespace Tests.Backend.UserValidation
 {

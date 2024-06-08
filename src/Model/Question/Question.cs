@@ -1,6 +1,7 @@
 namespace Model.Question;
 
 using Model.Answer;
+using Model.Utilities;
 using System.Text.Json.Serialization;
 
 public class Question : IReadOnlyQuestion, IModifyQuestion {
@@ -19,10 +20,11 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     private string text;
     [JsonInclude]
     private Answer answer;
+    private string databasePath;
 
     public string ReadOnlyCaption => caption;
 
-    public string ReadOnlyPicture => picture;
+    public string ReadOnlyPicture => GetLocalPicturePath(picture);
 
     public string ReadOnlyText => text;
 
@@ -31,7 +33,11 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     public string QuestionId => id;
 
     public string ModifyCaption { get => caption; set => caption = value; }
-    public string ModifyPicture { get => picture; set => picture = value; }
+    public string ModifyPicture 
+    { 
+        get =>  GetLocalPicturePath(picture);
+        set => picture = value; 
+    }
     public string ModifyText { get => text; set => text = value; }
     public IModifyAnswer ModifyAnswer { get => answer; }
 
@@ -42,8 +48,22 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
         picture = string.Empty;
         text = string.Empty;
         answer = new Answer();
+
+        string? localProjectPath = FileIO.GetProjectPath();
+        if (localProjectPath != null)
+        {
+            databasePath = Path.Combine(localProjectPath, "surveyDatabase");
+        }
+        else
+        {
+            databasePath = "surveyDatabase";
+        }
+        
     }
 
+    private string GetLocalPicturePath(string picture) {
+        return Path.Combine(databasePath, picture);
+    }
     internal void UpdateId(string newQuestionId) {
         id = newQuestionId;
     }
