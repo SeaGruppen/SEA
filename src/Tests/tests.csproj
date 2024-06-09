@@ -27,4 +27,10 @@
     <ProjectReference Include="..\Model\backend.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Backend\UserCredentials\myfile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
