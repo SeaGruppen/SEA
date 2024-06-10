@@ -199,26 +199,35 @@ internal class DatabaseServices : IDatabase {
                         // Skip line if it can't be parsed
                         continue;
                     }
+                    bool newestResult = true;
+                    // Check if the result is for the correct surveyWrapper, and is newest
                     if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.QuestionId) == surveyWrapperId) {
+                        // Go through all results and remove intermediate results
                         foreach (Result r in results) {
                             if (r.UserId == result.UserId && r.QuestionId == result.QuestionId) {
-                                if (r.CreationTime >= result.CreationTime) {
-                                    results.Remove(result);
-                                    results.Add(r);
-                                } 
-                                continue;
+                                // If r is older than result, remove r
+                                if (r.CreationTime <= result.CreationTime) {
+                                    results.Remove(r);
+                                    break;
+                                } else {
+                                    newestResult = false;
+                                    break;
+                                }
                             }
                         }
-                        results.Add(result);
+                        if (newestResult) {
+                            results.Add(result);
+                        }
                     }
                 }
             }
             return results;
         }
-        catch (Exception) {
+        catch (Exception ex) {
             // Handle exceptions if needed
+            System.Console.WriteLine($"Error in GetSurveyWrapperResults {ex.Message}");
+            return results;
         }
-        return results;
     }
 
     public bool StoreResult (IResult result) {
