@@ -80,6 +80,48 @@ internal class UserValidatorTests
 
         var res = sut.ValidateSuperUser("username", "wrong_password");
 
+            Assert.IsFalse(res);
+        }
+
+        [Test]
+        public void TestCreateFile()
+        {
+            var sut = new SuperUserValidator();
+
+            sut.AddSuperUserCredentials("username1", "password1");
+            sut.AddSuperUserCredentials("username2", "password2");
+            sut.AddSuperUserCredentials("username3", "password3");
+
+            File.WriteAllLines(Path.Combine("..","..", "..", "Backend", "UserCredentials", "myfile.txt"),
+                SuperUserValidator.SuperUserCredentials.Select(x => "[" + x.Key + " " + x.Value + "]").ToArray());
+        }
+
+        [Test]
+        public void TestImportFile()
+        {
+            var pre = SuperUserValidator.SuperUserCredentials;
+
+            string filePath = Path.Combine("..", "..", "..", "Backend", "UserCredentials", "myfile.txt");
+            Dictionary<string, string> userDictionary = new Dictionary<string, string>();
+
+            foreach (var line in File.ReadLines(filePath))
+            {
+                string content = line.Trim('[', ']');
+
+                int spaceIndex = content.IndexOf(' ');
+                if (spaceIndex > 0)
+                {
+                    string username = content.Substring(0, spaceIndex);
+                    string password = content.Substring(spaceIndex + 1);
+
+                    userDictionary[username] = password;
+                }
+            }
+
+            var post = userDictionary;
+        }
+    }
+}
         Assert.IsFalse(res);
     }
 }
