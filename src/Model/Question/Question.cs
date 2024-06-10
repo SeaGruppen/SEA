@@ -1,6 +1,5 @@
 namespace Model.Question;
 
-using System.Net.Mime;
 using Model.Answer;
 using System.Text.Json.Serialization;
 
@@ -12,8 +11,6 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     [JsonInclude]
     private string caption;
 
-    [JsonInclude]
-    private string questionText;
     [JsonInclude]
     private string picture;
     [JsonInclude]
@@ -39,9 +36,12 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     public Question(string id) {
         this.id = id;
         caption = string.Empty;
-        questionText = string.Empty;
         picture = string.Empty;
         text = string.Empty;
         answer = new Answer();
+    }
+
+    internal void UpdateId(string newQuestionId) {
+        id = newQuestionId;
     }
 }

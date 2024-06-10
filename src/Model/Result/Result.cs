@@ -4,8 +4,7 @@ using Model.Answer;
 using System.Text;
 
 internal class Result : IResult {
-    public AnswerType AnswerType {get; private set;} // First: ResultType == AnswerType, so no need for 2 different. 2. If we store it as 'ResultType' it can crash if the enum doesn't match the input type.
-
+    public AnswerType AnswerType {get; private set;} 
     public List<string> QuestionResult {get; set;}
 
     public int UserId {get; private set;}
@@ -14,16 +13,24 @@ internal class Result : IResult {
 
     public string SurveyId {get; private set;}
 
+    public DateTime CreationTime {get; private set;}
+
     public Result (string surveyId, string questionId, AnswerType type, int userId, List<string> questionResult) {
         AnswerType = type;
         QuestionResult = questionResult;
         UserId = userId;
         QuestionId = questionId;
         SurveyId = surveyId;
+        CreationTime = DateTime.Now;
+    }
+    public static Result FromString(string resultString) {
+        string[] parts = resultString.Split(',');
+        Result result =  new Result(parts[0], parts[1], (AnswerType)Enum.Parse(typeof(AnswerType), parts[2]), int.Parse(parts[3]), new List<string>(parts[4].Split(";")));
+        return result;
     }
 
     public override string ToString() {
-        return $"{SurveyId},{QuestionId},{AnswerType},{UserId},{Pretty(QuestionResult)}";
+        return $"{SurveyId},{QuestionId},{AnswerType},{UserId}, {CreationTime}, {Pretty(QuestionResult)}";
     }
 
     private static string Pretty(List<string> lst)
@@ -73,5 +80,3 @@ internal class Result : IResult {
         return sb.ToString();
     }
 }
-
-//     void StoreResultFromQuestion(int surveyID, int questionsID, int userID, Result result);
