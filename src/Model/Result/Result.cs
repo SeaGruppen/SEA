@@ -13,7 +13,7 @@ internal class Result : IResult {
 
     public string SurveyId {get; private set;}
 
-    private DateTime creationTime;
+    public DateTime CreationTime {get; private set;}
 
     public Result (string surveyId, string questionId, AnswerType type, int userId, List<string> questionResult) {
         AnswerType = type;
@@ -21,7 +21,7 @@ internal class Result : IResult {
         UserId = userId;
         QuestionId = questionId;
         SurveyId = surveyId;
-        creationTime = DateTime.Now;
+        CreationTime = DateTime.Now;
     }
     public static Result FromString(string resultString) {
         string[] parts = resultString.Split(',');
@@ -30,7 +30,7 @@ internal class Result : IResult {
     }
 
     public override string ToString() {
-        return $"{SurveyId},{QuestionId},{AnswerType},{UserId}, {creationTime}, {Pretty(QuestionResult)}";
+        return $"{SurveyId},{QuestionId},{AnswerType},{UserId}, {CreationTime}, {Pretty(QuestionResult)}";
     }
 
     private static string Pretty(List<string> lst)
