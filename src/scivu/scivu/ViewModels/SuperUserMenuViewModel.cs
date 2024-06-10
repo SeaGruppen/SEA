@@ -14,6 +14,7 @@ using System.Windows.Input;
 
 //using frontEndAPI;
 using scivu.Views;
+using System.Reactive;
 
 namespace scivu.ViewModels;
 
@@ -26,12 +27,14 @@ public class SuperUserMenuViewModel : ViewModelBase
 
     private bool _visibleCollection;
 
-    public ICommand SelectSurveyCommand {get;}
+    public ICommand? SelectSurveyCommand {get;}
     private SurveyViewModel? _selectedSurvey;
 
-    public string Username {get; private set; }
+    public string? Username {get; private set; }
     public ObservableCollection<SurveyViewModel> AvailableSurveys {get;} = new();
     public ObservableCollection<SurveyViewModel> SearchResults {get;} = new();
+
+    public ReactiveCommand<string, Unit> Handle {get;}
 
     public SurveyViewModel? SelectedSurvey
     {
@@ -68,15 +71,33 @@ public class SuperUserMenuViewModel : ViewModelBase
         .Subscribe(SearchSurveys!);
         _changeViewCommand = changeViewCommand;
         AvailableSurveys.Clear();
+        Handle = ReactiveCommand.Create<string>(HandleCommand);
         foreach (var survey in surveys)
         {
 
-            AvailableSurveys.Add(new SurveyViewModel(survey));
+            AvailableSurveys.Add(new SurveyViewModel(survey, HandleCommand));
         }
     }
 
-    public SuperUserMenuViewModel () {
-        
+    public void HandleCommand(string cm) => HandleCommand(cm, null);
+    public void HandleCommand(string cm, object? arg) {
+        switch(cm)
+        {
+            case "select" when arg is IModifySurveyWrapper wrapper:
+                _changeViewCommand("SelectMenu", wrapper);
+                break;
+            case "delete" when arg is SurveyViewModel vm:
+                Delete(vm);
+                break;
+            case "copy" when arg is SurveyViewModel vm:
+                Copy(vm);
+                break;
+            case "export" when arg is IModifySurveyWrapper wrapper:
+                Export(wrapper);
+                break;
+            default:
+                throw new ArgumentException($"indvalid com,mand '{cm}', with invalid argument '{arg}'");
+        }
     }
 
     private async void SearchSurveys(string? s)
@@ -111,6 +132,14 @@ public class SuperUserMenuViewModel : ViewModelBase
 
     public void Select(SurveyViewModel survey){
         throw new NotImplementedException(); // this might be able to be changeVeiw
+    }
+
+    public void Copy (SurveyViewModel survey){
+
+    }
+
+    public void Export (IModifySurveyWrapper survey){
+
     }
 
 }

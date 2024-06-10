@@ -9,6 +9,5 @@ public partial class SuperUserMenuView : UserControl
     public SuperUserMenuView()
     {
         InitializeComponent();
-        DataContext = new SuperUserMenuViewModel();
     }
 }

@@ -19,8 +19,10 @@
                           <TextBlock Text="{Binding SurveyName}" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
                           <TextBlock Text="{Binding SurveyID}" Margin="0,0,0,10"/>
                           <StackPanel Orientation="Horizontal">
-                            <Button Content="Select" Command="{Binding DataContext.ChangeView, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" HorizontalAlignment="Right"/>
-                            <Button Content="Delete" Command="{Binding DataContext.DeleteSurvey}" CommandParameter="{Binding}" HorizontalAlignment="Right"/>
+                            <Button Content="Select" Command="{Binding SelectCommand}" HorizontalAlignment="Right"/>
+                            <Button Content="Delete" Command="{Binding DeleteCommand}" HorizontalAlignment="Right"/>
+                            <Button Content="Copy" Command="{Binding CopyCommand}" HorizontalAlignment="Right"/>
+                            <Button Content="Export" Command="{Binding ExportCommand}" HorizontalAlignment="Right"/>
                           </StackPanel>
                         </StackPanel>
                       </Border>
