@@ -117,9 +117,7 @@ internal class DatabaseServices : IDatabase {
         return Path.Combine( GetSurveyWrapperPath(surveyWrapperId), "assets");
     }
 
-    // Tmp int used to increment to get unique IDs, must be received from db.
-    private int tmpId = 0;
-    public int GetNextSurveyWrapperID() {
+       public int GetNextSurveyWrapperID() {
         int result = random.Next(100000);
         // Ensure that Id isn't used already.
         while (Directory.Exists(GetSurveyWrapperPath(result))) {
@@ -222,6 +220,12 @@ internal class DatabaseServices : IDatabase {
                 System.Console.WriteLine("Error parsing directory name to int in DatabaseService.GetAllSurveyWrapperIds()");
             }
         }
+        return result;
+    }
+
+    public int GetNextUserId() {
+        Guid guid = Guid.NewGuid();
+        int result = guid.GetHashCode();
         return result;
     }
 }

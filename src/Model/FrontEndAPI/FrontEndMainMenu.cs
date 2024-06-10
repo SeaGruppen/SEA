@@ -9,7 +9,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
 
     private IDatabase db;
 
-    internal FrontEndMainMenu(DatabaseServices database) {
+    internal FrontEndMainMenu(IDatabase database) {
         db = database;
     }
 

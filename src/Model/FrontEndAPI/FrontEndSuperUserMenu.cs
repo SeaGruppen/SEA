@@ -5,7 +5,7 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
 
     private  IDatabase db = new DatabaseServices();
 
-    internal FrontEndSuperUserMenu(DatabaseServices databaseServices) {
+    internal FrontEndSuperUserMenu(IDatabase databaseServices) {
         this.db = databaseServices;
     }
 
