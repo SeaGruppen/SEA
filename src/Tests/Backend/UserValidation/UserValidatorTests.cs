@@ -92,7 +92,7 @@ internal class UserValidatorTests
             sut.AddSuperUserCredentials("username2", "password2");
             sut.AddSuperUserCredentials("username3", "password3");
 
-            File.WriteAllLines("..\\..\\..\\Backend\\UserCredentials\\myfile.txt",
+            File.WriteAllLines(Path.Combine("..","..", "..", "Backend", "UserCredentials", "myfile.txt"),
                 SuperUserValidator.SuperUserCredentials.Select(x => "[" + x.Key + " " + x.Value + "]").ToArray());
         }
 
@@ -101,7 +101,7 @@ internal class UserValidatorTests
         {
             var pre = SuperUserValidator.SuperUserCredentials;
 
-            string filePath = "..\\..\\..\\Backend\\UserCredentials\\myfile.txt";
+            string filePath = Path.Combine("..", "..", "..", "Backend", "UserCredentials", "myfile.txt");
             Dictionary<string, string> userDictionary = new Dictionary<string, string>();
 
             foreach (var line in File.ReadLines(filePath))

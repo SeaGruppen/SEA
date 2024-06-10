@@ -38,13 +38,13 @@ internal class SuperUserValidator : ISuperUserValidator {
 
     private void StoreUserCredentials()
     {
-        File.WriteAllLines("Model\\UserCredentials\\UserCredentials.txt",
+        File.WriteAllLines(Path.Combine"Model", "UserCredentials", "UserCredentials.txt",
             superUserCredentials.Select(x => "[" + x.Key + " " + x.Value + "]").ToArray());
     }
 
     private static Dictionary<string, string> ImportUserCredentials()
     {
-        string filePath = "Model\\UserCredentials\\UserCredentials.txt";
+        string filePath = Path.Combine("Model", "UserCredentials", "UserCredentials.txt");
         Dictionary<string, string> userDictionary = new Dictionary<string, string>();
 
         try
