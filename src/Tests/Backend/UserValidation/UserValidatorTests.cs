@@ -102,7 +102,7 @@ namespace Tests.Backend.UserValidation
         {
             var pre = SuperUserValidator.SuperUserCredentials;
 
-            string filePath = "..\\..\\..\\Backend\\UserCredentials\\myfile.txt";
+            string filePath = Path.Combine("..", "..", "..", "Backend", "UserCredentials", "myfile.txt");
             Dictionary<string, string> userDictionary = new Dictionary<string, string>();
 
             foreach (var line in File.ReadLines(filePath))
