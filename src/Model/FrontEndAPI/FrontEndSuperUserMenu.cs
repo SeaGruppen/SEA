@@ -5,15 +5,30 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
 
     private  IDatabase db = new DatabaseServices();
 
-    internal FrontEndSuperUserMenu(DatabaseServices databaseServices) {
+    internal FrontEndSuperUserMenu(IDatabase databaseServices) {
         this.db = databaseServices;
     }
 
-    public IModifySurveyWrapper CreateSurveyWrapper() {
-        int surveyId = db.GetNextSurveyWrapperID();
-        return new SurveyWrapper(surveyId);
+    public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username) {
+        List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
+        List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
+        return result;
     }
 
+    public IModifySurveyWrapper CreateSurveyWrapper(string superUserName) {
+        int surveyId = db.GetNextSurveyWrapperID(superUserName);
+        SurveyWrapper newSurveyWrapper = new SurveyWrapper(surveyId);
+        db.StoreSurveyWrapper(newSurveyWrapper);
+        return newSurveyWrapper;
+    }
+
+    public bool DeleteSurveyWrapper(int surveyId) {
+        if (db.DeleteSurveyWrapper(surveyId)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public bool ExportSurveyWrapperFromDatabase(int surveyId, string folderPath) {
         if (db.ExportSurveyWrapper(surveyId, folderPath)) {
             return true;

@@ -8,5 +8,3 @@ public interface IResult
     string QuestionId {get;}
     string SurveyId {get;}
 }
-
-//     void StoreResultFromQuestion(int surveyID, int questionsID, int userID, Result result);

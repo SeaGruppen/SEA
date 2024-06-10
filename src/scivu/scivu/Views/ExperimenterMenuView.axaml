@@ -24,11 +24,11 @@
       </Grid>
 
       <StackPanel HorizontalAlignment="Center" Spacing="25">
-                <TextBlock Text="{Binding SurveyName}"
+                <TextBlock Text="{Binding SurveyWrapperName}"
                            FontSize="18"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding SurveyId}"
+                <TextBlock Text="{Binding SurveyWrapperId}"
                            FontSize="18"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"/>

@@ -1,10 +1,11 @@
 namespace Model.Utilities;
-using Model.Survey;
-// using Model.Multiquestion;
-using Model.Question;
+
 public static class ExtractSurveyDetails {
 
-    /// Use to get surveyWrapperId from sub-element's Id
+    /// <summary>
+    /// Use to get surveyWrapperId from sub-element's Id.
+    /// It throws an exception if the subElement is null or does not contain a period.
+    /// </summary>
     public static int TryGetSurveyWrapperId(string subElement) {
         if (string.IsNullOrWhiteSpace(subElement) || !subElement.Contains('.')) {
             throw new ArgumentException("Invalid subElement", nameof(subElement));
@@ -16,6 +17,11 @@ public static class ExtractSurveyDetails {
         }
         return result;
     }
+
+    /// <summary>
+    /// Use to get surveyId from sub-element's Id
+    /// It throws an exception if the subElement is null or does not contain a period.
+    /// </summary>
     public static string TryGetSurveyId(string subElement) {
         // Check that subElement is not null and that it contains a period
         if (string.IsNullOrWhiteSpace(subElement) || !subElement.Contains('.')) {
@@ -29,6 +35,11 @@ public static class ExtractSurveyDetails {
         string result = string.Join(".", parts.Take(2));
         return result;
     }    
+
+    /// <summary>
+    /// Use to get multiQuestionId from sub-element's Id
+    /// It throws an exception if the subElement is null or does not contain a period.
+    /// </summary>
     public static string TryGetMultiQuestionId(string subElement) {
         //Check that subElement is not null and that it contains a period
         if (string.IsNullOrWhiteSpace(subElement) || !subElement.Contains('.')) {

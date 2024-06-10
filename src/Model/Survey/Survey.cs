@@ -1,13 +1,11 @@
 namespace Model.Survey;
-using System;
 
 using Model.Question;
-using Model.Answer;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 internal class Survey : IReadOnlySurvey, IModifySurvey {
-    public string SurveyId {get;}
+    public string SurveyId {get; private set;}
 
     public string SurveyName {get; set;}
 
@@ -75,7 +73,7 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         }
     }
 
-    public void DeleteQuestion(int index) {
+    public void DeleteMultiQuestion(int index) {
         if(0 < current && current < surveyQuestions.Count) {
             surveyQuestions.RemoveAt(index);
         }
@@ -93,5 +91,15 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
         MultiQuestion result = new MultiQuestion(string.Concat( SurveyId, ".", multiQuestionId));
         surveyQuestions.Insert(index, result);
         return (IMultiQuestion<IModifyQuestion>) result;
+    }
+
+    internal void UpdateId(string newSurveyId) {
+        SurveyId = newSurveyId;
+        foreach (MultiQuestion mq in surveyQuestions) {
+            string currentMqId = mq.MultiQuestionId;
+            string[] parts = currentMqId.Split(".");
+            string newMqId = SurveyId + "." + parts.Last();
+            mq.UpdateId(newMqId);
+        }
     }
 }

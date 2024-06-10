@@ -11,4 +11,7 @@ internal class FrontEndExperimenter : IFrontEndExperimenter {
     public void StoreResultFromQuestion(IResult answer) {
         databaseService.StoreResult(answer);   
     }
+    public int GetNextUserId() {
+        return databaseService.GetNextUserId();
+    }
 }

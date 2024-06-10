@@ -17,6 +17,7 @@ internal class DatabaseServices : IDatabase {
     
     private string databasePath;
     private readonly string resultsPath;
+    private readonly string creatorDictPath;
     private Random random = new Random();
     internal DatabaseServices() {
         string? projectPath = FileIO.GetProjectPath();
@@ -31,6 +32,8 @@ internal class DatabaseServices : IDatabase {
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
+        creatorDictPath = Path.Combine(databasePath, "creatorDict.json");
+        CreateCreatorDictFileIfNotExisting(creatorDictPath);
     }
 
     //overloading constructor for testing purposes
@@ -39,14 +42,22 @@ internal class DatabaseServices : IDatabase {
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);
+        creatorDictPath = Path.Combine(databasePath, "creatorDict.json");
+        CreateCreatorDictFileIfNotExisting(creatorDictPath);
     }
-
-    
-
 
     private static void CreateResultsFileIfNotExisting(string resultsPath) {
         if (!File.Exists(resultsPath)) {
             File.Create(resultsPath).Dispose();
+        }
+    }
+
+    private static void CreateCreatorDictFileIfNotExisting(string creatorDictPath) {
+        if (!File.Exists(creatorDictPath)) {
+            File.Create(creatorDictPath).Dispose();
+            var creatorDict = new Dictionary<string, List<int>>();
+            string jsonString = JsonSerializer.Serialize(creatorDict, Globals.OPTIONS);
+            File.WriteAllText(creatorDictPath, jsonString);
         }
     }
 
@@ -56,6 +67,16 @@ internal class DatabaseServices : IDatabase {
         string surveyWrapperFilePath = Path.Combine(surveyWrapperPath, surveyWrapper.SurveyWrapperId + ".json");
         SaveSurveyWrapperToFile(surveyWrapperFilePath, surveyWrapper);
         return true;
+    }
+
+    public bool DeleteSurveyWrapper(int surveyWrapperId) {
+        string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapperId);
+        if (Directory.Exists(surveyWrapperPath)) {
+            Directory.Delete(surveyWrapperPath, true);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public SurveyWrapper? GetSurveyWrapper(int surveyWrapperId) {
@@ -70,9 +91,7 @@ internal class DatabaseServices : IDatabase {
     
     
     private static void SaveSurveyWrapperToFile(string surveyWrapperFilePath, SurveyWrapper surveyWrapper) {
-        var options = new JsonSerializerOptions { WriteIndented = true }; //pretty printing of json strings
-        options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
-        string jsonString = JsonSerializer.Serialize(surveyWrapper, options);
+        string jsonString = JsonSerializer.Serialize(surveyWrapper, Globals.OPTIONS);
         File.WriteAllText(surveyWrapperFilePath, jsonString);
     }
 
@@ -81,10 +100,8 @@ internal class DatabaseServices : IDatabase {
     }
 
     private static SurveyWrapper LoadSurveyWrapperFromFile(string surveyWrapperPath) {
-        var options = new JsonSerializerOptions {}; //pretty printing of json strings
-        options.Converters.Add(new Model.Question.MultiQuestionConverter()); //necessary to serialize the fields of MultiQuestion (since it is an IEnumerable)
         string jsonString = File.ReadAllText(surveyWrapperPath);
-        return JsonSerializer.Deserialize<SurveyWrapper>(jsonString, options)!;
+        return JsonSerializer.Deserialize<SurveyWrapper>(jsonString, Globals.OPTIONS)!;
     }
 
     public string StorePictureOverwrite(int surveyWrapperId, string src) {
@@ -111,15 +128,35 @@ internal class DatabaseServices : IDatabase {
         return Path.Combine( GetSurveyWrapperPath(surveyWrapperId), "assets");
     }
 
-    // Tmp int used to increment to get unique IDs, must be received from db.
-    private int tmpId = 0;
-    public int GetNextSurveyWrapperID() {
+    public int GetNextSurveyWrapperID(string superUserName) {
         int result = random.Next(100000);
         // Ensure that Id isn't used already.
         while (Directory.Exists(GetSurveyWrapperPath(result))) {
             result = random.Next();
         }
+        StoreCreatorEntry(superUserName, result);
         return result;
+    }
+
+    private void StoreCreatorEntry(string superUserName, int surveyWrapperId) {
+        Dictionary<string, List<int>> creatorDict = GetCreatorDict();
+        if (!creatorDict.ContainsKey(superUserName)) {
+            List<int> idList = new List<int>{surveyWrapperId};
+            creatorDict.Add(superUserName, idList);
+        } else {
+            creatorDict[superUserName].Add(surveyWrapperId);
+        }
+        StoreCreatorDict(creatorDict);
+    }
+
+    private Dictionary<string, List<int>> GetCreatorDict() {
+        string jsonString = File.ReadAllText(creatorDictPath);
+        return JsonSerializer.Deserialize<Dictionary<string, List<int>>>(jsonString, Globals.OPTIONS)!;
+    }
+
+    private void StoreCreatorDict(Dictionary<string, List<int>> creatorDict) {
+        string jsonString = JsonSerializer.Serialize(creatorDict, Globals.OPTIONS);
+        File.WriteAllText(creatorDictPath, jsonString);
     }
 
     public bool ExportSurveyWrapper(int id, string path) {
@@ -200,9 +237,13 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username){
-        // Missing implementation
-        return new List<SurveyWrapper>();
+    public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string superUserName){
+        Dictionary<string, List<int>> creatorDict = GetCreatorDict();
+        List<SurveyWrapper> surveyWrapperList = new List<SurveyWrapper>();
+        foreach (int surveyWrapperId in creatorDict[superUserName]) {
+            surveyWrapperList.Add(GetSurveyWrapper(surveyWrapperId));
+        }
+        return surveyWrapperList;
     }
 
     public List<int> GetAllSurveyWrapperIds() {
@@ -216,6 +257,12 @@ internal class DatabaseServices : IDatabase {
                 System.Console.WriteLine("Error parsing directory name to int in DatabaseService.GetAllSurveyWrapperIds()");
             }
         }
+        return result;
+    }
+
+    public int GetNextUserId() {
+        Guid guid = Guid.NewGuid();
+        int result = guid.GetHashCode();
         return result;
     }
 }
