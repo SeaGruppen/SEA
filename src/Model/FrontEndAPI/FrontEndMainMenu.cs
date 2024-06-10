@@ -41,6 +41,5 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
         List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
         List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
         return result;
-
     }
 }  
