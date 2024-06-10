@@ -5,11 +5,13 @@ using Model.FrontEndAPI;
 using Result;
 using Answer;
 using Model.StatisticsModule;
+using Model.UserValidation;
 
 public static class FrontEndFactory {
     private static DatabaseServices databaseServices = new DatabaseServices();
+    private static ISuperUserValidator superUserValidator = new SuperUserValidator();
     public static IFrontEndMainMenu CreateMainMenu() {
-        return new FrontEndMainMenu(databaseServices);
+        return new FrontEndMainMenu(databaseServices, superUserValidator);
     }
 
     public static IFrontEndExperimenter CreateExperimenterMenu() {
