@@ -259,4 +259,11 @@ internal class DatabaseServices : IDatabase {
         }
         return result;
     }
+
+    public int GetNextUserId() {
+        Guid guid = Guid.NewGuid();
+        int result = guid.GetHashCode();
+        return result;
+    }
 }
+
