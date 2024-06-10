@@ -10,7 +10,7 @@ internal interface IDatabase {
     bool StoreSurveyWrapper(SurveyWrapper surveyWrapper);
     bool DeleteSurveyWrapper(int surveyWrapperId);
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
-    List<SurveyWrapper> GetSurveyWrapperForSuperUser(string username);
+    List<SurveyWrapper>? GetSurveyWrapperForSuperUser(string username);
     bool ExportSurveyWrapper(int surveyWrapperid,string path);
     bool ImportSurveyWrapper(string path);
     string TryStorePicture(int surveyWrapperId, string path);
