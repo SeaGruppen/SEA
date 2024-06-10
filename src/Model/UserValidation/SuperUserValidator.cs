@@ -1,6 +1,7 @@
 ﻿
 namespace Model.UserValidation;
 
+using Model.Utilities;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,6 +11,31 @@ internal class SuperUserValidator : ISuperUserValidator {
     public static IReadOnlyDictionary<string, string> SuperUserCredentials => superUserCredentials;
 
     private static Dictionary<string, string> superUserCredentials = ImportUserCredentials();
+
+    // Made public for testing purposes
+    public static string UserCredentialsFilePath;
+
+    public SuperUserValidator() {
+        string userCredentialsDirectoryPath;
+
+        string? projectPath = FileIO.GetProjectPath();
+        if (projectPath != null)
+        {
+            userCredentialsDirectoryPath = Path.Combine(projectPath, "UserCredentials");
+        }
+        else
+        {
+            userCredentialsDirectoryPath = "UserCredentials";
+        }
+
+        UserCredentialsFilePath = Path.Combine(userCredentialsDirectoryPath, "UserCredentials.txt");
+        Directory.CreateDirectory(userCredentialsDirectoryPath); //is only created if not exists
+
+        if (!File.Exists(UserCredentialsFilePath))
+        {
+            File.Create(UserCredentialsFilePath).Dispose();
+        }
+    }
 
     public bool AddSuperUserCredentials(string username, string password) {
         // Check if user already exists
@@ -38,7 +64,7 @@ internal class SuperUserValidator : ISuperUserValidator {
 
     private void StoreUserCredentials()
     {
-        File.WriteAllLines(Path.Combine("Model", "UserCredentials", "UserCredentials.txt"),
+        File.WriteAllLines(UserCredentialsFilePath,
             superUserCredentials.Select(x => "[" + x.Key + " " + x.Value + "]").ToArray());
     }
 
@@ -49,7 +75,7 @@ internal class SuperUserValidator : ISuperUserValidator {
 
         try
         {
-            foreach (var line in File.ReadLines(filePath))
+            foreach (var line in File.ReadLines(UserCredentialsFilePath))
             {
                 string content = line.Trim('[', ']');
 
