@@ -1,16 +1,21 @@
 namespace Model.FrontEndAPI;
 using Model.Database;
 using Model.Survey;
-
+using Model.UserValidation;
 
 internal class FrontEndMainMenu : IFrontEndMainMenu {
 
     private IDatabase db;
+    private ISuperUserValidator superUserValidator;
 
-    internal FrontEndMainMenu(IDatabase database) {
+    internal FrontEndMainMenu(IDatabase database, ISuperUserValidator superUserValidator) {
         db = database;
+        this.superUserValidator = superUserValidator;
     }
 
+    public bool AddSuperUser(string username, string password) {
+        return superUserValidator.AddSuperUserCredentials(username, password);
+    }
 
     public IReadOnlySurveyWrapper? GetSurveyWrapper(int surveyId) {
         return db.GetSurveyWrapper(surveyId);
