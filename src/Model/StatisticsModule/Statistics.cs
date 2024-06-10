@@ -111,9 +111,16 @@ internal class Statistics : IStatistics{
 
         Dictionary<string, double> surveyCompletionRate = new Dictionary<string, double>();
         for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
-            string surveyId = surveyWrapper.TryGetModifySurveyVersion(i).SurveyId;
+            IModifySurvey? surveyI = surveyWrapper.TryGetModifySurveyVersion(i);
+            if (surveyI == null) {
+                continue;
+            }
+            string surveyId =surveyI.SurveyId;
             var tmpresult = AverageCompletionRateSurvey(surveyId);
             surveyCompletionRate[surveyId] = tmpresult;
+        }
+        if (surveyCompletionRate.Count == 0) {
+            return 0;
         }
         double result = surveyCompletionRate.Values.Average();
         return result;
