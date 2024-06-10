@@ -44,7 +44,7 @@ internal class SuperUserValidator : ISuperUserValidator {
 
     private static Dictionary<string, string> ImportUserCredentials()
     {
-        string filePath = "Model\\UserCredentials\\UserCredentials.txt";
+        string filePath = Path.Combine("Model", "UserCredentials", "UserCredentials.txt");
         Dictionary<string, string> userDictionary = new Dictionary<string, string>();
 
         try
