@@ -260,6 +260,9 @@ internal class DatabaseServices : IDatabase {
 
     public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string superUserName){
         Dictionary<string, List<int>> creatorDict = GetCreatorDict();
+        if (!creatorDict.ContainsKey(superUserName)) {
+            return new List<SurveyWrapper>();
+        }
         List<SurveyWrapper> surveyWrapperList = new List<SurveyWrapper>();
         foreach (int surveyWrapperId in creatorDict[superUserName]) {
             surveyWrapperList.Add(GetSurveyWrapper(surveyWrapperId));
