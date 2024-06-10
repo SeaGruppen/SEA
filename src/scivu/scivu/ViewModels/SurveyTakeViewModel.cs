@@ -49,6 +49,7 @@ public class SurveyTakeViewModel : ViewModelBase
 
             if (result)
             {
+                SaveQuestionResults();
                 // Do the quit
                 _changeViewCommand.Invoke("PauseMenu", _wrapper);
             }
