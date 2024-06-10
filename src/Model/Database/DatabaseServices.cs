@@ -199,10 +199,9 @@ internal class DatabaseServices : IDatabase {
                         // Skip line if it can't be parsed
                         continue;
                     }
-                    if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.SurveyId) == surveyWrapperId) {
+                    if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.QuestionId) == surveyWrapperId) {
                         foreach (Result r in results) {
                             if (r.UserId == result.UserId && r.QuestionId == result.QuestionId) {
-                                // Skip if user already has a result
                                 if (r.CreationTime >= result.CreationTime) {
                                     results.Remove(result);
                                     results.Add(r);
