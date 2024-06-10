@@ -6,9 +6,11 @@ using Model.UserValidation;
 internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
 
     private  IDatabase db = new DatabaseServices();
+    private ISuperUserValidator superUserValidator;
 
-    internal FrontEndSuperUserMenu(IDatabase databaseServices) {
+    internal FrontEndSuperUserMenu(IDatabase databaseServices, ISuperUserValidator superUserValidator) {
         this.db = databaseServices;
+        this.superUserValidator = superUserValidator;
     }
 
     public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username) {
@@ -63,8 +65,6 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
 
     public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username, string password) {
         //Validate superuser against Hashfunction first. If true, then return the list of surveys
-        var superUserValidator = new SuperUserValidator();
-
         if (superUserValidator.ValidateSuperUser(username, password)) {
             List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
             List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
