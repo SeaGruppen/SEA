@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
 using Model.FrontEndAPI;
+using Model.UserValidation;
 using ReactiveUI;
 using scivu.Model;
 
@@ -21,6 +23,7 @@ public class MainMenuViewModel : ViewModelBase
     private bool _isExperimenterLogin;
     private bool _isSuperLogin;
 
+    private bool _isCreateUser;
     private bool _isLoginEnabled;
 
     public MainMenuViewModel(Action<string, object> changeViewCommand, IFrontEndMainMenu client)
@@ -76,7 +79,14 @@ public class MainMenuViewModel : ViewModelBase
         private set => this.RaiseAndSetIfChanged(ref _isSuperLogin, value);
     }
 
+    public bool IsCreateUser
+    {
+        get => _isCreateUser;
+        private set => this.RaiseAndSetIfChanged(ref _isCreateUser, value);
+    }
+
     public bool IsLogin => IsExperimenterLogin || IsSuperLogin;
+    public bool IsInputting => IsExperimenterLogin || IsSuperLogin || IsCreateUser;
 
     public async void ImportSurvey()
     {
@@ -106,12 +116,24 @@ public class MainMenuViewModel : ViewModelBase
 
         // Need to raise that fields under IsLogin has changed!
         this.RaisePropertyChanged(nameof(IsLogin));
+        this.RaisePropertyChanged(nameof(IsInputting));
+    }
+
+    public void GoToCreateUser()
+    {
+        IsCreateUser = true;
+        ErrorMessage = string.Empty;
+
+        // Need to raise that fields under IsInputting has changed!
+        this.RaisePropertyChanged(nameof(IsInputting));
+        this.RaisePropertyChanged(nameof(IsCreateUser));
     }
 
     public void GoBackToMenu()
     {
         IsSuperLogin = false;
         IsExperimenterLogin = false;
+        IsCreateUser = false;
 
         Username = null;
         Password = null;
@@ -119,12 +141,19 @@ public class MainMenuViewModel : ViewModelBase
 
         // Need to raise that fields under IsLogin has changed!
         this.RaisePropertyChanged(nameof(IsLogin));
+        this.RaisePropertyChanged(nameof(IsInputting));
     }
 
     public void DoLogin()
     {
         if (IsSuperLogin) DoSuperUserLogin();
         else DoExperimenterLogin();
+    }
+
+    public void DoCreateUser()
+    {
+        Debug.Assert(IsCreateUser);
+        _client.
     }
 
     private async void DoSuperUserLogin()

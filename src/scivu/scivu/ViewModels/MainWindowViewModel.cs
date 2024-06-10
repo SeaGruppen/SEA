@@ -60,7 +60,7 @@ public class MainWindowViewModel : ViewModelBase
                 ContentViewModel = _surveyTaker;
                 break;
             case "ExperimenterMenu" when arg is IReadOnlySurveyWrapper survey:
-                ContentViewModel = new ExperimenterMenuViewModel(survey, ChangeViewTo);
+                ContentViewModel = new ExperimenterMenuViewModel(_experimenterClient, survey, ChangeViewTo);
                 break;
             case "MainMenu":
                 ContentViewModel = new MainMenuViewModel(ChangeViewTo, _mainMenuClient);

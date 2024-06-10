@@ -3,6 +3,7 @@ using Model.FrontEndAPI;
 using Model.Survey;
 using Model.StatisticsModule;
 using Model.Factory;
+using System.Net.Http;
 
 namespace scivu.ViewModels;
 
@@ -12,6 +13,7 @@ public class ExperimenterMenuViewModel : ViewModelBase
     private readonly Action<string, object> _changeViewCommand;
     private IStatistics _statistics;
     // The following are placeholder, should be dynamically pulled from the survey object.
+    private readonly IFrontEndExperimenter _client;
     public string SurveyWrapperName { get; }
     public int SurveyWrapperId { get; }
     public int StartedSurveys { get; }
@@ -19,9 +21,10 @@ public class ExperimenterMenuViewModel : ViewModelBase
     public double CompletionRate { get; }
     public double AverageCompletionRate { get; }
 
-    public ExperimenterMenuViewModel(IReadOnlySurveyWrapper survey, Action<string, object> changeViewCommand)
+    public ExperimenterMenuViewModel(IFrontEndExperimenter client, IReadOnlySurveyWrapper survey, Action<string, object> changeViewCommand)
     {
         _statistics = FrontEndFactory.CreateStatistics();
+        _client = client;
         _survey = survey;
         _changeViewCommand = changeViewCommand;
         SurveyWrapperName = survey.SurveyWrapperName;
@@ -44,6 +47,10 @@ public class ExperimenterMenuViewModel : ViewModelBase
         _changeViewCommand("TakeSurvey", _survey);
     }
 
+    public void ExportResults()
+    {
+        
+    }
 
 
 
