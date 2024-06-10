@@ -27,8 +27,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
 
     public List<IModifySurveyWrapper>? ValidateSuperUser(string username, string password) {
         //Validate superuser against Hashfunction first. If true, then return the list of surveys
-        if (superUserValidator.ValidateSuperUser(username, password))
-        {
+        if (superUserValidator.ValidateSuperUser(username, password)) {
             List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
             List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
             return result;
