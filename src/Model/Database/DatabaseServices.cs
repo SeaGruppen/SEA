@@ -183,6 +183,9 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
+/// <summary>
+/// Get all final results for a SurveyWrapper, this does not return intermediate results, they still exist in the database
+/// </summary>
     public List<Result> GetSurveyWrapperResults(int surveyWrapperId) {
         List<Result> results = new List<Result>();
         try {
@@ -197,6 +200,16 @@ internal class DatabaseServices : IDatabase {
                         continue;
                     }
                     if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.SurveyId) == surveyWrapperId) {
+                        foreach (Result r in results) {
+                            if (r.UserId == result.UserId && r.QuestionId == result.QuestionId) {
+                                // Skip if user already has a result
+                                if (r.CreationTime >= result.CreationTime) {
+                                    results.Remove(result);
+                                    results.Add(r);
+                                } 
+                                continue;
+                            }
+                        }
                         results.Add(result);
                     }
                 }
