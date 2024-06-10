@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:scivu.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:SuperUserMenuViewModel"
+             x:Class="scivu.Views.SuperUserMenuView">
+            <DockPanel>
+              <StackPanel DockPanel.Dock="Top">
+                <TextBox Text="{Binding SearchText}" Watermark="Search for Surveys..."/>
+                <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+                <ListBox ItemsSource="{Binding AvailableSurveys}" SelectedItem="{Binding SelectedSurvey}"
+                         IsVisible="{Binding VisibleCollection}">
+                  <ListBox.ItemTemplate>
+                    <DataTemplate>
+                      <Border BorderBrush="Gray" BorderThickness="3" CornerRadius="5" Margin="5" Padding="10" Background="#FFF">
+                        <StackPanel>
+                          <TextBlock Text="{Binding SurveyName}" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+                          <TextBlock Text="{Binding SurveyID}" Margin="0,0,0,10"/>
+                          <StackPanel Orientation="Horizontal">
+                            <Button Content="Select" Command="{Binding DataContext.ChangeView, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" HorizontalAlignment="Right"/>
+                            <Button Content="Delete" Command="{Binding DataContext.DeleteSurvey}" CommandParameter="{Binding}" HorizontalAlignment="Right"/>
+                          </StackPanel>
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </StackPanel>
+              <Button Content="Main Menu"
+                      Command="{Binding ChangeView}"
+                      CommandParameter="MainMenu"
+                      DockPanel.Dock="Bottom"
+                      HorizontalAlignment="Left"/>
+              <Button Content="Create Survey"
+                      Command="{Binding ChangeView}"
+                      CommandParameter="Create"
+                      DockPanel.Dock="Bottom"
+                      HorizontalAlignment="Center"/>
+            </DockPanel>
+
+</UserControl>
+
+<!--
+<StackPanel HorizontalAlignment=""
+                          VerticalAlignment="Center"
+                          Spacing="25">
+                  <Button Command="{Binding ChangeView}"
+                          CommandParameter="MainMenu">
+                    Go back
+                  </Button>
+                  
+                <TextBlock Margin="0.5"> Select a survey or create a new </TextBlock>
+
+              </StackPanel>
+-->

@@ -34,7 +34,7 @@ public class MainWindowViewModel : ViewModelBase
         // a dialog option
         _surveyTaker = new SurveyTakeViewModel(_experimenterClient, ChangeViewTo);
 
-        Surveys = new SurveyViewModel();
+        //Surveys = new SurveyViewModel();
         Change = ReactiveCommand.Create<string>(ChangeViewTo);
 
         _mainMenuClient = FrontEndFactory.CreateMainMenu();
