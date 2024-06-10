@@ -6,7 +6,7 @@ using Result = Result.Result;
 using Model.Survey;
 
 internal interface IDatabase {
-    int GetNextSurveyWrapperID();
+    int GetNextSurveyWrapperID(string superUserName);
     bool StoreSurveyWrapper(SurveyWrapper surveyWrapper);
     bool DeleteSurveyWrapper(int surveyWrapperId);
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
