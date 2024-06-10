@@ -1,12 +1,16 @@
 namespace Model.FrontEndAPI;
 using Model.Survey;
 using Model.Database;
+using Model.UserValidation;
+
 internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
 
     private  IDatabase db = new DatabaseServices();
+    private ISuperUserValidator superUserValidator;
 
-    internal FrontEndSuperUserMenu(IDatabase databaseServices) {
+    internal FrontEndSuperUserMenu(IDatabase databaseServices, ISuperUserValidator superUserValidator) {
         this.db = databaseServices;
+        this.superUserValidator = superUserValidator;
     }
 
     public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username) {
@@ -57,5 +61,15 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
             // Downcast failed, handle accordingly
             throw new InvalidCastException("The provided surveyWrapper is not of type SurveyWrapper, Have you gotten hacked?");
         }
+    }
+
+    public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username, string password) {
+        //Validate superuser against Hashfunction first. If true, then return the list of surveys
+        if (superUserValidator.ValidateSuperUser(username, password)) {
+            List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
+            List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
+            return result;
+        }
+        return null;
     }
 }
