@@ -1,33 +1,17 @@
 namespace Model.FrontEndAPI;
 using Model.Database;
-using Model.Result;
 using Model.Survey;
-using System.Text;
-using System.IO;
+
 
 internal class FrontEndMainMenu : IFrontEndMainMenu {
 
     private IDatabase db;
 
-    internal FrontEndMainMenu(DatabaseServices database) {
+    internal FrontEndMainMenu(IDatabase database) {
         db = database;
     }
 
-    public bool ExportResults(int surveyWrapperId, string folderPath) {
-        List<Result> results = db.GetSurveyWrapperResults(surveyWrapperId);
-        string path = Path.Combine(folderPath, $"{surveyWrapperId}.csv");
-        try {
-            using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8)) {
-                foreach (var result in results) {
-                    writer.WriteLine(result.ToString());
-                }
-            }
-            return true;
-        }
-        catch (Exception) {
-            return false;
-        } 
-    }
+
     public IReadOnlySurveyWrapper? GetSurveyWrapper(int surveyId) {
         return db.GetSurveyWrapper(surveyId);
     }
@@ -41,6 +25,5 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
         List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
         List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
         return result;
-
     }
 }  

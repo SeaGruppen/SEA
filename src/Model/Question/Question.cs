@@ -12,8 +12,6 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     private string caption;
 
     [JsonInclude]
-    private string questionText;
-    [JsonInclude]
     private string picture;
     [JsonInclude]
     private string text;
@@ -38,7 +36,6 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     public Question(string id) {
         this.id = id;
         caption = string.Empty;
-        questionText = string.Empty;
         picture = string.Empty;
         text = string.Empty;
         answer = new Answer();

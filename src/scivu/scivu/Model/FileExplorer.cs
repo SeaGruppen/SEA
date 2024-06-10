@@ -46,4 +46,18 @@ public static class FileExplorer
 
         return file.Count >= 1 ? file[0] : null;
     }
+
+    public static async Task<IStorageFolder?> OpenFolderAsync()
+    {
+        if (!FileExplorerAvailable(out var provider))
+            throw new NullReferenceException("Missing StorageProvider instance.");
+
+        var folder = await provider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+        {
+            Title = "Choose Export Folder",
+            AllowMultiple = false
+        });
+
+        return folder.Count >= 1 ? folder[0] : null;
+    }
 }
