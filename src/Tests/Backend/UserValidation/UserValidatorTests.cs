@@ -93,7 +93,7 @@ namespace Tests.Backend.UserValidation
             sut.AddSuperUserCredentials("username2", "password2");
             sut.AddSuperUserCredentials("username3", "password3");
 
-            File.WriteAllLines("..\\..\\..\\Backend\\UserCredentials\\myfile.txt",
+            File.WriteAllLines(Path.Combine("..","..", "..", "Backend", "UserCredentials", "myfile.txt"),
                 SuperUserValidator.SuperUserCredentials.Select(x => "[" + x.Key + " " + x.Value + "]").ToArray());
         }
 
