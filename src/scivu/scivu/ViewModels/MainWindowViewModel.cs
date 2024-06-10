@@ -8,6 +8,7 @@ using Model.Survey;
 using Model.Factory;
 using Model.Question;
 using Model.Answer;
+using Avalonia.Metadata;
 
 
 namespace scivu.ViewModels;
@@ -18,7 +19,10 @@ public class MainWindowViewModel : ViewModelBase
     internal SurveyTakeViewModel _surveyTaker;
     private readonly IFrontEndExperimenter _experimenterClient;
 
+    private readonly IFrontEndSuperUser _client;
     private readonly IFrontEndMainMenu _mainMenuClient;
+
+    private readonly IFrontEndSuperUser _superUserClient;
 
     public SurveyViewModel Surveys { get; }
 
@@ -40,6 +44,8 @@ public class MainWindowViewModel : ViewModelBase
         _mainMenuClient = FrontEndFactory.CreateMainMenu();
 
         _contentViewModel = new MainMenuViewModel(ChangeViewTo, _mainMenuClient);
+
+        _superUserClient= FrontEndFactory.CreateSuperUserMenu();
     }
 
     public ViewModelBase ContentViewModel
@@ -68,8 +74,9 @@ public class MainWindowViewModel : ViewModelBase
             case "PauseMenu" when arg is IReadOnlySurveyWrapper survey:
                 ContentViewModel = new PauseMenuViewModel(ChangeViewTo, survey);
                 break;
-            case "SuperUserMenu":
-                throw new NotImplementedException("Changing to super user menu");
+            case "SuperUserMenu" when arg is string username:
+                ContentViewModel = new SuperUserMenuViewModel(ChangeViewTo, _superUserClient, username);
+                break;
             default:
                 throw new ArgumentException($"Invalid view model `{vm}` with invalid argument `{arg}`");
         }

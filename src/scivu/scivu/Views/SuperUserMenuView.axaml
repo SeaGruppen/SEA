@@ -21,7 +21,6 @@
                           <StackPanel Orientation="Horizontal">
                             <Button Content="Select" Command="{Binding SelectCommand}" HorizontalAlignment="Right"/>
                             <Button Content="Delete" Command="{Binding DeleteCommand}" HorizontalAlignment="Right"/>
-                            <Button Content="Copy" Command="{Binding CopyCommand}" HorizontalAlignment="Right"/>
                             <Button Content="Export" Command="{Binding ExportCommand}" HorizontalAlignment="Right"/>
                           </StackPanel>
                         </StackPanel>
@@ -36,10 +35,9 @@
                       DockPanel.Dock="Bottom"
                       HorizontalAlignment="Left"/>
               <Button Content="Create Survey"
-                      Command="{Binding ChangeView}"
-                      CommandParameter="Create"
+                      Command="{Binding CreateSurvey}"
                       DockPanel.Dock="Bottom"
-                      HorizontalAlignment="Center"/>
+                      HorizontalAlignment="Right"/>
             </DockPanel>
 
 </UserControl>

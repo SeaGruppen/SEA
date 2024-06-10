@@ -15,26 +15,32 @@ using System.Windows.Input;
 //using frontEndAPI;
 using scivu.Views;
 using System.Reactive;
+using scivu.Model;
+using Model.FrontEndAPI;
+using DynamicData.Kernel;
+
 
 namespace scivu.ViewModels;
 
 public class SuperUserMenuViewModel : ViewModelBase
 {
     private readonly Action<string, object> _changeViewCommand;
+    private readonly IFrontEndSuperUser _client;
 
     private string? _searchText;
     private bool _isBusy;
 
     private bool _visibleCollection;
 
-    public ICommand? SelectSurveyCommand {get;}
     private SurveyViewModel? _selectedSurvey;
 
-    public string? Username {get; private set; }
+    public string Username {get; private set; }
     public ObservableCollection<SurveyViewModel> AvailableSurveys {get;} = new();
     public ObservableCollection<SurveyViewModel> SearchResults {get;} = new();
 
     public ReactiveCommand<string, Unit> Handle {get;}
+
+    private string _errorMessage = string.Empty;
 
     public SurveyViewModel? SelectedSurvey
     {
@@ -52,6 +58,11 @@ public class SuperUserMenuViewModel : ViewModelBase
         get => _isBusy;
         set => this.RaiseAndSetIfChanged(ref _isBusy, value);
     }
+        public string ErrorMessage
+    {
+        get => _errorMessage;
+        private set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
+    }
 
     public bool VisibleCollection
     {
@@ -59,7 +70,9 @@ public class SuperUserMenuViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isBusy, value);
     }
 
-    public SuperUserMenuViewModel(Action<string,object> changeViewCommand, List<IModifySurveyWrapper> surveys, string Username)
+    
+
+    public SuperUserMenuViewModel(Action<string,object> changeViewCommand, IFrontEndSuperUser client, string username)
     {
         //SelectSurveyCommand = ReactiveCommand.Create(() => 
         //{
@@ -70,14 +83,30 @@ public class SuperUserMenuViewModel : ViewModelBase
         .ObserveOn(RxApp.MainThreadScheduler)
         .Subscribe(SearchSurveys!);
         _changeViewCommand = changeViewCommand;
+        _client = client;
+        Username = username;
         AvailableSurveys.Clear();
         Handle = ReactiveCommand.Create<string>(HandleCommand);
-        foreach (var survey in surveys)
-        {
+        GetSurveys();
 
-            AvailableSurveys.Add(new SurveyViewModel(survey, HandleCommand));
+
+
+    }
+
+    private void GetSurveys(){
+        List<IModifySurveyWrapper>? surveys = _client.GetSurveyWrappersFromSuperUser(Username);
+        AvailableSurveys.Clear();
+        if (surveys != null)
+        {
+            foreach (var survey in surveys)
+            {
+                AvailableSurveys.Add(new SurveyViewModel(survey, HandleCommand));
+            }
         }
     }
+
+
+
 
     public void HandleCommand(string cm) => HandleCommand(cm, null);
     public void HandleCommand(string cm, object? arg) {
@@ -126,20 +155,40 @@ public class SuperUserMenuViewModel : ViewModelBase
         _changeViewCommand(view, view == "Mainmenu" ? null! : SelectedSurvey.SurveyWrapper);
     }
 
+    public void CreateSurvey() {
+        _client.CreateSurveyWrapper(Username);
+        GetSurveys();
+    }
+
     public void Delete(SurveyViewModel survey){
-        throw new NotImplementedException(); // Delete survey logic
+
+
+        _client.DeleteSurveyWrapper(survey.SurveyID);
+        GetSurveys();
     }
 
     public void Select(SurveyViewModel survey){
-        throw new NotImplementedException(); // this might be able to be changeVeiw
+       _changeViewCommand("SelectMenu", survey.SurveyWrapper); // this might be able to be changeVeiw
     }
 
     public void Copy (SurveyViewModel survey){
+        throw new NotImplementedException();
 
     }
 
-    public void Export (IModifySurveyWrapper survey){
-
+    public async void Export (IModifySurveyWrapper survey){
+        var folder = await FileExplorer.OpenFolderAsync();
+        if (folder != null)
+        {
+            var path = folder.Path.ToString();
+            if (_client.ExportSurveyWrapperFromDatabase(survey.SurveyWrapperId,path))
+            {
+                return;
+            }
+            var stdmsg = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.WAR_CouldNotExportSurvey);
+            ErrorMessage = $"{stdmsg}: id: {survey.SurveyWrapperId}, path: '{path}'";
+        }
+        ErrorMessage = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.WAR_InvalidSurveyFileType);
     }
 
 }
