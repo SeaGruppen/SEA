@@ -38,7 +38,7 @@ internal class SuperUserValidator : ISuperUserValidator {
 
     private void StoreUserCredentials()
     {
-        File.WriteAllLines("Model\\UserCredentials\\UserCredentials.txt",
+        File.WriteAllLines(Path.Combine"Model", "UserCredentials", "UserCredentials.txt",
             superUserCredentials.Select(x => "[" + x.Key + " " + x.Value + "]").ToArray());
     }
 
