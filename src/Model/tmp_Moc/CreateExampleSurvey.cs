@@ -62,7 +62,7 @@ using Model.Utilities;
             IModifyQuestion question120 =  multiQuestion12.AddQuestion();
             question120.ModifyCaption = "New breed of cat";
             question120.ModifyPicture = turtlePicture;
-            question120.ModifyText = "How likely is this animal to be accepted as a new dog breed?";
+            question120.ModifyText = "How likely is this animal to be accepted as a new cat breed?";
 
 
 
