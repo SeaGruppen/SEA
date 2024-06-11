@@ -19,12 +19,11 @@ using Model.Utilities;
             
             // Store pictures needed in database
             string dogPicture1 = superuserMenu.StorePicture(surveyWrapper.SurveyWrapperId, Path.Combine(FileIO.GetProjectPath(), "..", "assets","dog_1.jpeg"));
-            string dogPicture2 = superuserMenu.StorePicture(surveyWrapper.SurveyWrapperId, Path.Combine(FileIO.GetProjectPath(), "..", "assets","AI_dog.jpg"));
             string dnPicture3 = superuserMenu.StorePicture(surveyWrapper.SurveyWrapperId, Path.Combine(FileIO.GetProjectPath(), "..", "assets","dangernoodle.jpg"));
             string catPicture1 = superuserMenu.StorePicture(surveyWrapper.SurveyWrapperId, Path.Combine(FileIO.GetProjectPath(), "..", "assets","cat.jpg"));
-            string catPicture2 = superuserMenu.StorePicture(surveyWrapper.SurveyWrapperId, Path.Combine(FileIO.GetProjectPath(), "..", "assets","ai_cat.jpg"));             
             string turtlePicture = superuserMenu.StorePicture(surveyWrapper.SurveyWrapperId, Path.Combine(FileIO.GetProjectPath(), "..", "assets","turtle.png"));
-            // Add a versions to SurveyWrapper
+
+            // Add a versions to SurveyWrapper (Cat version of the survey)
             IModifySurvey survey1 = surveyWrapper.AddNewVersion();
 
 
@@ -68,7 +67,7 @@ using Model.Utilities;
 
 
 
-            // Create version 2 of the survey
+            // Create version 2 of the survey (dog version of the survey)
             IModifySurvey survey2 = surveyWrapper.AddNewVersion();
             // Add 3 MultiQuestion to survey2
             IMultiQuestion<IModifyQuestion> multiQuestion20 = survey2.AddNewMultiQuestion();
@@ -105,14 +104,7 @@ using Model.Utilities;
             question220.ModifyPicture = dnPicture3;
             question220.ModifyText = "How likely is this animal to be accepted as a new dog breed?";
 
-
-
-            // IModifySurvey survey2 = surveyWrapper.AddNewVersion();
-            // // Add MultiQuestion to survey2
-            // IMultiQuestion<IModifyQuestion> multiQuestion21 = survey2.AddNewMultiQuestion();
-            // IMultiQuestion<IModifyQuestion> multiQuestion22 = survey2.AddNewMultiQuestion();
-            // IMultiQuestion<IModifyQuestion> multiQuestion23 = survey2.AddNewMultiQuestion();
-
+            // Store the survey in the database
             superuserMenu.StoreSurveyWrapperInDatabase(surveyWrapper);
             return surveyWrapper.SurveyWrapperId;
         }
