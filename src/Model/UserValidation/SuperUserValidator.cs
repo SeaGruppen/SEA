@@ -21,7 +21,7 @@ internal class SuperUserValidator : ISuperUserValidator {
         string? projectPath = FileIO.GetProjectPath();
         if (projectPath != null)
         {
-            userCredentialsDirectoryPath = Path.Combine(projectPath, "UserCredentials");
+            userCredentialsDirectoryPath = Path.Combine(projectPath,"..", "UserCredentials");
         }
         else
         {
