@@ -10,7 +10,7 @@ internal class SuperUserValidator : ISuperUserValidator {
     // Created for testing purposes. Contains hashed passwords.
     public static IReadOnlyDictionary<string, string> SuperUserCredentials => superUserCredentials;
 
-    private static Dictionary<string, string> superUserCredentials = ImportUserCredentials();
+    private static Dictionary<string, string> superUserCredentials;
 
     // Made public for testing purposes
     public static string UserCredentialsFilePath;
@@ -35,6 +35,7 @@ internal class SuperUserValidator : ISuperUserValidator {
         {
             File.Create(UserCredentialsFilePath).Dispose();
         }
+        superUserCredentials = ImportUserCredentials();
     }
 
     public bool AddSuperUserCredentials(string username, string password) {
@@ -68,7 +69,7 @@ internal class SuperUserValidator : ISuperUserValidator {
             superUserCredentials.Select(x => "[" + x.Key + " " + x.Value + "]").ToArray());
     }
 
-    private static Dictionary<string, string> ImportUserCredentials()
+    private Dictionary<string, string> ImportUserCredentials()
     {
         string filePath = Path.Combine("Model", "UserCredentials", "UserCredentials.txt");
         Dictionary<string, string> userDictionary = new Dictionary<string, string>();
