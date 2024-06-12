@@ -6,6 +6,19 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Reactive;
 
+
+using System;
+using System.Collections.ObjectModel;
+using System.Reactive.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Input;
+using Model.Factory;
+using Model.FrontEndAPI;
+using Model.Question;
+using Model.Result;
+using Model.Survey;
+using ReactiveUI;
 using System.Windows.Input;
 
 namespace scivu.ViewModels;
@@ -30,8 +43,8 @@ public class SurveyViewModel : ViewModelBase
         ShowDialog = new Interaction<ExitSurveyViewModel, bool>();
         DeleteCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var diaglog = new ExitSurveyViewModel();
-            var result = await ShowDialog.Handle(diaglog);
+            var dialog= new ExitSurveyViewModel();
+            var result = await ShowDialog.Handle(dialog);
             if (result)
             {
                 _handleCommand("delete", this);
