@@ -89,11 +89,13 @@ internal class Program {
 
         List<string> resultAnswered = ["Hund", "Kat"]; // Random answer to the questions
         for (int k = 0; k < 50; k++) {
-            for (int i = 0; i < 2; i++) {
-                int jtop = random.Next(5);
-                for (int j = 0; j < jtop; j++) {
-                    IResult result = FrontEndFactory.CreateResult(surveyWrapper.ToString() + "." + i.ToString(), $"{surveyWrapper.ToString() + ".0.0"}.{j}", AnswerType.Text, k, resultAnswered);
-                    experimenter.StoreResultFromQuestion(result);
+            for (int surveyVersion = 0; surveyVersion < 2; surveyVersion++) {
+                for (int i = 0; i < 2; i++) {
+                    int jtop = random.Next(4);
+                    for (int j = 0; j < jtop; j++) {
+                        IResult result = FrontEndFactory.CreateResult(surveyWrapper.ToString() + "." + surveyVersion.ToString(), $"{surveyWrapper}.{surveyVersion}.{i}.{j}", AnswerType.Text, k, resultAnswered);
+                        experimenter.StoreResultFromQuestion(result);
+                    }
                 }
             }
         }
