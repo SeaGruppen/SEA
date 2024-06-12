@@ -58,7 +58,7 @@
               <Button Content="Create Survey"
                       Command="{Binding CreateSurvey}"
                       DockPanel.Dock="Bottom"
-                      HorizontalAlignment="Right"/>
+                      HorizontalAlignment="Center"/>
             </DockPanel>
 
 </UserControl>

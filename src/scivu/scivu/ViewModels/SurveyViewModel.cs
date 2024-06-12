@@ -20,6 +20,7 @@ using Model.Result;
 using Model.Survey;
 using ReactiveUI;
 using System.Windows.Input;
+using System.Threading;
 
 namespace scivu.ViewModels;
 
@@ -33,30 +34,18 @@ public class SurveyViewModel : ViewModelBase
     private readonly Action<string, object> _handleCommand;
 
     
-    public ICommand DeleteCommand { get; }
 
 
     public SurveyViewModel(IModifySurveyWrapper survey, Action<string, object> handleCommand)
     {
         _surveyWrapper = survey;
         _handleCommand = handleCommand;
-        ShowDialog = new Interaction<ExitSurveyViewModel, bool>();
-        DeleteCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var dialog= new ExitSurveyViewModel();
-            var result = await ShowDialog.Handle(dialog);
-            if (result)
-            {
-                _handleCommand("delete", this);
-            }
-        });
 
     }
 
 
     public string SurveyName => _surveyWrapper.SurveyWrapperName;
     public int SurveyID => _surveyWrapper.SurveyWrapperId;
-    public Interaction<ExitSurveyViewModel, bool> ShowDialog { get; }
 
     public IModifySurveyWrapper SurveyWrapper => _surveyWrapper;
 
@@ -70,6 +59,10 @@ public class SurveyViewModel : ViewModelBase
 
     public void ExportCommand() {
         _handleCommand("export",SurveyWrapper);
+    }
+
+    public void DeleteCommand() {
+        _handleCommand("delete", this);
     }
 
 }

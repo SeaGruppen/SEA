@@ -70,7 +70,7 @@ public class SuperUserMenuViewModel : ViewModelBase
     public bool VisibleCollection
     {
         get => _visibleCollection;
-        set => this.RaiseAndSetIfChanged(ref _isBusy, value);
+        set => this.RaiseAndSetIfChanged(ref _visibleCollection, value);
     }
 
     
@@ -163,7 +163,7 @@ public class SuperUserMenuViewModel : ViewModelBase
     }
 
     public void CreateSurvey() {
-        _client.CreateSurveyWrapper(Username);
+        _client.CreateSurveyWrapper(Username, "temp_name");
         GetSurveys();
     }
 
