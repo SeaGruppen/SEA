@@ -183,6 +183,9 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
+/// <summary>
+/// Get all final results for a SurveyWrapper, this does not return intermediate results, they still exist in the database
+/// </summary>
     public List<Result> GetSurveyWrapperResults(int surveyWrapperId) {
         List<Result> results = new List<Result>();
         try {
@@ -196,17 +199,35 @@ internal class DatabaseServices : IDatabase {
                         // Skip line if it can't be parsed
                         continue;
                     }
-                    if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.SurveyId) == surveyWrapperId) {
-                        results.Add(result);
+                    bool newestResult = true;
+                    // Check if the result is for the correct surveyWrapper, and is newest
+                    if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.QuestionId) == surveyWrapperId) {
+                        // Go through all results and remove intermediate results
+                        foreach (Result r in results) {
+                            if (r.UserId == result.UserId && r.QuestionId == result.QuestionId) {
+                                // If r is older than result, remove r
+                                if (r.CreationTime <= result.CreationTime) {
+                                    results.Remove(r);
+                                    break;
+                                } else {
+                                    newestResult = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (newestResult) {
+                            results.Add(result);
+                        }
                     }
                 }
             }
             return results;
         }
-        catch (Exception) {
+        catch (Exception ex) {
             // Handle exceptions if needed
+            System.Console.WriteLine($"Error in GetSurveyWrapperResults {ex.Message}");
+            return results;
         }
-        return results;
     }
 
     public bool StoreResult (IResult result) {
@@ -237,8 +258,11 @@ internal class DatabaseServices : IDatabase {
         }
     }
 
-    public List<SurveyWrapper> GetSurveyWrapperForSuperUser(string superUserName){
+    public List<SurveyWrapper>? GetSurveyWrapperForSuperUser(string superUserName){
         Dictionary<string, List<int>> creatorDict = GetCreatorDict();
+        if (!creatorDict.ContainsKey(superUserName)) {
+            return null;
+        }
         List<SurveyWrapper> surveyWrapperList = new List<SurveyWrapper>();
         foreach (int surveyWrapperId in creatorDict[superUserName]) {
             surveyWrapperList.Add(GetSurveyWrapper(surveyWrapperId));

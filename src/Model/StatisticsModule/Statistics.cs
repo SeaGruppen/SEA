@@ -41,14 +41,13 @@ internal class Statistics : IStatistics{
 
 
     public int StartedSurveysInWrapper(int surveyWrapperId) {
-        List<Result> surveyWrapperResults = databaseServices.GetSurveyWrapperResults(surveyWrapperId);
-        List<int> userIds =[];
-        for (int i = 0; i < surveyWrapperResults.Count; i++) {
-            if (!userIds.Contains(surveyWrapperResults[i].UserId)) {
-                userIds.Add(surveyWrapperResults[i].UserId);
-            }
+        int result = 0;
+        List<Survey> surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
+        if (surveys == null) return 0; // SurveyWrapper not found
+        foreach (Survey survey in surveys) {
+            result += StartedSurveys(survey.SurveyId);
         }
-        return userIds.Count;
+        return result;
     }
 
     public int FinishedSurveysInWrapper(int surveyWrapperId) {
@@ -112,9 +111,16 @@ internal class Statistics : IStatistics{
 
         Dictionary<string, double> surveyCompletionRate = new Dictionary<string, double>();
         for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
-            string surveyId = surveyWrapper.TryGetModifySurveyVersion(i).SurveyId;
+            IModifySurvey? surveyI = surveyWrapper.TryGetModifySurveyVersion(i);
+            if (surveyI == null) {
+                continue;
+            }
+            string surveyId =surveyI.SurveyId;
             var tmpresult = AverageCompletionRateSurvey(surveyId);
             surveyCompletionRate[surveyId] = tmpresult;
+        }
+        if (surveyCompletionRate.Count == 0) {
+            return 0;
         }
         double result = surveyCompletionRate.Values.Average();
         return result;
