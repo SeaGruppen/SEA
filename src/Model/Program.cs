@@ -14,6 +14,21 @@ using Model.Utilities;
 using System.Runtime.InteropServices;
 using Model.tmp_Moc;
 
+
+// // Clear old database, to avoid conflicts
+// string projectPath = Model.Utilities.FileIO.GetProjectPath();
+
+// // delete src\surveyDatabase\ folder
+// System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "surveyDatabase"));
+// foreach (System.IO.FileInfo file in di.GetFiles()) {
+//     file.Delete();
+// }
+// foreach (System.IO.DirectoryInfo dir in di.GetDirectories()) {
+//     dir.Delete(true);
+// }
+
+
+
 // lav SurveyWrapper
 SurveyWrapper surveyWrapper = new SurveyWrapper(3797);
 System.Console.WriteLine($"SuveyWrapperId = {surveyWrapper.SurveyWrapperId}");
@@ -182,8 +197,8 @@ mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
 mainMenu.AddSuperUser("RandomUser", "RandomPassword");
 mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
 
-SUMenu.CreateSurveyWrapper("RandomUser");
-SUMenu.CreateSurveyWrapper("RandomUser");
+SUMenu.CreateSurveyWrapper("RandomUser", "Survey om hunde og katte");
+SUMenu.CreateSurveyWrapper("RandomUser", "2. survey about that danish sentence above");
 System.Console.WriteLine($"RandomUser has {mainMenu.ValidateSuperUser("RandomUser", "RandomPassword").Count()} surveyWrappers");
 
-System.Console.WriteLine($"New survey created to test on!: SurveyWrapperId = {CreateExampleSurvey.CreateSurveyWrapper("RandomUser")}");
+System.Console.WriteLine($"New survey created to test on!: SurveyWrapperId = {CreateExampleSurvey.CreateSurveyWrapper("RandomUser", "Test survey for SEA!")}");
