@@ -9,6 +9,10 @@ using Model.Result;
 using Model.Factory;
 using Model.FrontEndAPI;
 using Model.StatisticsModule;
+using Model.Database;
+using Model.Utilities;
+using System.Runtime.InteropServices;
+using Model.tmp_Moc;
 
 // lav SurveyWrapper
 SurveyWrapper surveyWrapper = new SurveyWrapper(3797);
@@ -140,3 +144,46 @@ System.Console.WriteLine($"Number of started surveys in surveywrapper 3797: {sta
 System.Console.WriteLine($"Completionrate of SurveyWrapper 3797: {statistics.CompletionRateSurveyWrapper(3797)}");
 System.Console.WriteLine($"AverageCompletionrate of SurveyWrapper 3797: {statistics.AverageCompletionRateSurveyWrapper(3797)}");
 System.Console.WriteLine($"AverageCompletionRate overall: {statistics.AverageCompletionRateCombined()}");
+
+        IDatabase statisticsdatabase = new DatabaseServices("bin/testDB");
+        IStatistics statistics2 = new Statistics( statisticsdatabase);
+
+
+SurveyWrapper statisticssurveyWrapper = new SurveyWrapper(1);
+statisticssurveyWrapper.AddNewVersion();
+IModifySurvey survey = statisticssurveyWrapper.TryGetModifySurveyVersion(0);
+IMultiQuestion<IModifyQuestion>? mq1 = survey.AddNewMultiQuestion();
+mq1.AddQuestion();
+IMultiQuestion<IModifyQuestion>? mq2 = survey.AddNewMultiQuestion();
+mq2.AddQuestion();
+System.Console.WriteLine(survey.SurveyId);
+statisticsdatabase.StoreSurveyWrapper(statisticssurveyWrapper);
+for (int i = 0; i < 10; i++) {
+    IResult result = FrontEndFactory.CreateResult("1.0", $"1.0.0", AnswerType.Text, i, ["Nothing"]);
+     statisticsdatabase.StoreResult(result);
+}
+for (int i = 0; i < 5; i++) {
+    IResult result = FrontEndFactory.CreateResult("1.0", $"1.0.1", AnswerType.Text, i, ["Nothing"]);
+     statisticsdatabase.StoreResult(result);
+}      
+int surveysStarted = statistics2.StartedSurveysInWrapper(1);
+System.Console.WriteLine($"Started surveys in surveywrapper 1: {surveysStarted}");  
+int surveysFinished = statistics2.FinishedSurveysInWrapper(1);
+System.Console.WriteLine($"Finished surveys in surveywrapper 1: {surveysFinished}");
+List<Result> results =  statisticsdatabase.GetSurveyWrapperResults(1);
+for (int i = 0; i < results.Count; i++) {
+    System.Console.WriteLine($"QuestionId =  {results[i].QuestionId}, UserId = {results[i].UserId}");
+}
+System.Console.WriteLine($"Completionrate of survey{statisticssurveyWrapper.TryGetModifySurveyVersion(0).SurveyId}: {statistics2.CompletionRateSurvey(statisticssurveyWrapper.TryGetModifySurveyVersion(0).SurveyId)}");
+
+System.Console.WriteLine($"AverageCompletionRate of survey{statisticssurveyWrapper.TryGetModifySurveyVersion(0).SurveyId}: {statistics2.AverageCompletionRateSurveyWrapper(statisticssurveyWrapper.SurveyWrapperId)}");
+System.Console.WriteLine( experimenter.ExportResults(13797, FileIO.GetProjectPath()));
+mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
+mainMenu.AddSuperUser("RandomUser", "RandomPassword");
+mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
+
+SUMenu.CreateSurveyWrapper("RandomUser");
+SUMenu.CreateSurveyWrapper("RandomUser");
+System.Console.WriteLine($"RandomUser has {mainMenu.ValidateSuperUser("RandomUser", "RandomPassword").Count()} surveyWrappers");
+
+System.Console.WriteLine($"New survey created to test on!: SurveyWrapperId = {CreateExampleSurvey.CreateSurveyWrapper("RandomUser")}");

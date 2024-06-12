@@ -41,7 +41,7 @@ internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<I
         return questions.GetEnumerator();
     }
 
-    IModifyQuestion? IMultiQuestion<IModifyQuestion>.AddQuestion() {
+    IModifyQuestion IMultiQuestion<IModifyQuestion>.AddQuestion() {
         string questionId = string.Concat(multiquestionId, ".", nextQuestionId++);
         Question result = new Question(questionId);
         questions.Add(result);
