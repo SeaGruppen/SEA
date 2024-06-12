@@ -168,8 +168,6 @@ public class SuperUserMenuViewModel : ViewModelBase
     }
 
     public void Delete(SurveyViewModel survey){
-
-
         _client.DeleteSurveyWrapper(survey.SurveyID);
         GetSurveys();
     }
