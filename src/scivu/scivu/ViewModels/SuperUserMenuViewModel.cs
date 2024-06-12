@@ -85,6 +85,7 @@ public class SuperUserMenuViewModel : ViewModelBase
         _changeViewCommand = changeViewCommand;
         _client = client;
         Username = username;
+        VisibleCollection = true;
         AvailableSurveys.Clear();
         Handle = ReactiveCommand.Create<string>(HandleCommand);
         GetSurveys();
