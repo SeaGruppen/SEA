@@ -19,7 +19,7 @@ public static class FrontEndFactory {
     }
 
     public static IFrontEndSuperUser CreateSuperUserMenu() {
-        return new FrontEndSuperUserMenu(databaseServices);
+        return new FrontEndSuperUserMenu(databaseServices, superUserValidator);
     }
 
     public static IStatistics CreateStatistics() {
