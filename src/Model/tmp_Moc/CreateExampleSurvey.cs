@@ -9,13 +9,13 @@ using Model.Utilities;
 
         private static IFrontEndSuperUser superuserMenu = FrontEndFactory.CreateSuperUserMenu();
         // private string projectPath => FileIO.GetProjectPath();
-        public static int CreateSurveyWrapper(string superUser) {
+        public static int CreateSurveyWrapper(string superUser, string surveyWrapperName) {
             string projectPath = FileIO.GetProjectPath();
             if (projectPath == null) {
                 throw new System.IO.DirectoryNotFoundException("Project path not found");
             }
             // Create SurveyWrapper
-            IModifySurveyWrapper surveyWrapper =  superuserMenu.CreateSurveyWrapper(superUser);
+            IModifySurveyWrapper surveyWrapper =  superuserMenu.CreateSurveyWrapper(superUser, surveyWrapperName);
             
             // Store pictures needed in database
             string dogPicture1 = superuserMenu.StorePicture(surveyWrapper.SurveyWrapperId, Path.Combine(FileIO.GetProjectPath(), "..", "assets","dog_1.jpeg"));
