@@ -134,7 +134,8 @@ public class MainMenuViewModel : ViewModelBase
         var result = _client.ValidateSuperUser(Username!, Password!);
         if (result != null)
         {
-            _changeViewCommand.Invoke("SuperUserMenu", Username!);
+            var tuple = (Username!,Password!,result!);
+            _changeViewCommand.Invoke("SuperUserMenu", tuple);
             return;
         }
 

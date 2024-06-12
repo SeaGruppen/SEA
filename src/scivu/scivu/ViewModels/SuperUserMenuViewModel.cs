@@ -18,6 +18,7 @@ using System.Reactive;
 using scivu.Model;
 using Model.FrontEndAPI;
 using DynamicData.Kernel;
+using System.Linq;
 
 
 namespace scivu.ViewModels;
@@ -35,6 +36,8 @@ public class SuperUserMenuViewModel : ViewModelBase
     private SurveyViewModel? _selectedSurvey;
 
     public string Username {get; private set; }
+
+    private string _password;
     public ObservableCollection<SurveyViewModel> AvailableSurveys {get;} = new();
     public ObservableCollection<SurveyViewModel> SearchResults {get;} = new();
 
@@ -72,7 +75,8 @@ public class SuperUserMenuViewModel : ViewModelBase
 
     
 
-    public SuperUserMenuViewModel(Action<string,object> changeViewCommand, IFrontEndSuperUser client, string username)
+    public SuperUserMenuViewModel(Action<string,object> changeViewCommand, IFrontEndSuperUser client,
+    string username, string password, List<IModifySurveyWrapper> surveys)
     {
         //SelectSurveyCommand = ReactiveCommand.Create(() => 
         //{
@@ -85,17 +89,19 @@ public class SuperUserMenuViewModel : ViewModelBase
         _changeViewCommand = changeViewCommand;
         _client = client;
         Username = username;
-        VisibleCollection = true;
+        _visibleCollection = true;
         AvailableSurveys.Clear();
         Handle = ReactiveCommand.Create<string>(HandleCommand);
-        GetSurveys();
-
-
+        _password = password;
+        foreach (var survey in surveys)
+            {
+                AvailableSurveys.Add(new SurveyViewModel(survey, HandleCommand));
+            }
 
     }
 
     private void GetSurveys(){
-        List<IModifySurveyWrapper>? surveys = _client.GetSurveyWrappersFromSuperUser(Username);
+        List<IModifySurveyWrapper>? surveys = _client.GetSurveyWrappersFromSuperUser(Username,_password);
         AvailableSurveys.Clear();
         if (surveys != null)
         {
@@ -153,7 +159,7 @@ public class SuperUserMenuViewModel : ViewModelBase
     }
 
     public void ChangeView(string view){
-        _changeViewCommand(view, view == "Mainmenu" ? null! : SelectedSurvey.SurveyWrapper);
+        _changeViewCommand(view, null!);
     }
 
     public void CreateSurvey() {

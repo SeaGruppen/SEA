@@ -19,12 +19,9 @@ public class MainWindowViewModel : ViewModelBase
     internal SurveyTakeViewModel _surveyTaker;
     private readonly IFrontEndExperimenter _experimenterClient;
 
-    private readonly IFrontEndSuperUser _client;
     private readonly IFrontEndMainMenu _mainMenuClient;
 
     private readonly IFrontEndSuperUser _superUserClient;
-
-    public SurveyViewModel Surveys { get; }
 
     public ReactiveCommand<string, Unit> Change { get; }
 
@@ -74,8 +71,8 @@ public class MainWindowViewModel : ViewModelBase
             case "PauseMenu" when arg is IReadOnlySurveyWrapper survey:
                 ContentViewModel = new PauseMenuViewModel(ChangeViewTo, survey);
                 break;
-            case "SuperUserMenu" when arg is string username:
-                ContentViewModel = new SuperUserMenuViewModel(ChangeViewTo, _superUserClient, username);
+            case "SuperUserMenu" when arg is (string username, string password, List<IModifySurveyWrapper> surveys):
+                ContentViewModel = new SuperUserMenuViewModel(ChangeViewTo, _superUserClient, username, password, surveys);
                 break;
             default:
                 throw new ArgumentException($"Invalid view model `{vm}` with invalid argument `{arg}`");

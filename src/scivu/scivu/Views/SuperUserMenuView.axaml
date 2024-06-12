@@ -7,7 +7,10 @@
              x:DataType="vm:SuperUserMenuViewModel"
              x:Class="scivu.Views.SuperUserMenuView">
             <DockPanel>
-              <StackPanel DockPanel.Dock="Top">
+              <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Username}" FontSize="20" FontWeight="UltraBlack" Margin="0,0,0,5"/>
+              </StackPanel>
+              <StackPanel DockPanel.Dock="Center">
                 <TextBox Text="{Binding SearchText}" Watermark="Search for Surveys..."/>
                 <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
                 <ListBox ItemsSource="{Binding AvailableSurveys}" SelectedItem="{Binding SelectedSurvey}"
