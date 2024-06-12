@@ -193,12 +193,12 @@ System.Console.WriteLine($"Completionrate of survey{statisticssurveyWrapper.TryG
 
 System.Console.WriteLine($"AverageCompletionRate of survey{statisticssurveyWrapper.TryGetModifySurveyVersion(0).SurveyId}: {statistics2.AverageCompletionRateSurveyWrapper(statisticssurveyWrapper.SurveyWrapperId)}");
 System.Console.WriteLine( experimenter.ExportResults(13797, FileIO.GetProjectPath()));
-mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
-mainMenu.AddSuperUser("RandomUser", "RandomPassword");
-mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
+mainMenu.ValidateSuperUser("Sippo", "123456");
+mainMenu.AddSuperUser("Sippo", "123456");
+mainMenu.ValidateSuperUser("Sippo", "123456");
 
-SUMenu.CreateSurveyWrapper("RandomUser", "Survey om hunde og katte");
-SUMenu.CreateSurveyWrapper("RandomUser", "2. survey about that danish sentence above");
-System.Console.WriteLine($"RandomUser has {mainMenu.ValidateSuperUser("RandomUser", "RandomPassword").Count()} surveyWrappers");
+SUMenu.CreateSurveyWrapper("Sippo", "Survey om hunde og katte");
+SUMenu.CreateSurveyWrapper("Sippo", "2. survey about that danish sentence above");
+System.Console.WriteLine($"Sippo has {mainMenu.ValidateSuperUser("Sippo", "123456").Count()} surveyWrappers");
 
-System.Console.WriteLine($"New survey created to test on!: SurveyWrapperId = {CreateExampleSurvey.CreateSurveyWrapper("RandomUser", "Test survey for SEA!")}");
+System.Console.WriteLine($"New survey created to test on!: SurveyWrapperId = {CreateExampleSurvey.CreateSurveyWrapper("Sippo", "Test survey for SEA!")}");
