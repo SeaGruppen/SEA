@@ -23,7 +23,7 @@ internal class DatabaseServices : IDatabase {
         string? projectPath = FileIO.GetProjectPath();
         if (projectPath != null)
         {
-            databasePath = Path.Combine(projectPath, "..", "surveyDatabase");
+            databasePath = Path.Combine(projectPath, "surveyDatabase");
         }
         else
         {
