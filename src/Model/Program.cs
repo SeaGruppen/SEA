@@ -14,6 +14,21 @@ using Model.Utilities;
 using System.Runtime.InteropServices;
 using Model.tmp_Moc;
 
+
+// // Clear old database, to avoid conflicts
+// string projectPath = Model.Utilities.FileIO.GetProjectPath();
+
+// // delete src\surveyDatabase\ folder
+// System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "surveyDatabase"));
+// foreach (System.IO.FileInfo file in di.GetFiles()) {
+//     file.Delete();
+// }
+// foreach (System.IO.DirectoryInfo dir in di.GetDirectories()) {
+//     dir.Delete(true);
+// }
+
+
+
 // lav SurveyWrapper
 SurveyWrapper surveyWrapper = new SurveyWrapper(3797);
 System.Console.WriteLine($"SuveyWrapperId = {surveyWrapper.SurveyWrapperId}");
@@ -178,12 +193,12 @@ System.Console.WriteLine($"Completionrate of survey{statisticssurveyWrapper.TryG
 
 System.Console.WriteLine($"AverageCompletionRate of survey{statisticssurveyWrapper.TryGetModifySurveyVersion(0).SurveyId}: {statistics2.AverageCompletionRateSurveyWrapper(statisticssurveyWrapper.SurveyWrapperId)}");
 System.Console.WriteLine( experimenter.ExportResults(13797, FileIO.GetProjectPath()));
-mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
-mainMenu.AddSuperUser("RandomUser", "RandomPassword");
-mainMenu.ValidateSuperUser("RandomUser", "RandomPassword");
+mainMenu.ValidateSuperUser("Sippo", "123456");
+mainMenu.AddSuperUser("Sippo", "123456");
+mainMenu.ValidateSuperUser("Sippo", "123456");
 
-SUMenu.CreateSurveyWrapper("RandomUser");
-SUMenu.CreateSurveyWrapper("RandomUser");
-System.Console.WriteLine($"RandomUser has {mainMenu.ValidateSuperUser("RandomUser", "RandomPassword").Count()} surveyWrappers");
+SUMenu.CreateSurveyWrapper("Sippo", "Survey om hunde og katte");
+SUMenu.CreateSurveyWrapper("Sippo", "2. survey about that danish sentence above");
+System.Console.WriteLine($"Sippo has {mainMenu.ValidateSuperUser("Sippo", "123456").Count()} surveyWrappers");
 
-System.Console.WriteLine($"New survey created to test on!: SurveyWrapperId = {CreateExampleSurvey.CreateSurveyWrapper("RandomUser")}");
+System.Console.WriteLine($"New survey created to test on!: SurveyWrapperId = {CreateExampleSurvey.CreateSurveyWrapper("Sippo", "Test survey for SEA!")}");
