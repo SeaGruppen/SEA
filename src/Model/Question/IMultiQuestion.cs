@@ -10,4 +10,5 @@ public interface IMultiQuestion<T> : IEnumerable<T> {
     T AddQuestion();
     void DeleteQuestion(int i);
     void InsertQuestion(int i);
+    T? ModifyQuestion(int i);
 }

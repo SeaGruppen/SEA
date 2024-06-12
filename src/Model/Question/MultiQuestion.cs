@@ -69,4 +69,16 @@ internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<I
             question.UpdateId(newQuestionId);
         }
     }
+
+    public IModifyQuestion? ModifyQuestion(int index) {
+        if (0 <= index && index < questions.Count) {
+            return questions[index];
+        } else {
+            return null;
+        }
+    }
+    IReadOnlyQuestion? IMultiQuestion<IReadOnlyQuestion>.ModifyQuestion(int i) {
+        return null;
+    }
+
 }

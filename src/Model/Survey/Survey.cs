@@ -27,36 +27,32 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
     public bool PreviousQuestionExist() => current > 0;
     public bool NextQuestionExist() => current + 1 < surveyQuestions.Count;
 
-    public IEnumerable<IReadOnlyQuestion>? TryGetNextReadOnlyQuestion()
-    {
+    public IEnumerable<IReadOnlyQuestion>? TryGetNextReadOnlyQuestion() {
         return NextQuestionExist()
             ? surveyQuestions[++current]
             : null;
     }
 
-    public IEnumerable<IReadOnlyQuestion>? TryGetPreviousReadOnlyQuestion()
-    {
+    public IEnumerable<IReadOnlyQuestion>? TryGetPreviousReadOnlyQuestion() {
         return PreviousQuestionExist()
             ? surveyQuestions[--current]
             : null;
     }
 
-    public void ResetCounter()
-    {
+    public void ResetCounter() {
         current = -1;
     }
 
     public IMultiQuestion<IModifyQuestion>? TryGetModifyMultiQuestion(int index) {
-        if(0 <= index && index < surveyQuestions.Count) {
+        if (0 <= index && index < surveyQuestions.Count) {
             current = index;
             return (IMultiQuestion<IModifyQuestion>) surveyQuestions[index];
         } else {
             return null;
         }
     }
-    public IMultiQuestion<IModifyQuestion>? TryGetNextModifyMultiQuestion()
-    {
-        if(-1 <= current && NextQuestionExist()) {
+    public IMultiQuestion<IModifyQuestion>? TryGetNextModifyMultiQuestion() {
+        if (-1 <= current && NextQuestionExist()) {
             current++;
             return (IMultiQuestion<IModifyQuestion>) surveyQuestions[current];
         } else {
