@@ -111,14 +111,13 @@
             </Button>
         </WrapPanel>
        <!-- Buttons for creating user-->
-        <WrapPanel IsVisible="{Binding IsInputting}">
+        <WrapPanel IsVisible="{Binding IsCreateUser}">
             <Button Command="{Binding GoBackToMenu}">
                 Cancel
             </Button>
 
-            <Button Command="{Binding DoLogin}"
-                    IsEnabled="{Binding IsLoginEnabled}">
-                Login
+            <Button Command="{Binding DoCreateUser}">
+                Create
             </Button>
         </WrapPanel>
     </StackPanel>

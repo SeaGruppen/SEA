@@ -153,10 +153,12 @@ public class MainMenuViewModel : ViewModelBase
     public void DoCreateUser()
     {
         Debug.Assert(IsCreateUser);
-        _client.
+
+        _client.AddSuperUser(Username!, Password!);
+        GoBackToMenu();
     }
 
-    private async void DoSuperUserLogin()
+    private void DoSuperUserLogin()
     {
         Debug.Assert(IsSuperLogin);
 
@@ -189,7 +191,7 @@ public class MainMenuViewModel : ViewModelBase
                && Int32.TryParse(Password, out _);
     }
 
-    private async void DoExperimenterLogin()
+    private void DoExperimenterLogin()
     {
         Debug.Assert(IsExperimenterLogin);
 

@@ -3,7 +3,8 @@ using Model.FrontEndAPI;
 using Model.Survey;
 using Model.StatisticsModule;
 using Model.Factory;
-using System.Net.Http;
+using scivu.Model;
+using System.Diagnostics;
 
 namespace scivu.ViewModels;
 
@@ -20,6 +21,7 @@ public class ExperimenterMenuViewModel : ViewModelBase
     public int FinishedSurveys { get; }
     public double CompletionRate { get; }
     public double AverageCompletionRate { get; }
+    public string ErrorMessage { get; private set; } = string.Empty;
 
     public ExperimenterMenuViewModel(IFrontEndExperimenter client, IReadOnlySurveyWrapper survey, Action<string, object> changeViewCommand)
     {
@@ -47,9 +49,23 @@ public class ExperimenterMenuViewModel : ViewModelBase
         _changeViewCommand("TakeSurvey", _survey);
     }
 
-    public void ExportResults()
+    public async void ExportResults()
     {
-        
+        var folder = await FileExplorer.OpenFolderAsync();
+        if (folder != null)
+        {
+            var path = folder.Path.AbsolutePath.ToString();
+            if (_client.ExportResults(SurveyWrapperId, path))
+            {
+                return;
+            }
+            Console.WriteLine(path);
+            var stdmsg = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.WAR_CouldNotImportSurvey);
+            ErrorMessage = $"{stdmsg}: '{path}'";
+            Debug.Assert(false);
+            return;
+        }
+
     }
 
 
