@@ -1,12 +1,12 @@
 namespace Model.StatisticsModule;
-
 using System;
 using System.Collections.Generic;
-using Model.Database;
-using Model.Result;
-using Model.Survey;
-using Model.Utilities;
-using Model.Question;
+using Database;
+using Result;
+using Survey;
+using Utilities;
+using Question;
+
 internal class Statistics : IStatistics{
 
     private IDatabase databaseServices;

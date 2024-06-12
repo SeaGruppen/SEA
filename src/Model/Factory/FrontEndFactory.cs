@@ -1,11 +1,11 @@
 namespace Model.Factory;
 
-using Model.Database;
-using Model.FrontEndAPI;
+using Database;
+using FrontEndAPI;
 using Result;
 using Answer;
-using Model.StatisticsModule;
-using Model.UserValidation;
+using StatisticsModule;
+using UserValidation;
 
 public static class FrontEndFactory {
 

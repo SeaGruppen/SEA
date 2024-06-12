@@ -1,7 +1,6 @@
 namespace Model.Answer;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 // Answer is the given options to a question, by the survey creater.

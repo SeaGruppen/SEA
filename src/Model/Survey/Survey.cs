@@ -1,8 +1,8 @@
 namespace Model.Survey;
 
-using Model.Question;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Question;
 
 internal class Survey : IReadOnlySurvey, IModifySurvey {
     public string SurveyId {get; private set;}

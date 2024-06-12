@@ -1,17 +1,13 @@
 namespace Model.Database;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using FrontEndAPI;
-using SurveyWrapper = Model.Survey.SurveyWrapper;
-using Survey = Model.Survey.Survey;
-using Result = Model.Result.Result;
-using Model.Result;
-using System.Collections.Generic;
-using Model.Utilities;
-using Model.Question;using System.IO.Compression;
+using SurveyWrapper = Survey.SurveyWrapper;
+using Result;
+using Utilities;
 
 internal class DatabaseServices : IDatabase {
     

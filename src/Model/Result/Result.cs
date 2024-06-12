@@ -1,7 +1,6 @@
 namespace Model.Result;
-
-using Model.Answer;
 using System.Text;
+using Answer;
 
 internal class Result : IResult {
     public AnswerType AnswerType {get; private set;} 

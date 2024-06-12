@@ -2,8 +2,6 @@ namespace Model.Survey;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-
-
 internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
 
     private int surveyWrapperId;

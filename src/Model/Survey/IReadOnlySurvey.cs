@@ -1,5 +1,5 @@
 namespace Model.Survey;
-using Model.Question;
+using Question;
 
 public interface IReadOnlySurvey {
     string SurveyId {get;}

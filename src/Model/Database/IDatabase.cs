@@ -1,9 +1,8 @@
 namespace Model.Database;
 
-using Model.Result;
 using System.Collections.Generic;
-using Result = Result.Result;
-using Model.Survey;
+using Result;
+using Survey;
 
 internal interface IDatabase {
     int GetNextSurveyWrapperID(string superUserName);

@@ -1,5 +1,5 @@
 namespace Model.FrontEndAPI;
-using Model.Survey;
+using Survey;
 
 public interface IFrontEndSuperUser {
     

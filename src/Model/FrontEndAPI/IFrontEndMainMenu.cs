@@ -1,5 +1,5 @@
 namespace Model.FrontEndAPI;
-using Model.Survey;
+using Survey;
 
 public interface IFrontEndMainMenu {
     List<IModifySurveyWrapper>? ValidateSuperUser(string username, string password);
