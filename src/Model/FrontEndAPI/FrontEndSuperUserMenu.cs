@@ -14,7 +14,7 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
     }
 
     public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username) {
-        List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
+        List<SurveyWrapper>? surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
         if (surveyWrappers == null) {
             return null;
         }
@@ -70,7 +70,10 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
     public List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username, string password) {
         //Validate superuser against Hashfunction first. If true, then return the list of surveys
         if (superUserValidator.ValidateSuperUser(username, password)) {
-            List<SurveyWrapper> surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
+            List<SurveyWrapper>? surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
+            if (surveyWrappers == null) {
+                return null;
+            }
             List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
             return result;
         }

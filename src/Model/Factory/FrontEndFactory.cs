@@ -8,6 +8,7 @@ using Model.StatisticsModule;
 using Model.UserValidation;
 
 public static class FrontEndFactory {
+
     private static DatabaseServices databaseServices = new DatabaseServices();
     private static ISuperUserValidator superUserValidator = new SuperUserValidator();
     public static IFrontEndMainMenu CreateMainMenu() {

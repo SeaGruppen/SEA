@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 
-internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<IReadOnlyQuestion> {
+internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IEnumerable<IReadOnlyQuestion> {
 
     private string multiquestionId;
 
@@ -50,10 +50,6 @@ internal class MultiQuestion : IMultiQuestion<IModifyQuestion>, IMultiQuestion<I
 
     IEnumerator<IModifyQuestion> IEnumerable<IModifyQuestion>.GetEnumerator() {
         return questions.GetEnumerator();
-    }
-
-    IReadOnlyQuestion? IMultiQuestion<IReadOnlyQuestion>.AddQuestion() {
-        return null;
     }
 
     IEnumerator<IReadOnlyQuestion> IEnumerable<IReadOnlyQuestion>.GetEnumerator() {
