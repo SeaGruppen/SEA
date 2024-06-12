@@ -4,7 +4,7 @@ using Model.Survey;
 public interface IFrontEndSuperUser {
     
     List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username);
-    IModifySurveyWrapper CreateSurveyWrapper(string superUserName);
+    IModifySurveyWrapper CreateSurveyWrapper(string superUserName, string surveyWrapperName);
     IModifySurveyWrapper? ModifySurveyWrapper(int surveyWrapperId); // Possibly (SuperUserId, SurveyId)?
     bool DeleteSurveyWrapper(int surveyWrapperId);
 
