@@ -130,7 +130,6 @@ public class MainMenuViewModel : ViewModelBase
     private async void DoSuperUserLogin()
     {
         Debug.Assert(IsSuperLogin);
-        Console.WriteLine("hello from SUlogin");
 
         var result = _client.ValidateSuperUser(Username!, Password!);
         if (result != null)
