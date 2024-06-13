@@ -60,7 +60,9 @@ internal class Program {
         if (!superUserValidator.ValidateSuperUser("Sippo", "123456"))
             // Add Sippo as super user
             System.Console.WriteLine($"Adding Sippo to SuperUsers went well: {mainMenu.AddSuperUser("Sippo", "123456")}");
-
+        else {
+            System.Console.WriteLine("sippo already exists as superuser");
+        }
         // Get surveys from Sippo
         // Validate that logging in to Sippo works
         List<IModifySurveyWrapper>? sipposSurveys = mainMenu.ValidateSuperUser("Sippo", "123456");
@@ -91,7 +93,12 @@ internal class Program {
                 dir.Delete(true);
             }
 
-            Console.WriteLine("Old database deleted.");
+            System.IO.DirectoryInfo di2 = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "UserCredentials"));
+            foreach (System.IO.FileInfo file in di2.GetFiles()) {
+                file.Delete();
+            }
+
+            Console.WriteLine("Old database and usercredentials deleted deleted.");
         }
         else {
             Console.WriteLine("Old database not deleted.");
