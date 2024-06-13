@@ -69,8 +69,28 @@ internal class DatabaseServices : IDatabase {
         return true;
     }
 
-    public bool DeleteSurveyWrapper(int surveyWrapperId) {
+    public bool DeleteSurveyWrapper(int surveyWrapperId, string username) {
         string surveyWrapperPath = GetSurveyWrapperPath(surveyWrapperId);
+        Dictionary<string, List<int>> creatorDict = GetCreatorDict();
+        List<int> surveyWrapperList;
+
+        if (!creatorDict.ContainsKey(username)) {
+            return false;
+        }
+        surveyWrapperList = creatorDict[username];
+
+        if (!surveyWrapperList.Contains(surveyWrapperId)) {
+            return false;
+        }        
+
+        while (surveyWrapperList.Contains(surveyWrapperId)) {
+            surveyWrapperList.Remove(surveyWrapperId);
+        }
+
+        StoreCreatorDict(creatorDict);
+        creatorDict = GetCreatorDict();
+
+
         if (Directory.Exists(surveyWrapperPath)) {
             Directory.Delete(surveyWrapperPath, true);
             return true;
@@ -158,6 +178,7 @@ internal class DatabaseServices : IDatabase {
         string jsonString = JsonSerializer.Serialize(creatorDict, Globals.OPTIONS);
         File.WriteAllText(creatorDictPath, jsonString);
     }
+
 
     public bool ExportSurveyWrapper(int id, string path) {
         string surveyWrapperPath = GetSurveyWrapperPath(id);

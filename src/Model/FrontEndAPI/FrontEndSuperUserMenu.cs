@@ -30,8 +30,8 @@ internal class FrontEndSuperUserMenu : IFrontEndSuperUser {
         return newSurveyWrapper;
     }
 
-    public bool DeleteSurveyWrapper(int surveyId) {
-        if (db.DeleteSurveyWrapper(surveyId)) {
+    public bool DeleteSurveyWrapper(int surveyId, string username) {
+        if (db.DeleteSurveyWrapper(surveyId, username)) {
             return true;
         } else {
             return false;

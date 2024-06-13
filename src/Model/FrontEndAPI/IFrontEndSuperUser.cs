@@ -6,7 +6,7 @@ public interface IFrontEndSuperUser {
     List<IModifySurveyWrapper>? GetSurveyWrappersFromSuperUser(string username);
     IModifySurveyWrapper CreateSurveyWrapper(string superUserName, string surveyWrapperName);
     IModifySurveyWrapper? ModifySurveyWrapper(int surveyWrapperId); // Possibly (SuperUserId, SurveyId)?
-    bool DeleteSurveyWrapper(int surveyWrapperId);
+    bool DeleteSurveyWrapper(int surveyWrapperId, string username);
 
     void StoreSurveyWrapperInDatabase (IModifySurveyWrapper surveyWrapper);
 
