@@ -159,11 +159,67 @@ internal class DatabaseServices : IDatabase {
         File.WriteAllText(creatorDictPath, jsonString);
     }
 
+
+    public delegate string CreateModifiedPicturePathCallback(string path);
+    private string getRelativePicturePath(string absPicturePath) {
+        string[] parts = absPicturePath.Split(Path.DirectorySeparatorChar);
+        string [] lastElms = parts.TakeLast(3).ToArray();
+        string relPicturePath = Path.Combine(lastElms);
+        return relPicturePath;
+    }
+
+    private string getAbsolutePicturePath(string relPicturePath) {
+        return Path.Combine(databasePath, relPicturePath);
+    }
+    //remember to add some error handling (if survey does not exist)
+    private void updateAllSurveyWrapperPicturePaths(SurveyWrapper surveyWrapper, CreateModifiedPicturePathCallback handler) {
+        int versionCount = surveyWrapper.GetVersionCount();
+        Survey survey;
+        IMultiQuestion<IModifyQuestion> multiQuestion;
+        IEnumerator<IModifyQuestion> questionEnumerator;
+        for (int i = 0 ; i < versionCount; i++) {
+            survey = (Survey) surveyWrapper.TryGetModifySurveyVersion(i);
+            multiQuestion = survey.TryGetNextModifyMultiQuestion();
+            while (multiQuestion != null) {
+                questionEnumerator = multiQuestion.GetEnumerator();
+                while (questionEnumerator.MoveNext()) {
+                    IModifyQuestion question = questionEnumerator.Current;
+                    string picturePath = question.ModifyPicture;
+                    question.ModifyPicture = handler(picturePath);
+                }
+                multiQuestion = survey.TryGetNextModifyMultiQuestion();
+            }
+        }
+    }
+
+    private void CopyFolder(string src, string dest, bool overwriteFiles=false) {
+        string[] allDirectories = Directory.GetDirectories(src, "*", SearchOption.AllDirectories);
+
+        foreach (string dir in allDirectories) {
+            string newDir = dir.Replace(src, dest);
+            Directory.CreateDirectory(newDir);
+        }
+
+        string[] allFiles = Directory.GetFiles(src, "*", SearchOption.AllDirectories);
+
+        foreach (string filePath in allFiles) {
+            string destFilePath = filePath.Replace(src, dest);
+            File.Copy(filePath, destFilePath, overwriteFiles);
+        }
+        
+    }
+  
     public bool ExportSurveyWrapper(int id, string path) {
-        string surveyWrapperPath = GetSurveyWrapperPath(id);
+        string dest = GetSurveyWrapperPath(id) + "_export";
         string zipFilePath = Path.Combine(path, $"{id}.zip");
+        string destSurveyWrapper = Path.Combine(dest, id.ToString()+".json")
+        CopyFolder(GetSurveyWrapperPath(id), dest, true); //true->overwrites previously copied files
+        SurveyWrapper surveyWrapper = LoadSurveyWrapperFromFile(Path.Combine(dest, id.ToString()+".json"));
+        updateAllSurveyWrapperPicturePaths(surveyWrapper, getRelativePicturePath);
+        SaveSurveyWrapperToFile(Path.Combine(dest, id.ToString()+".json"), surveyWrapper);
         try {
-            ZipFile.CreateFromDirectory(surveyWrapperPath, zipFilePath);
+            ZipFile.CreateFromDirectory(dest, zipFilePath);
+            //todo: delete _export folder
             return true;
         } catch (Exception) {
             // Survey doesn't exist, or zipfile already exists
@@ -172,8 +228,9 @@ internal class DatabaseServices : IDatabase {
     }
 
     public bool ImportSurveyWrapper(string filePathAndName) {
+        string surveyWrapperId = Path.GetFileNameWithoutExtension(filePathAndName);
         try {
-            ZipFile.ExtractToDirectory(filePathAndName, Path.Combine(databasePath, Path.GetFileNameWithoutExtension(filePathAndName)));
+            ZipFile.ExtractToDirectory(filePathAndName, Path.Combine(databasePath, Path.GetFileNameWithoutExtension(filePathAndName)));            // updateAllSurveyWrapperPicturePaths(Convert.ToInt32(surveyWrapperId), getAbsolutePicturePath);
             return true;
         }
         catch (Exception)
