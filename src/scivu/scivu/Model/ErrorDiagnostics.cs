@@ -15,6 +15,7 @@ public static class ErrorDiagnostics
         Errors[ErrorDiagnosticsID.ERR_ScaleRangeInvalid] = $"Range must be [a,b] where {SharedConstants.ScaleMinimumValue}<a<b";
         Errors[ErrorDiagnosticsID.WAR_InvalidSurveyFileType] = $"Invalid file type for survey";
         Errors[ErrorDiagnosticsID.WAR_CouldNotImportSurvey] = "Survey could not be imported";
+        Errors[ErrorDiagnosticsID.WAR_CouldNotExportSurvey] = "Survey could bot be exported";
     }
 
     public static string GetErrorMessage(ErrorDiagnosticsID id)

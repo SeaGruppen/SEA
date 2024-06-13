@@ -7,6 +7,7 @@ public enum ErrorDiagnosticsID
 
     WAR_InvalidSurveyFileType,
     WAR_CouldNotImportSurvey,
+    WAR_CouldNotExportSurvey,
 
     ERR_ScaleRangeNotInt,
     ERR_ScaleRangeInvalid,

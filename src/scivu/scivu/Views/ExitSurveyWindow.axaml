@@ -7,7 +7,7 @@
         Width="250" Height="200"
         WindowStartupLocation="CenterOwner"
         x:Class="scivu.Views.ExitSurveyWindow"
-        Title="ExitSurveyWindow">
+        Title="ConfirmWindow">
     <Panel>
         <views:ExitSurveyView />
     </Panel>
