@@ -1,13 +1,14 @@
 namespace Model.Factory;
 
-using Model.Database;
-using Model.FrontEndAPI;
+using Database;
+using FrontEndAPI;
 using Result;
 using Answer;
-using Model.StatisticsModule;
-using Model.UserValidation;
+using StatisticsModule;
+using UserValidation;
 
 public static class FrontEndFactory {
+
     private static DatabaseServices databaseServices = new DatabaseServices();
     private static ISuperUserValidator superUserValidator = new SuperUserValidator();
     public static IFrontEndMainMenu CreateMainMenu() {

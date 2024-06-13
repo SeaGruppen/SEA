@@ -1,7 +1,6 @@
 namespace Model.Question;
-
-using Model.Answer;
 using System.Text.Json.Serialization;
+using Answer;
 
 public class Question : IReadOnlyQuestion, IModifyQuestion {
     

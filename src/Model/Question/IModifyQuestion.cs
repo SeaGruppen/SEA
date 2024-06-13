@@ -1,5 +1,5 @@
 namespace Model.Question;
-using Model.Answer;
+using Answer;
 
 public interface IModifyQuestion {
     string QuestionId {get;}    

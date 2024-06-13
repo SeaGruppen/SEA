@@ -1,12 +1,12 @@
 namespace Model.StatisticsModule;
-
 using System;
 using System.Collections.Generic;
-using Model.Database;
-using Model.Result;
-using Model.Survey;
-using Model.Utilities;
-using Model.Question;
+using Database;
+using Result;
+using Survey;
+using Utilities;
+using Question;
+
 internal class Statistics : IStatistics{
 
     private IDatabase databaseServices;
@@ -23,9 +23,10 @@ internal class Statistics : IStatistics{
             return 0; // Invalid surveyId
         }
         SurveyWrapper? surveyWrapper = databaseServices.GetSurveyWrapper(surveyWrapperId);
-        if (surveyWrapper == null) return 0; // SurveyWrapper not found
+        if (surveyWrapper == null) return 0; // SurveyWrapper is not found in database
         Survey? survey = GetSurveyFromSurveyWrapper(surveyWrapper, surveyId);
-        // To be implemented
+
+        if (survey == null) return 0; // Survey is not found in database
         int result = 0;
 
         while (survey.NextQuestionExist()) {
@@ -42,8 +43,8 @@ internal class Statistics : IStatistics{
 
     public int StartedSurveysInWrapper(int surveyWrapperId) {
         int result = 0;
-        List<Survey> surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
-        if (surveys == null) return 0; // SurveyWrapper not found
+        List<Survey>? surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
+        if (surveys == null) return 0; // SurveyWrapper is not found in database
         foreach (Survey survey in surveys) {
             result += StartedSurveys(survey.SurveyId);
         }
@@ -52,8 +53,8 @@ internal class Statistics : IStatistics{
 
     public int FinishedSurveysInWrapper(int surveyWrapperId) {
         int result = 0;
-        List<Survey> surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
-        if (surveys == null) return 0; // SurveyWrapper not found
+        List<Survey>? surveys = GetSurveysInSurveyWrapper(surveyWrapperId);
+        if (surveys == null) return 0; // SurveyWrapper is not found in database
         foreach (Survey survey in surveys) {
             result += FinishedSurveys(survey.SurveyId);
         }
@@ -61,7 +62,8 @@ internal class Statistics : IStatistics{
     }
 
     private int FinishedSurveys(string surveyId) {
-        List<Result> surveyReults = GetSurveyResultsFromDatabase(surveyId);
+        List<Result>? surveyReults = GetSurveyResultsFromDatabase(surveyId);
+        if (surveyReults == null) return 0; // Survey is not found in database
         Dictionary<int, int> questionsAnsweredPrUser = QuestionsAnsweredPrUser(surveyReults);
         int totalQuestions = NumberOfQuestionsInSurvey(surveyId);
         int result = 0;
@@ -107,7 +109,7 @@ internal class Statistics : IStatistics{
 
     public double AverageCompletionRateSurveyWrapper(int surveyWrapperId) {
         SurveyWrapper? surveyWrapper = databaseServices.GetSurveyWrapper(surveyWrapperId);
-        if (surveyWrapper == null) return 0; // SurveyWrapper not found
+        if (surveyWrapper == null) return 0; // SurveyWrapper is not found in database
 
         Dictionary<string, double> surveyCompletionRate = new Dictionary<string, double>();
         for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
@@ -129,7 +131,8 @@ internal class Statistics : IStatistics{
     // Helper function to get AverageCompletion for a single survey
     private double AverageCompletionRateSurvey(string surveyId) {
         int totalQuestions = NumberOfQuestionsInSurvey(surveyId);
-        List<Result> resultsFromSurvey = GetSurveyResultsFromDatabase(surveyId);
+        List<Result>? resultsFromSurvey = GetSurveyResultsFromDatabase(surveyId);
+        if (resultsFromSurvey == null) return 0; // Survey is not found in database
         Dictionary<int, int> questionsAnsweredPrUser = QuestionsAnsweredPrUser(resultsFromSurvey);
         foreach (KeyValuePair<int, int> entry in questionsAnsweredPrUser) {
         }
@@ -187,10 +190,14 @@ internal class Statistics : IStatistics{
 
     private List<Survey>? GetSurveysInSurveyWrapper(int surveyWrapperId) {
         SurveyWrapper? surveyWrapper = databaseServices.GetSurveyWrapper(surveyWrapperId);   
-        if (surveyWrapper == null) return null; // SurveyWrapper not found
+        if (surveyWrapper == null) return null; // SurveyWrapper is not found in database
         List<Survey> result = new List<Survey>();
         for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
-            result.Add((Survey) surveyWrapper.TryGetModifySurveyVersion(i));
+            IModifySurvey? surveyI = surveyWrapper.TryGetModifySurveyVersion(i);
+            if (surveyI == null) {
+                continue;
+            }
+            result.Add((Survey) surveyI);
         }
         return result;
     }
@@ -198,7 +205,7 @@ internal class Statistics : IStatistics{
     /// Helper function to get surveys started for a single survey, inside a SurveyWrapper
     private int StartedSurveys(string surveyId) {
         List<Result>? surveyResults = GetSurveyResultsFromDatabase(surveyId);
-        if (surveyResults == null) return 0; // Survey not found
+        if (surveyResults == null) return 0; // Survey is not found in database
         List<int> userIds =[];
         for (int i = 0; i < surveyResults.Count; i++) {
             if (!userIds.Contains(surveyResults[i].UserId)) {
@@ -210,7 +217,11 @@ internal class Statistics : IStatistics{
     
     private Survey? GetSurveyFromSurveyWrapper(SurveyWrapper surveyWrapper, string surveyId) {
         for (int i = 0; i < surveyWrapper.GetVersionCount(); i++) {
-            Survey survey = (Survey) surveyWrapper.TryGetModifySurveyVersion(i);
+            IModifySurvey? modifySurvey = surveyWrapper.TryGetModifySurveyVersion(i);
+            if (modifySurvey == null) {
+                continue;
+            }
+            Survey survey = (Survey) modifySurvey ;
             if (survey.SurveyId == surveyId) {
                 return survey;
             }

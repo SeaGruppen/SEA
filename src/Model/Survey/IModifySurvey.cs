@@ -1,5 +1,6 @@
 namespace Model.Survey;
-using Model.Question;
+using Question;
+
 public interface IModifySurvey {
 
     string SurveyId {get;}

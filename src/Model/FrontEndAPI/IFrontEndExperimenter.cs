@@ -1,5 +1,5 @@
 namespace Model.FrontEndAPI;
-using Model.Result;
+using Result;
 
 public interface IFrontEndExperimenter {
     

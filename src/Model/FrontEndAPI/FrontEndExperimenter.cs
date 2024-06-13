@@ -1,7 +1,7 @@
 namespace Model.FrontEndAPI;
-using Model.Result;
-using Model.Database;
 using System.Text;
+using Result;
+using Database;
 internal class FrontEndExperimenter : IFrontEndExperimenter {
 
     private IDatabase databaseService;
