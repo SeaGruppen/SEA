@@ -1,6 +1,9 @@
 namespace Model.Survey;
 
 public interface IModifySurveyWrapper {
+
+    // Get a list of all surveys, for information, cannot multi modify surveys this way though.
+    IReadOnlyList<IReadOnlySurvey> SurveyVersions {get;}
     IModifySurvey? TryGetModifySurveyVersion(int index); // Return survey index'
 
     IModifySurvey AddNewVersion();
