@@ -125,9 +125,6 @@ public class SuperUserMenuViewModel : ViewModelBase
             case "delete" when arg is SurveyViewModel vm:
                 Delete(vm);
                 break;
-            case "copy" when arg is SurveyViewModel vm:
-                Copy(vm);
-                break;
             case "export" when arg is IModifySurveyWrapper wrapper:
                 Export(wrapper);
                 break;
@@ -168,7 +165,7 @@ public class SuperUserMenuViewModel : ViewModelBase
     }
 
     public void Delete(SurveyViewModel survey){
-        _client.DeleteSurveyWrapper(survey.SurveyID);
+        _client.DeleteSurveyWrapper(survey.SurveyID, Username);
         GetSurveys();
     }
 
@@ -176,10 +173,6 @@ public class SuperUserMenuViewModel : ViewModelBase
        _changeViewCommand("SelectMenu", survey.SurveyWrapper); // this might be able to be changeVeiw
     }
 
-    public void Copy (SurveyViewModel survey){
-        throw new NotImplementedException();
-
-    }
 
     public async void Export (IModifySurveyWrapper survey){
         var folder = await FileExplorer.OpenFolderAsync();
