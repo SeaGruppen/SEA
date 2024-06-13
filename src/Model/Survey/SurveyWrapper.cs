@@ -24,7 +24,7 @@ internal class SurveyWrapper : IReadOnlySurveyWrapper, IModifySurveyWrapper {
     // Created for testing purposes.
     public IReadOnlyList<Survey> SurveyVersions => surveyVersions;
 
-
+    IReadOnlyList<IReadOnlySurvey> IModifySurveyWrapper.SurveyVersions => surveyVersions;
 
     public SurveyWrapper (int surveyWrapperId) {
         this.surveyWrapperId = surveyWrapperId;
