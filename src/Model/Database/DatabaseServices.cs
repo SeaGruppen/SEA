@@ -87,9 +87,9 @@ internal class DatabaseServices : IDatabase {
             surveyWrapperList.Remove(surveyWrapperId);
         }
 
-        //is it necessary to explicitly update creatorDicts list before storing it?
-        creatorDict[username] = surveyWrapperList; 
         StoreCreatorDict(creatorDict);
+        creatorDict = GetCreatorDict();
+
 
         if (Directory.Exists(surveyWrapperPath)) {
             Directory.Delete(surveyWrapperPath, true);
