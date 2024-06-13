@@ -2,7 +2,7 @@
 
 namespace Tests.Backend.Question
 {
-    public class MultiQuestionTests
+    public class TestMultiQuestion
     {
         [SetUp]
         public void Setup() { }
