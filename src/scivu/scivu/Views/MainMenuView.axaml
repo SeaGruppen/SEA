@@ -16,7 +16,7 @@
                    Text="{Binding ErrorMessage}"/>
 
         <!-- Actual menu items -->
-        <Button IsVisible="{Binding !IsLogin}"
+        <Button IsVisible="{Binding !IsInputting}"
                 Command="{Binding GoToLogin}">
             <Button.CommandParameter>
                 <sys:Boolean>true</sys:Boolean>
@@ -24,7 +24,7 @@
             Super User Login
         </Button>
 
-        <Button IsVisible="{Binding !IsLogin}"
+        <Button IsVisible="{Binding !IsInputting}"
                 Command="{Binding GoToLogin}">
             <Button.CommandParameter>
                 <sys:Boolean>false</sys:Boolean>
@@ -32,10 +32,36 @@
             Experimenter Login
         </Button>
 
-        <Button IsVisible="{Binding !IsLogin}"
+        <Button IsVisible="{Binding !IsInputting}"
                 Command="{Binding ImportSurvey}">
             Import Survey
         </Button>
+
+        <Button IsVisible="{Binding !IsInputting}"
+                Command="{Binding GoToCreateUser}">
+            Create Super User
+        </Button>
+
+        <Grid IsVisible="{Binding IsCreateUser}"
+              ColumnDefinitions="*,10,4*"
+              RowDefinitions="*,*"> <!-- a middle column for spacing -->
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">
+                User name
+            </TextBlock>
+            <TextBox Grid.Row="0" Grid.Column="2"
+                     Text="{Binding Username, Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">
+                Password
+            </TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="2"
+                     PasswordChar="*"
+                     Text="{Binding Password, Mode=TwoWay}"/>
+        </Grid>
 
         <!-- Super user login -->
         <Grid IsVisible="{Binding IsSuperLogin}"
@@ -82,6 +108,16 @@
             <Button Command="{Binding DoLogin}"
                     IsEnabled="{Binding IsLoginEnabled}">
                 Login
+            </Button>
+        </WrapPanel>
+       <!-- Buttons for creating user-->
+        <WrapPanel IsVisible="{Binding IsCreateUser}">
+            <Button Command="{Binding GoBackToMenu}">
+                Cancel
+            </Button>
+
+            <Button Command="{Binding DoCreateUser}">
+                Create
             </Button>
         </WrapPanel>
     </StackPanel>
