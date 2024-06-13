@@ -23,43 +23,28 @@ using System.Linq;
 
 namespace scivu.ViewModels;
 
-public class SuperUserMenuViewModel : ViewModelBase
+public class SelectSurveyViewModel : ViewModelBase
 {
     private readonly Action<string, object> _changeViewCommand;
-    private readonly IFrontEndSuperUser _client;
 
-    private string? _searchText;
-    private bool _isBusy;
 
-    private bool _visibleCollection;
-
-    private SurveyViewModel? _selectedSurvey;
+    private VersionVeiwModel? _selectedSurvey;
 
     public string Username {get; private set; }
 
     private string _password;
-    public ObservableCollection<SurveyViewModel> AvailableSurveys {get;} = new();
-    public ObservableCollection<SurveyViewModel> SearchResults {get;} = new();
+    public ObservableCollection<VersionModel> AvailableVersions {get;} = new();
 
     public ReactiveCommand<string, Unit> Handle {get;}
 
     private string _errorMessage = string.Empty;
 
+    private IModifySurveyWrapper _surveyWrapper;
+
     public SurveyViewModel? SelectedSurvey
     {
         get => _selectedSurvey;
         set => this.RaiseAndSetIfChanged(ref _selectedSurvey, value);
-    }
-    public string? SearchText
-    {
-        get => _searchText;
-        set => this.RaiseAndSetIfChanged(ref _searchText, value);
-    }
-
-    public bool IsBusy
-    {
-        get => _isBusy;
-        set => this.RaiseAndSetIfChanged(ref _isBusy, value);
     }
         public string ErrorMessage
     {
@@ -67,33 +52,22 @@ public class SuperUserMenuViewModel : ViewModelBase
         private set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
     }
 
-    public bool VisibleCollection
-    {
-        get => _visibleCollection;
-        set => this.RaiseAndSetIfChanged(ref _visibleCollection, value);
-    }
 
     
 
-    public SuperUserMenuViewModel(Action<string,object> changeViewCommand, IFrontEndSuperUser client,
-    string username, string password, List<IModifySurveyWrapper> surveys)
+    public SelectSurveyViewModel(Action<string,object> changeViewCommand, IModifySurveyWrapper surveyWrapper,
+    string username, string password)
     {
         //SelectSurveyCommand = ReactiveCommand.Create(() => 
         //{
         //    //execute button code here
         //})
-        this.WhenAnyValue(x => x.SearchText)
-        .Throttle(TimeSpan.FromMilliseconds(400))
-        .ObserveOn(RxApp.MainThreadScheduler)
-        .Subscribe(SearchSurveys!);
-        _changeViewCommand = changeViewCommand;
-        _client = client;
         Username = username;
-        _visibleCollection = true;
-        AvailableSurveys.Clear();
+        AvailableVersions.Clear();
         Handle = ReactiveCommand.Create<string>(HandleCommand);
         _password = password;
-        foreach (var survey in surveys)
+        _surveyWrapper = surveyWrapper;
+        foreach (var survey in surveyWrapper.)
             {
                 AvailableSurveys.Add(new SurveyViewModel(survey, HandleCommand));
             }
@@ -101,7 +75,7 @@ public class SuperUserMenuViewModel : ViewModelBase
     }
 
     private void GetSurveys(){
-        List<IModifySurveyWrapper>? surveys = _client.GetSurveyWrappersFromSuperUser(Username,_password);
+        List<IReadOnlySurvey>? surveys = 
         AvailableSurveys.Clear();
         if (surveys != null)
         {
@@ -133,34 +107,12 @@ public class SuperUserMenuViewModel : ViewModelBase
         }
     }
 
-    private async void SearchSurveys(string? s)
-    {
-        IsBusy = true;
-        VisibleCollection = false;
-        SearchResults.Clear();
-        if (!string.IsNullOrWhiteSpace(s)){
-            foreach (var survey in AvailableSurveys)
-            {
-                if (survey.SurveyName.StartsWith(s,StringComparison.InvariantCultureIgnoreCase))
-                {
-                    SearchResults.Add(survey);
-                }
-            }
-
-
-        }
-        IsBusy = false;
-        if(SearchResults.Count == 0) {
-            VisibleCollection = true;
-        }
-    }
-
     public void ChangeView(string view){
         _changeViewCommand(view, null!);
     }
 
     public void CreateSurvey() {
-        _client.CreateSurveyWrapper(Username, "temp_name");
+        _surveyWrapper.(Username, "temp_name");
         GetSurveys();
     }
 
