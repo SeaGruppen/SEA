@@ -8,7 +8,7 @@ using Model.Survey;
 internal interface IDatabase {
     int GetNextSurveyWrapperID(string superUserName);
     bool StoreSurveyWrapper(SurveyWrapper surveyWrapper);
-    bool DeleteSurveyWrapper(int surveyWrapperId);
+    bool DeleteSurveyWrapper(int surveyWrapperId, string username);
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
     List<SurveyWrapper>? GetSurveyWrapperForSuperUser(string username);
     bool ExportSurveyWrapper(int surveyWrapperid,string path);
