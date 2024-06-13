@@ -28,12 +28,12 @@ public class SelectSurveyViewModel : ViewModelBase
     private readonly Action<string, object> _changeViewCommand;
 
 
-    private VersionVeiwModel? _selectedSurvey;
+    private VersionViewModel? _selectedSurvey;
 
     public string Username {get; private set; }
 
     private string _password;
-    public ObservableCollection<VersionModel> AvailableVersions {get;} = new();
+    public ObservableCollection<VersionViewModel> AvailableVersions {get;} = new();
 
     public ReactiveCommand<string, Unit> Handle {get;}
 
@@ -41,7 +41,7 @@ public class SelectSurveyViewModel : ViewModelBase
 
     private IModifySurveyWrapper _surveyWrapper;
 
-    public SurveyViewModel? SelectedSurvey
+    public VersionViewModel? SelectedSurvey
     {
         get => _selectedSurvey;
         set => this.RaiseAndSetIfChanged(ref _selectedSurvey, value);
@@ -62,28 +62,42 @@ public class SelectSurveyViewModel : ViewModelBase
         //{
         //    //execute button code here
         //})
+        _changeViewCommand = changeViewCommand;
         Username = username;
         AvailableVersions.Clear();
         Handle = ReactiveCommand.Create<string>(HandleCommand);
         _password = password;
         _surveyWrapper = surveyWrapper;
-        foreach (var survey in surveyWrapper.)
+        foreach (var survey in surveyWrapper.SurveyVersions)
             {
-                AvailableSurveys.Add(new SurveyViewModel(survey, HandleCommand));
+                AvailableVersions.Add(new VersionViewModel(survey, HandleCommand));
             }
 
     }
 
     private void GetSurveys(){
-        List<IReadOnlySurvey>? surveys = 
-        AvailableSurveys.Clear();
+        IReadOnlyList<IReadOnlySurvey>? surveys = _surveyWrapper.SurveyVersions;
+        AvailableVersions.Clear();
         if (surveys != null)
         {
             foreach (var survey in surveys)
             {
-                AvailableSurveys.Add(new SurveyViewModel(survey, HandleCommand));
+                AvailableVersions.Add(new VersionViewModel(survey, HandleCommand));
             }
         }
+    }
+
+    private int FindIdx(IReadOnlySurvey survey){
+        var idx = -1;
+        for (int i = 0; i < _surveyWrapper.GetVersionCount(); i++){
+            var _survey = _surveyWrapper.TryGetModifySurveyVersion(i);
+            if (_survey != null){
+                if (survey.SurveyId == _survey.SurveyId){
+                    break;
+                }
+            }
+        }
+        return idx;
     }
 
 
@@ -93,14 +107,15 @@ public class SelectSurveyViewModel : ViewModelBase
     public void HandleCommand(string cm, object? arg) {
         switch(cm)
         {
-            case "select" when arg is IModifySurveyWrapper wrapper:
-                _changeViewCommand("SelectMenu", wrapper);
+            case "copy" when arg is IReadOnlySurvey rs:
+                Copy(rs);
                 break;
-            case "delete" when arg is SurveyViewModel vm:
-                Delete(vm);
+
+            case "delete" when arg is IReadOnlySurvey rs:
+                Delete(rs);
                 break;
-            case "export" when arg is IModifySurveyWrapper wrapper:
-                Export(wrapper);
+            case "modify" when arg is IReadOnlySurvey rs:
+                Modify(rs);
                 break;
             default:
                 throw new ArgumentException($"indvalid com,mand '{cm}', with invalid argument '{arg}'");
@@ -112,34 +127,29 @@ public class SelectSurveyViewModel : ViewModelBase
     }
 
     public void CreateSurvey() {
-        _surveyWrapper.(Username, "temp_name");
+        _surveyWrapper.AddNewVersion();
         GetSurveys();
     }
 
-    public void Delete(SurveyViewModel survey){
-        _client.DeleteSurveyWrapper(survey.SurveyID, Username);
+    public void Delete(IReadOnlySurvey survey){
+        int idx = FindIdx(survey);
+        _surveyWrapper.DeleteVersion(idx);
         GetSurveys();
-        VisibleCollection = true;
     }
 
-    public void Select(SurveyViewModel survey){
-       _changeViewCommand("SelectMenu", survey.SurveyWrapper); // this might be able to be changeVeiw
+    public void Copy(IReadOnlySurvey survey) {
+        int idx = FindIdx(survey);
+        _surveyWrapper.CopyVersion(idx);
     }
 
-
-    public async void Export (IModifySurveyWrapper survey){
-        var folder = await FileExplorer.OpenFolderAsync();
-        if (folder != null)
-        {
-            var path = folder.Path.AbsolutePath.ToString();
-            if (_client.ExportSurveyWrapperFromDatabase(survey.SurveyWrapperId,path))
-            {
-                return;
-            }
-            var stdmsg = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.WAR_CouldNotExportSurvey);
-            ErrorMessage = $"{stdmsg}: id: {survey.SurveyWrapperId}, path: '{path}'";
+    public void Modify (IReadOnlySurvey survey) {
+        int idx = FindIdx(survey);
+        IModifySurvey? ms = _surveyWrapper.TryGetModifySurveyVersion(idx);
+        if (ms != null) {
+            throw new NotImplementedException();
         }
-        ErrorMessage = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.WAR_InvalidSurveyFileType);
+        throw new NotImplementedException();
     }
+
 
 }

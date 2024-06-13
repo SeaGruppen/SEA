@@ -28,37 +28,33 @@ namespace scivu.ViewModels;
 
 
 
-public class SurveyViewModel : ViewModelBase
+public class VersionViewModel : ViewModelBase
 {
-    private IModifySurveyWrapper _surveyWrapper;
+    private IReadOnlySurvey _survey;
     private readonly Action<string, object> _handleCommand;
-
-    
-
-
-    public SurveyViewModel(IModifySurveyWrapper survey, Action<string, object> handleCommand)
+    public VersionViewModel(IReadOnlySurvey survey, Action<string, object> handleCommand)
     {
-        _surveyWrapper = survey;
+        _survey = survey;
         _handleCommand = handleCommand;
 
     }
 
 
-    public string SurveyName => _surveyWrapper.SurveyWrapperName;
-    public int SurveyID => _surveyWrapper.SurveyWrapperId;
+    public string SurveyName => _survey.SurveyName;
+    public string SurveyID => _survey.SurveyId;
 
-    public IModifySurveyWrapper SurveyWrapper => _surveyWrapper;
+    public IReadOnlySurvey Survey => _survey;
 
-    public void SelectCommand(){
-        _handleCommand("select", SurveyWrapper);
+    public void ModifyCommand(){
+        _handleCommand("modify", Survey);
     }
 
-    public void ExportCommand() {
-        _handleCommand("export",SurveyWrapper);
+    public void CopyCommand(){
+        _handleCommand("copy",Survey);
     }
 
     public void DeleteCommand() {
-        _handleCommand("delete", this);
+        _handleCommand("delete", Survey);
     }
 
 }
