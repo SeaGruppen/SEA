@@ -9,7 +9,7 @@ using UserValidation;
 
 public static class FrontEndFactory {
 
-    private static DatabaseServices databaseServices = new DatabaseServices();
+    private static Database databaseServices = new Database();
     private static ISuperUserValidator superUserValidator = new SuperUserValidator();
     public static IFrontEndMainMenu CreateMainMenu() {
         return new FrontEndMainMenu(databaseServices, superUserValidator);
