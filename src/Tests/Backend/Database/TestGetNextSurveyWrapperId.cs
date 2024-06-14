@@ -14,6 +14,7 @@ internal class TestGetNextSurveyWrapperId {
     [SetUp]
     public void Setup() {
         database = new Database(testDB);
+        database = new Database(testDB);
     }
 
     [TearDown]

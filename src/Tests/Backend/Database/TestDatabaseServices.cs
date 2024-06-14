@@ -1,10 +1,10 @@
+namespace Tests.Backend.Database;
+
 using Avalonia.Win32.DirectX;
 using DatabaseClass = Model.DatabaseModule.Database;
 using Model.DatabaseModule;
 using Model.Survey;
 using System.Text.Json;
-
-namespace Tests.Backend.Database;
 
 
 public class TestDatabaseServices

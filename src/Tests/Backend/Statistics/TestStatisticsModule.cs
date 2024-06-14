@@ -17,6 +17,7 @@ internal class TestStatisticsModule {
     [SetUp]
     public void SetUp() {
         database = new Database(testDB);
+        database = new Database(testDB);
         statistics = new Statistics(database);
 
         // Creating a base surveyWrapper with 1 survey and 2 questions in it.
