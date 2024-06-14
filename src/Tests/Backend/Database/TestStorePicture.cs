@@ -8,7 +8,7 @@ using Model.Utilities;
 [TestFixture]
 internal class TestStorePicture {
     string testDB = ("testDB");
-    DatabaseServices db;
+    Database db;
     SurveyWrapper surveyWrapper;
 
     int id = 222222;
@@ -20,7 +20,7 @@ internal class TestStorePicture {
 
     [SetUp]
     public void Setup() {
-        db = new DatabaseServices(testDB);
+        db = new Database(testDB);
         src = Path.Combine(FileIO.GetProjectPath(), "..", "assets", fileName);
         relDest = Path.Combine(testDB, id.ToString(), "assets", fileName);
     }
