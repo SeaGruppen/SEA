@@ -9,13 +9,13 @@ using SurveyWrapper = Survey.SurveyWrapper;
 using Result;
 using Utilities;
 
-internal class DatabaseServices : IDatabase {
+internal class Database : IDatabase {
     
     private string databasePath;
     private readonly string resultsPath;
     private readonly string creatorDictPath;
     private Random random = new Random();
-    internal DatabaseServices() {
+    internal Database() {
         string? projectPath = FileIO.GetProjectPath();
         if (projectPath != null)
         {
@@ -33,7 +33,7 @@ internal class DatabaseServices : IDatabase {
     }
 
     //overloading constructor for testing purposes
-    internal DatabaseServices(string dataBasePath) {
+    internal Database(string dataBasePath) {
         this.databasePath = dataBasePath;
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "results.csv");
@@ -145,7 +145,7 @@ internal class DatabaseServices : IDatabase {
     }
 
     public int GetNextSurveyWrapperID(string superUserName) {
-        int result = random.Next(100000);
+        int result = random.Next(100000, 1000000); // random number with 6 digits
         // Ensure that Id isn't used already.
         while (Directory.Exists(GetSurveyWrapperPath(result))) {
             result = random.Next();
