@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace scivu.ViewModels;
 
-public class SelectSurveyViewModel : ViewModelBase
+public class SelectSurveyMenuViewModel : ViewModelBase
 {
     private readonly Action<string, object> _changeViewCommand;
 
@@ -31,6 +31,7 @@ public class SelectSurveyViewModel : ViewModelBase
     private VersionViewModel? _selectedSurvey;
 
     public string Username {get; private set; }
+    public string Name {get; private set; }
 
     private string _password;
     public ObservableCollection<VersionViewModel> AvailableVersions {get;} = new();
@@ -51,19 +52,14 @@ public class SelectSurveyViewModel : ViewModelBase
         get => _errorMessage;
         private set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
     }
+ 
 
-
-    
-
-    public SelectSurveyViewModel(Action<string,object> changeViewCommand, IModifySurveyWrapper surveyWrapper,
+    public SelectSurveyMenuViewModel(Action<string,object> changeViewCommand, IModifySurveyWrapper surveyWrapper,
     string username, string password)
     {
-        //SelectSurveyCommand = ReactiveCommand.Create(() => 
-        //{
-        //    //execute button code here
-        //})
         _changeViewCommand = changeViewCommand;
         Username = username;
+        Name = surveyWrapper.SurveyWrapperName;
         AvailableVersions.Clear();
         Handle = ReactiveCommand.Create<string>(HandleCommand);
         _password = password;
@@ -93,6 +89,7 @@ public class SelectSurveyViewModel : ViewModelBase
             var _survey = _surveyWrapper.TryGetModifySurveyVersion(i);
             if (_survey != null){
                 if (survey.SurveyId == _survey.SurveyId){
+                    idx = i;
                     break;
                 }
             }
@@ -122,8 +119,8 @@ public class SelectSurveyViewModel : ViewModelBase
         }
     }
 
-    public void ChangeView(string view){
-        _changeViewCommand(view, null!);
+    public void ChangeView(){
+        _changeViewCommand("SuperUserMenu", (Username, _password));
     }
 
     public void CreateSurvey() {
@@ -140,6 +137,7 @@ public class SelectSurveyViewModel : ViewModelBase
     public void Copy(IReadOnlySurvey survey) {
         int idx = FindIdx(survey);
         _surveyWrapper.CopyVersion(idx);
+        GetSurveys();
     }
 
     public void Modify (IReadOnlySurvey survey) {

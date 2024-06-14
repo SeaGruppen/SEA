@@ -73,15 +73,25 @@ public class SuperUserMenuViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _visibleCollection, value);
     }
 
-    
+    public SuperUserMenuViewModel( Action<string,object> changeViewCommand, IFrontEndSuperUser client,
+    string username, string password) {
+        this.WhenAnyValue(x => x.SearchText)
+        .Throttle(TimeSpan.FromMilliseconds(400))
+        .ObserveOn(RxApp.MainThreadScheduler)
+        .Subscribe(SearchSurveys!);
+        _changeViewCommand = changeViewCommand;
+        _client = client;
+        Username = username;
+        _visibleCollection = true;
+        AvailableSurveys.Clear();
+        Handle = ReactiveCommand.Create<string>(HandleCommand);
+        _password = password;
+        GetSurveys();
+    }
 
     public SuperUserMenuViewModel(Action<string,object> changeViewCommand, IFrontEndSuperUser client,
     string username, string password, List<IModifySurveyWrapper> surveys)
     {
-        //SelectSurveyCommand = ReactiveCommand.Create(() => 
-        //{
-        //    //execute button code here
-        //})
         this.WhenAnyValue(x => x.SearchText)
         .Throttle(TimeSpan.FromMilliseconds(400))
         .ObserveOn(RxApp.MainThreadScheduler)
@@ -120,7 +130,7 @@ public class SuperUserMenuViewModel : ViewModelBase
         switch(cm)
         {
             case "select" when arg is IModifySurveyWrapper wrapper:
-                _changeViewCommand("SelectMenu", wrapper);
+                Select(wrapper);
                 break;
             case "delete" when arg is SurveyViewModel vm:
                 Delete(vm);
@@ -170,8 +180,8 @@ public class SuperUserMenuViewModel : ViewModelBase
         VisibleCollection = true;
     }
 
-    public void Select(SurveyViewModel survey){
-       _changeViewCommand("SelectMenu", survey.SurveyWrapper); // this might be able to be changeVeiw
+    public void Select(IModifySurveyWrapper surveyWrapper){
+       _changeViewCommand("SurveySelectMenu", (surveyWrapper, Username, _password)); // this might be able to be changeVeiw
     }
 
 

@@ -64,17 +64,3 @@
             </DockPanel>
 
 </UserControl>
-
-<!--
-<StackPanel HorizontalAlignment=""
-                          VerticalAlignment="Center"
-                          Spacing="25">
-                  <Button Command="{Binding ChangeView}"
-                          CommandParameter="MainMenu">
-                    Go back
-                  </Button>
-                  
-                <TextBlock Margin="0.5"> Select a survey or create a new </TextBlock>
-
-              </StackPanel>
--->
