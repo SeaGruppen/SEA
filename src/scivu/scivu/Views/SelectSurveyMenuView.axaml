@@ -11,24 +11,27 @@
       <TextBlock Text="{Binding Username}" FontSize="25" FontWeight="SemiBold" />
       <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="SemiBold" />
     </StackPanel>
-    <ListBox DockPanel.Dock="Top" HorizontalAlignment="Center" ItemsSource="{Binding AvailableVersions}" SelectedItem="{Binding SelectedSurvey}"
-             IsVisible="True" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="500">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <Border BorderBrush="Gray" BorderThickness="3" CornerRadius="5" Margin="5" Padding="10" Background="#FFF">
-            <StackPanel Width="500">
-              <TextBlock Text="{Binding SurveyName}" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
-              <TextBlock Text="{Binding SurveyID}" Margin="0,0,0,10"/>
-              <StackPanel Orientation="Horizontal">
-                <Button Content="Modify" Command="{Binding ModifyCommand}" HorizontalAlignment="Right"/>
-                <Button Content="Copy" Command="{Binding CopyCommand}" HorizontalAlignment="Right"/>
-                <Button Content="Delete" Command="{Binding DeleteCommand }" HorizontalAlignment="Right"/>
+    <StackPanel  DockPanel.Dock="Top" HorizontalAlignment="Center">
+      <TextBlock Text="Survey Versions" FontSize="20" FontWeight="Bold" Margin="0,0,0,5"/>
+      <ListBox ItemsSource="{Binding AvailableVersions}" SelectedItem="{Binding SelectedSurvey}"
+              IsVisible="True" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="500">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Border BorderBrush="Gray" BorderThickness="3" CornerRadius="5" Margin="5" Padding="10" Background="#FFF">
+              <StackPanel Width="500">
+                <TextBlock Text="{Binding SurveyName}" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SurveyID}" Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal">
+                  <Button Content="Modify" Command="{Binding ModifyCommand}" HorizontalAlignment="Right"/>
+                  <Button Content="Copy" Command="{Binding CopyCommand}" HorizontalAlignment="Right"/>
+                  <Button Content="Delete" Command="{Binding DeleteCommand }" HorizontalAlignment="Right"/>
+                </StackPanel>
               </StackPanel>
-            </StackPanel>
-          </Border>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+            </Border>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </StackPanel>
     <Button Content="Back" Command="{Binding ChangeView}" DockPanel.Dock="Bottom" HorizontalAlignment="Left"/>
   </DockPanel>
 </UserControl>
