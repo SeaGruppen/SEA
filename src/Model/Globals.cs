@@ -1,8 +1,6 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
-public static class Globals
-{
+public static class Globals {
     public static JsonSerializerOptions OPTIONS = new JsonSerializerOptions { 
 
         // pretty printing
@@ -12,5 +10,5 @@ public static class Globals
         Converters = {
             new Model.Question.MultiQuestionConverter()
         } 
-        };
+    };
 }
