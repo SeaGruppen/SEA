@@ -21,7 +21,7 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
 
     public string ReadOnlyCaption => caption;
 
-    public string ReadOnlyPicture => GetLocalPicturePath(picture);
+    public string ReadOnlyPicture => GetLocalPicturePath();
 
     public string ReadOnlyText => text;
 
@@ -31,7 +31,7 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
 
     public string ModifyCaption { get => caption; set => caption = value; }
     public string ModifyPicture { 
-        get => GetLocalPicturePath(picture);
+        get => GetLocalPicturePath();
         set => picture = value; 
     }
     public string ModifyText { get => text; set => text = value; }
@@ -50,7 +50,7 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
         id = newQuestionId;
     }
 
-    private string GetLocalPicturePath(string picture) {
+    private string GetLocalPicturePath() {
         if (string.IsNullOrEmpty(picture)) {
             return picture;
         }

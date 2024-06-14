@@ -11,12 +11,13 @@ using Utilities;
 
 internal class DatabaseServices : IDatabase {
     
-    private string databaseName = "surveyDatabase";
+    private string databaseName; 
     private string databasePath;
     private readonly string resultsPath;
     private readonly string creatorDictPath;
     private Random random = new Random();
     internal DatabaseServices() {
+        databaseName = "surveyDatabase";
         string? projectPath = FileIO.GetProjectPath();
         if (projectPath != null)
         {
@@ -34,8 +35,17 @@ internal class DatabaseServices : IDatabase {
     }
 
     //overloading constructor for testing purposes
-    internal DatabaseServices(string dataBasePath) {
-        this.databasePath = dataBasePath;
+    internal DatabaseServices(string databaseName) {
+        this.databaseName = databaseName;
+        string? projectPath = FileIO.GetProjectPath();
+        if (projectPath != null)
+        {
+            this.databasePath = Path.Combine(projectPath, "Tests", "bin", "Debug", "net8.0", this.databaseName);
+        }
+        else
+        {
+            this.databasePath = this.databaseName;
+        }
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "results.csv");
         CreateResultsFileIfNotExisting(resultsPath);

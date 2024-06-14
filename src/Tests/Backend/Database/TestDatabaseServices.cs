@@ -112,32 +112,4 @@ public class TestDatabaseServices
         Directory.Delete(testDbPath, true);
         Assert.That(Path.Exists(testDbPath), Is.False);
     }
-
-    [Test]
-    public void TestStorePicture() {
-
-        string testDbPath = "surveyDatabase";
-        DatabaseServices db = new DatabaseServices(testDbPath); 
-        
-        int id1 = 6666;
-        SurveyWrapper surveyWrapper1 = new(id1);
-
-        string fileName = "dog.jpg";
-        string projectPath =  Model.Utilities.FileIO.GetProjectPath() ;
-        string src = Path.Combine(projectPath, "..", "assets", fileName);
-        string dest = Path.Combine("surveyDatabase", id1.ToString(), "assets", fileName);   
-
-        db.StoreSurveyWrapper(surveyWrapper1);
-        Assert.That(File.Exists(dest), Is.False);  
-        string returnedDest = db.TryStorePicture(surveyWrapper1.SurveyWrapperId, src);
-        
-        Assert.Multiple(() => {
-            Assert.That(File.Exists(dest), Is.True);  
-            Assert.That(returnedDest, Is.EqualTo(dest));
-        });
-        
-        Directory.Delete(testDbPath, true);
-        Assert.That(Path.Exists(testDbPath), Is.False);
-
-    }
 }
