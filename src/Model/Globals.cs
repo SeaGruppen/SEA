@@ -1,7 +1,7 @@
 using System.Text.Json;
 
-public static class Globals {
-    public static JsonSerializerOptions OPTIONS = new JsonSerializerOptions { 
+internal static class Globals {
+    internal static JsonSerializerOptions OPTIONS = new JsonSerializerOptions { 
 
         // pretty printing
         WriteIndented = true, 
