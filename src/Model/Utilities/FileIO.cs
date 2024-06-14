@@ -1,12 +1,12 @@
 ﻿
 namespace Model.Utilities;
-public class FileIO {
+internal class FileIO {
 
     /// <summary>
     /// Return the platform-specific path of the current project directory
     /// </summary>
     /// <returns></returns>
-    public static string? GetProjectPath() {
+    internal static string? GetProjectPath() {
         // find base path of the project
         string? assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
         if (assemblyLocation != null) {

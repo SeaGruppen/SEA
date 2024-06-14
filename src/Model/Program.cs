@@ -3,11 +3,11 @@ using Survey;
 using Factory;
 using FrontEndAPI;
 using tmp_Moc;
-using UserValidation;
+using UserValidationModule;
 using Result;
 using Answer;
 using StatisticsModule;
-using Model.Database;
+using Model.DatabaseModule;
 
 internal class Program {
     private static void Main(string[] args) {
@@ -86,6 +86,10 @@ internal class Program {
 
             // delete src\surveyDatabase\ folder
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "surveyDatabase"));
+            if (di.Exists == false) {
+                Console.WriteLine("Old surveyDatabase not found.");
+                return;
+            }
             foreach (System.IO.FileInfo file in di.GetFiles()) {
                 file.Delete();
             }
@@ -94,6 +98,10 @@ internal class Program {
             }
 
             System.IO.DirectoryInfo di2 = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "UserCredentials"));
+            if (di2.Exists == false) {
+                Console.WriteLine("Old UserCredentials not found.");
+                return;
+            }
             foreach (System.IO.FileInfo file in di2.GetFiles()) {
                 file.Delete();
             }

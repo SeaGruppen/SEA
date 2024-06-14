@@ -1,7 +1,8 @@
 namespace Tests.Backend.Database;
 
 using Avalonia.Win32.DirectX;
-using Database = Model.Database.Database;
+using DatabaseClass = Model.DatabaseModule.Database;
+using Model.DatabaseModule;
 using Model.Survey;
 using System.Text.Json;
 
@@ -14,7 +15,7 @@ public class TestDatabaseServices
     {
         string testDbPath = "surveyDatabase/";
         string resultsPath = Path.Combine(testDbPath, "./results.csv");
-        Database db = new Database(testDbPath); 
+        IDatabase db = new DatabaseClass(testDbPath); 
         
 
         Assert.Multiple(() =>
@@ -33,7 +34,7 @@ public class TestDatabaseServices
     public void TestStoreSurveyWrapper()
     {
         string testDbPath = "surveyDatabase/";
-        Database db = new Database(testDbPath); 
+        IDatabase db = new DatabaseClass(testDbPath); 
 
         int id1 = 1111;
         int id2 = 2222;
@@ -69,7 +70,7 @@ public class TestDatabaseServices
     public void TestGetSurveyWrapper()
     {
         string testDbPath = "surveyDatabase/";
-        Database db = new Database(testDbPath); 
+        IDatabase db = new DatabaseClass(testDbPath); 
 
         int id3 = 3333;
         int id4 = 4444;

@@ -1,6 +1,6 @@
 ﻿
 namespace Tests.Backend.UserValidation;
-using Model.UserValidation;
+using Model.UserValidationModule;
 internal class UserValidatorTests
 {
     [SetUp]

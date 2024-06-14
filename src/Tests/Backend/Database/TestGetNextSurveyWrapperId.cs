@@ -1,4 +1,4 @@
-using Model.Database;
+using Model.DatabaseModule;
 using Model.Survey;
 using Model.Answer;
 using System.Text.Json;
@@ -8,11 +8,12 @@ using System.Text.Json;
 internal class TestGetNextSurveyWrapperId {
     string testDB = ("testDB");
     string creatorDictPath = Path.Combine("testDB", "creatorDict.json");
-    Database database;
+    IDatabase database;
     SurveyWrapper surveyWrapper;
 
     [SetUp]
     public void Setup() {
+        database = new Database(testDB);
         database = new Database(testDB);
     }
 

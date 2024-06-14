@@ -1,7 +1,7 @@
 namespace Model.StatisticsModule;
 using System;
 using System.Collections.Generic;
-using Database;
+using DatabaseModule;
 using Result;
 using Survey;
 using Utilities;

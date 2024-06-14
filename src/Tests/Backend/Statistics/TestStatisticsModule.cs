@@ -2,7 +2,7 @@ namespace Tests.Backend.StatisticsModule;
 
 using Model.StatisticsModule;
 using Model.Result;
-using Model.Database;
+using Model.DatabaseModule;
 using Model.Factory;
 using Model.Answer;
 using Model.Survey;
@@ -12,10 +12,11 @@ using Model.Question;
 internal class TestStatisticsModule {
     IStatistics statistics;
     string testDB = ("testDB");
-    Database database;
+    IDatabase database;
     SurveyWrapper surveyWrapper;
     [SetUp]
     public void SetUp() {
+        database = new Database(testDB);
         database = new Database(testDB);
         statistics = new Statistics(database);
 

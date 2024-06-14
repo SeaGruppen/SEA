@@ -2,7 +2,8 @@ namespace Tests.Backend.Database;
 
 using Model.StatisticsModule;
 using Model.Result;
-using Model.Database;
+using Model.DatabaseModule;
+using DatabaseClass = Model.DatabaseModule.Database;
 using Model.Factory;
 using Model.Answer;
 using Model.Survey;
@@ -12,7 +13,7 @@ using Model.Question;
 internal class TestDeleteSurveyWrapper {   
    
     string testDB = ("testDB");
-    Database database;
+    IDatabase database;
 
     string username;
 
@@ -27,7 +28,7 @@ internal class TestDeleteSurveyWrapper {
     
     [SetUp]
     public void SetUp() {
-        database = new Database(testDB);
+        database = new DatabaseClass(testDB);
         username = "sippo";
         otherUser = "notsippo";
         id = database.GetNextSurveyWrapperID(username);
