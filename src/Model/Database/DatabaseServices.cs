@@ -11,6 +11,7 @@ using Utilities;
 
 internal class DatabaseServices : IDatabase {
     
+    private string databaseName = "surveyDatabase";
     private string databasePath;
     private readonly string resultsPath;
     private readonly string creatorDictPath;
@@ -19,11 +20,11 @@ internal class DatabaseServices : IDatabase {
         string? projectPath = FileIO.GetProjectPath();
         if (projectPath != null)
         {
-            databasePath = Path.Combine(projectPath, "surveyDatabase");
+            databasePath = Path.Combine(projectPath, databaseName);
         }
         else
         {
-            databasePath = "surveyDatabase";
+            databasePath = databaseName;
         }
         Directory.CreateDirectory(databasePath); //is only created if not exists
         resultsPath = Path.Combine(databasePath, "results.csv");
@@ -121,20 +122,24 @@ internal class DatabaseServices : IDatabase {
     }
 
     public string StorePictureOverwrite(int surveyWrapperId, string src) {
+        string fileName = Path.GetFileName(src);
         string surveyAssetsPath = GetSurveyWrapperAssetsPath(surveyWrapperId); 
-        string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
+        string absDest = Path.Combine(surveyAssetsPath, fileName);
+        string relDest  = GetRelativePicturePath(surveyWrapperId, fileName);
         Directory.CreateDirectory(surveyAssetsPath);
-        File.Copy(src, dest, true); //true -> overwrites automatically if dest already exists
-        return dest;
+        File.Copy(src, absDest, true); //true -> overwrites automatically if dest already exists
+        return relDest;
     }
 
     public string TryStorePicture(int surveyWrapperId, string src) {
+        string fileName = Path.GetFileName(src);
         string surveyAssetsPath = GetSurveyWrapperAssetsPath(surveyWrapperId); 
-        string dest = Path.Combine(surveyAssetsPath, Path.GetFileName(src));
+        string absDest = Path.Combine(surveyAssetsPath, fileName);
+        string relDest  = GetRelativePicturePath(surveyWrapperId, fileName);
         Directory.CreateDirectory(surveyAssetsPath);
-        if (!File.Exists(dest)) {
-            File.Copy(src, dest);
-            return dest;
+        if (!File.Exists(absDest)) {
+            File.Copy(src, absDest);
+            return relDest;
         } else {
             throw new Exception("A file with this name already exists for this surveyWrapper");
         }
@@ -142,6 +147,10 @@ internal class DatabaseServices : IDatabase {
 
     private string GetSurveyWrapperAssetsPath(int surveyWrapperId) {
         return Path.Combine( GetSurveyWrapperPath(surveyWrapperId), "assets");
+    }
+
+    private string GetRelativePicturePath(int surveyWrapperId, string fileName) {
+        return Path.Combine(databaseName, surveyWrapperId.ToString(), "assets", fileName);
     }
 
     public int GetNextSurveyWrapperID(string superUserName) {

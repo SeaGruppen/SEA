@@ -1,6 +1,7 @@
 namespace Model.Question;
 using System.Text.Json.Serialization;
 using Answer;
+using Utilities;
 
 public class Question : IReadOnlyQuestion, IModifyQuestion {
     
@@ -16,10 +17,11 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     private string text;
     [JsonInclude]
     private Answer answer;
+    private string localProjectPath;
 
     public string ReadOnlyCaption => caption;
 
-    public string ReadOnlyPicture => picture;
+    public string ReadOnlyPicture => GetLocalPicturePath(picture);
 
     public string ReadOnlyText => text;
 
@@ -28,7 +30,10 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     public string QuestionId => id;
 
     public string ModifyCaption { get => caption; set => caption = value; }
-    public string ModifyPicture { get => picture; set => picture = value; }
+    public string ModifyPicture { 
+        get => GetLocalPicturePath(picture);
+        set => picture = value; 
+    }
     public string ModifyText { get => text; set => text = value; }
     public IModifyAnswer ModifyAnswer { get => answer; }
 
@@ -38,9 +43,17 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
         picture = string.Empty;
         text = string.Empty;
         answer = new Answer();
+        localProjectPath = FileIO.GetProjectPath();
     }
 
     internal void UpdateId(string newQuestionId) {
         id = newQuestionId;
+    }
+
+    private string GetLocalPicturePath(string picture) {
+        if (string.IsNullOrEmpty(picture)) {
+            return picture;
+        }
+        return Path.Combine(localProjectPath, picture);
     }
 }
