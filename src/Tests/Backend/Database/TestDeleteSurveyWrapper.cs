@@ -12,7 +12,7 @@ using Model.Question;
 internal class TestDeleteSurveyWrapper {   
    
     string testDB = ("testDB");
-    DatabaseServices database;
+    Database database;
 
     string username;
 
@@ -27,7 +27,7 @@ internal class TestDeleteSurveyWrapper {
     
     [SetUp]
     public void SetUp() {
-        database = new DatabaseServices(testDB);
+        database = new Database(testDB);
         username = "sippo";
         otherUser = "notsippo";
         id = database.GetNextSurveyWrapperID(username);

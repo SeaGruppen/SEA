@@ -8,12 +8,12 @@ using System.Text.Json;
 internal class TestGetSurveyWrapperForSuperUser {
     string testDB = ("testDB");
     string creatorDictPath = Path.Combine("testDB", "creatorDict.json");
-    DatabaseServices database;
+    Database database;
     SurveyWrapper surveyWrapper;
 
     [SetUp]
     public void Setup() {
-        database = new DatabaseServices(testDB);
+        database = new Database(testDB);
     }
 
     [TearDown]
