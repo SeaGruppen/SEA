@@ -1,4 +1,4 @@
-namespace Model.Database;
+namespace Model.DatabaseModule;
 
 using System.Collections.Generic;
 using Result;

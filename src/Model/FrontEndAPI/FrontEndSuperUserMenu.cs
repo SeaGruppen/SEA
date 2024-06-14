@@ -1,6 +1,6 @@
 namespace Model.FrontEndAPI;
 using Survey;
-using Database;
+using DatabaseModule;
 using UserValidation;
 
 internal class FrontEndSuperUserMenu : IFrontEndSuperUser {

@@ -7,7 +7,7 @@ using UserValidation;
 using Result;
 using Answer;
 using StatisticsModule;
-using Model.Database;
+using Model.DatabaseModule;
 
 internal class Program {
     private static void Main(string[] args) {
