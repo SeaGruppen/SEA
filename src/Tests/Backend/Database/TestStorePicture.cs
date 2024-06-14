@@ -1,4 +1,6 @@
-using Model.Database;
+namespace Tests.Backend.Database;
+using DatabaseClass = Model.DatabaseModule.Database;
+using Model.DatabaseModule;
 using Model.Survey;
 using Model.Answer;
 using System.Text.Json;
@@ -8,7 +10,7 @@ using Model.Utilities;
 [TestFixture]
 internal class TestStorePicture {
     string testDB = ("testDB");
-    Database db;
+    IDatabase db;
     SurveyWrapper surveyWrapper;
 
     int id = 222222;
@@ -20,7 +22,7 @@ internal class TestStorePicture {
 
     [SetUp]
     public void Setup() {
-        db = new Database(testDB);
+        db = new DatabaseClass(testDB);
         src = Path.Combine(FileIO.GetProjectPath(), "..", "assets", fileName);
         relDest = Path.Combine(testDB, id.ToString(), "assets", fileName);
     }
