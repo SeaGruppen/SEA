@@ -5,7 +5,7 @@ using FrontEndAPI;
 using Result;
 using Answer;
 using StatisticsModule;
-using UserValidation;
+using UserValidationModule;
 
 public static class FrontEndFactory {
 

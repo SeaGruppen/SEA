@@ -1,5 +1,5 @@
 ﻿
-namespace Model.UserValidation;
+namespace Model.UserValidationModule;
 
 using Model.Utilities;
 using System.Collections.Generic;

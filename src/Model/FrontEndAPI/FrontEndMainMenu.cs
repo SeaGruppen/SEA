@@ -1,7 +1,7 @@
 namespace Model.FrontEndAPI;
 using DatabaseModule;
 using Survey;
-using UserValidation;
+using UserValidationModule;
 
 internal class FrontEndMainMenu : IFrontEndMainMenu {
 

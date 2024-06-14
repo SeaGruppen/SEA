@@ -1,4 +1,4 @@
-﻿namespace Model.UserValidation {
+﻿namespace Model.UserValidationModule {
     internal interface ISuperUserValidator {
         bool ValidateSuperUser(string username, string password);
 
