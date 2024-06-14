@@ -86,6 +86,10 @@ internal class Program {
 
             // delete src\surveyDatabase\ folder
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "surveyDatabase"));
+            if (di.Exists == false) {
+                Console.WriteLine("Old database not found.");
+                return;
+            }
             foreach (System.IO.FileInfo file in di.GetFiles()) {
                 file.Delete();
             }
