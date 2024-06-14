@@ -1,5 +1,5 @@
 ﻿namespace Model.UserValidation {
-    public interface ISuperUserValidator {
+    internal interface ISuperUserValidator {
         bool ValidateSuperUser(string username, string password);
 
         bool AddSuperUserCredentials(string username, string password);
