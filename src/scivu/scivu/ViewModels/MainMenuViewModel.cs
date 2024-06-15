@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net.Http;
 using Model.FrontEndAPI;
-using Model.UserValidation;
 using ReactiveUI;
 using scivu.Model;
 

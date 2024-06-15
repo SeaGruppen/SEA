@@ -16,7 +16,7 @@ public class ScaleQuestionViewModel : QuestionBaseViewModel
     public ScaleQuestionViewModel(string questionText, ReadOnlyCollection<string> answers)
     {
         Text = questionText;
-        
+
         if (answers.Count != 2)
         {
             throw new ArgumentException(ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.ERR_ScaleRangeInvalid));
@@ -63,7 +63,7 @@ public class ScaleQuestionViewModel : QuestionBaseViewModel
         {
             return;
         }
-        
+
         // Find the correct radiobutton to check
         foreach (var button in Buttons)
         {

@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Reactive;
 using ReactiveUI;
 using Model.FrontEndAPI;
 using Model.Survey;
 using Model.Factory;
-using Model.Question;
-using Model.Answer;
-using Avalonia.Metadata;
-
 
 namespace scivu.ViewModels;
 
