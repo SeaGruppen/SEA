@@ -13,7 +13,7 @@ public class MultiQuestionViewModel : QuestionBaseViewModel
     public MultiQuestionViewModel(string questionText, ReadOnlyCollection<string> answers)
     {
         QuestionText = questionText;
-        
+
         foreach (var answer in answers)
         {
             Toggles.Add(new ToggleButton

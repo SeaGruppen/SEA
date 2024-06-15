@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net.Http;
 using Model.FrontEndAPI;
 using ReactiveUI;
 using scivu.Model;
