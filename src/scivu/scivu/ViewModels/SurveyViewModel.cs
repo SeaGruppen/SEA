@@ -26,11 +26,6 @@ public class SurveyViewModel : ViewModelBase
         _handleCommand("select", SurveyWrapper);
     }
 
-    public void CopyCommand()
-    {
-        _handleCommand("copy", SurveyWrapper);
-    }
-
     public void ExportCommand()
     {
         _handleCommand("export", SurveyWrapper);

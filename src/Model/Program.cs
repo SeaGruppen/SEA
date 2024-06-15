@@ -3,10 +3,11 @@ using Survey;
 using Factory;
 using FrontEndAPI;
 using tmp_Moc;
-using UserValidation;
+using UserValidationModule;
 using Result;
 using Answer;
 using StatisticsModule;
+using Model.DatabaseModule;
 
 internal class Program {
     private static void Main(string[] args) {
@@ -17,44 +18,62 @@ internal class Program {
         IFrontEndMainMenu mainMenu = FrontEndFactory.CreateMainMenu();
         IStatistics statisticsModule = FrontEndFactory.CreateStatistics();
 
-        // Check if Sippo exist as super user
-        if (!superUserValidator.ValidateSuperUser("Sippo", "123456"))
-            // Add Sippo as super user
-            System.Console.WriteLine($"Adding Sippo to SuperUsers went well: {mainMenu.AddSuperUser("Sippo", "123456")}");
-
-        // Get surveys from Sippo
-        var sipposSurveys = mainMenu.ValidateSuperUser("Sippo", "123456");
-        if (sipposSurveys != null) {
-            System.Console.WriteLine($"Validate Sippo as SuperUser: {sipposSurveys.Count()}");
-        }
-        else {
-            System.Console.WriteLine("Validation if Sippo as superuser failed");
-        }
-
-        // Check how many surveys Sippo has currently
-        System.Console.WriteLine("Current number of SurveyWrappers that Sippo has:");
-        List<IModifySurveyWrapper>? randomUserSurveyWrappers = SUMenu.GetSurveyWrappersFromSuperUser("Sippo");
-        if (randomUserSurveyWrappers != null)
-            System.Console.WriteLine($"Sippo has {randomUserSurveyWrappers.Count()} surveyWrappers");
-        else
-            System.Console.WriteLine("Sippo has no surveyWrappers");
+        AddSippoToUserCredentials(superUserValidator, mainMenu);
+        
+        CheckHowManySurveysSippoHave(SUMenu);
 
         // System.Console.WriteLine($"Sippo currently has ");
         int TestSurvey = CreateExampleSurvey.CreateSurveyWrapper("Sippo", "Test survey for SEA!");
+
+        CheckHowManySurveyWrappersSippoHasNow(SUMenu, TestSurvey);
+        
+        AddResultsToSurveyWrapper(statisticsModule, TestSurvey, 0);
+
+    }
+
+    private static void CheckHowManySurveyWrappersSippoHasNow(IFrontEndSuperUser SUMenu, int TestSurvey)
+    {
         System.Console.WriteLine($"New survey created for Sippo to test on!: SurveyWrapperId = {TestSurvey}");
-        List<IModifySurveyWrapper>? randomUserSurveyWrappers1 = SUMenu.GetSurveyWrappersFromSuperUser("Sippo");
+        List<IModifySurveyWrapper>? randomUserSurveyWrappers1 = SUMenu.GetSurveyWrappersFromSuperUser("Sippo", "123456");
         if (randomUserSurveyWrappers1 != null)
             System.Console.WriteLine($"Sippo now has {randomUserSurveyWrappers1.Count()} surveyWrappers");
         else
             System.Console.WriteLine("Sippo still have no surveyWrappers");
 
         // Add results to the TestSurvey
-        AddResultsToSurveyWrapper(TestSurvey, 0);
-        // Check if the random generated results are not messed up
-        System.Console.WriteLine($"Number of questions in TestSurvey {TestSurvey}: {statisticsModule.NumberOfQuestionsInSurvey(TestSurvey.ToString() + ".0")}");
-        System.Console.WriteLine($"Number of started surveys in TestSurvey {TestSurvey}: {statisticsModule.StartedSurveysInWrapper(TestSurvey)}");
-        System.Console.WriteLine($"Number of finished surveys in TestSurvey {TestSurvey}: {statisticsModule.FinishedSurveysInWrapper(TestSurvey)}");
-        System.Console.WriteLine($"AverageCompletionRate in TestSurvey {TestSurvey}: {statisticsModule.AverageCompletionRateSurveyWrapper(TestSurvey)}");
+    }
+
+    private static void CheckHowManySurveysSippoHave(IFrontEndSuperUser SUMenu)
+    {
+        // Check how many surveys Sippo has currently
+        System.Console.WriteLine("Current number of SurveyWrappers that Sippo has:");
+        List<IModifySurveyWrapper>? randomUserSurveyWrappers = SUMenu.GetSurveyWrappersFromSuperUser("Sippo", "123456");
+        if (randomUserSurveyWrappers != null)
+            System.Console.WriteLine($"Sippo has {randomUserSurveyWrappers.Count()} surveyWrappers");
+        else
+            System.Console.WriteLine("Sippo has no surveyWrappers");
+    }
+
+    private static void AddSippoToUserCredentials(ISuperUserValidator superUserValidator, IFrontEndMainMenu mainMenu)
+    {
+        // Check if Sippo exist as super user
+        if (!superUserValidator.ValidateSuperUser("Sippo", "123456"))
+            // Add Sippo as super user
+            System.Console.WriteLine($"Adding Sippo to SuperUsers went well: {mainMenu.AddSuperUser("Sippo", "123456")}");
+        else {
+            System.Console.WriteLine("sippo already exists as superuser");
+        }
+        // Get surveys from Sippo
+        // Validate that logging in to Sippo works
+        List<IModifySurveyWrapper>? sipposSurveys = mainMenu.ValidateSuperUser("Sippo", "123456");
+        if (sipposSurveys == null)
+        {
+            System.Console.WriteLine("Validation of Sippo as superuser failed");
+        }
+        else
+        {
+            System.Console.WriteLine($"Validate Sippo as SuperUser, Sippo has: {sipposSurveys.Count()} survey");
+        }
     }
 
     private static void AskIfDeleteCurrentDatabase() {
@@ -67,6 +86,10 @@ internal class Program {
 
             // delete src\surveyDatabase\ folder
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "surveyDatabase"));
+            if (di.Exists == false) {
+                Console.WriteLine("Old surveyDatabase not found.");
+                return;
+            }
             foreach (System.IO.FileInfo file in di.GetFiles()) {
                 file.Delete();
             }
@@ -74,14 +97,23 @@ internal class Program {
                 dir.Delete(true);
             }
 
-            Console.WriteLine("Old database deleted.");
+            System.IO.DirectoryInfo di2 = new System.IO.DirectoryInfo(System.IO.Path.Combine(projectPath, "UserCredentials"));
+            if (di2.Exists == false) {
+                Console.WriteLine("Old UserCredentials not found.");
+                return;
+            }
+            foreach (System.IO.FileInfo file in di2.GetFiles()) {
+                file.Delete();
+            }
+
+            Console.WriteLine("Old database and usercredentials deleted deleted.");
         }
         else {
             Console.WriteLine("Old database not deleted.");
         }
     }
 
-    private static void AddResultsToSurveyWrapper(int surveyWrapper, int surveyId) {
+    private static void AddResultsToSurveyWrapper(IStatistics statisticsModule, int surveyWrapper, int surveyId) {
         System.Console.WriteLine("Adding results to the TestSurvey");
         IFrontEndExperimenter experimenter = FrontEndFactory.CreateExperimenterMenu();
 
@@ -99,5 +131,10 @@ internal class Program {
                 }
             }
         }
+        // Check if the random generated results are not messed up
+        System.Console.WriteLine($"Number of questions in TestSurvey {surveyWrapper}: {statisticsModule.NumberOfQuestionsInSurvey(surveyWrapper.ToString() + ".0")}");
+        System.Console.WriteLine($"Number of started surveys in TestSurvey {surveyWrapper}: {statisticsModule.StartedSurveysInWrapper(surveyWrapper)}");
+        System.Console.WriteLine($"Number of finished surveys in TestSurvey {surveyWrapper}: {statisticsModule.FinishedSurveysInWrapper(surveyWrapper)}");
+        System.Console.WriteLine($"AverageCompletionRate in TestSurvey {surveyWrapper}: {statisticsModule.AverageCompletionRateSurveyWrapper(surveyWrapper)}");
     }
 }

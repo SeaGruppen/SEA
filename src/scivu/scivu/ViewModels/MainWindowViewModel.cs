@@ -22,7 +22,6 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        _mainMenuClient = FrontEndFactory.CreateMainMenu();
         _experimenterClient = FrontEndFactory.CreateExperimenterMenu();
 
         // We cache our survey taker both to avoid creating a new version
@@ -68,6 +67,12 @@ public class MainWindowViewModel : ViewModelBase
                 break;
             case "SuperUserMenu" when arg is (string username, string password, List<IModifySurveyWrapper> surveys):
                 ContentViewModel = new SuperUserMenuViewModel(ChangeViewTo, _superUserClient, username, password, surveys);
+                break;
+            case "SuperUserMenu" when arg is (string username, string password):
+                ContentViewModel = new SuperUserMenuViewModel(ChangeViewTo, _superUserClient, username, password);
+                break;
+            case "SurveySelectMenu" when arg is (IModifySurveyWrapper surveyWrapper, string username, string password):
+                ContentViewModel = new SelectSurveyMenuViewModel(ChangeViewTo,surveyWrapper, username,password);
                 break;
             default:
                 throw new ArgumentException($"Invalid view model `{vm}` with invalid argument `{arg}`");

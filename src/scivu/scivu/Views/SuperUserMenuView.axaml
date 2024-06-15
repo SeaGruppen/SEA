@@ -11,13 +11,13 @@
               <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
                 <TextBox Text="{Binding SearchText}" Watermark="Search for Surveys..."/>
                 <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
-                <ScrollViewer>
+                <ScrollViewer MaxHeight = "500">
                 <ListBox ItemsSource="{Binding AvailableSurveys}" SelectedItem="{Binding SelectedSurvey}"
                          IsVisible="{Binding VisibleCollection}" ScrollViewer.VerticalScrollBarVisibility="Visible">
                   <ListBox.ItemTemplate>
                     <DataTemplate>
                       <Border BorderBrush="Gray" BorderThickness="3" CornerRadius="5" Margin="5" Padding="10" Background="#FFF">
-                        <StackPanel>
+                        <StackPanel Width="500">
                           <TextBlock Text="{Binding SurveyName}" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
                           <TextBlock Text="{Binding SurveyID}" Margin="0,0,0,10"/>
                           <StackPanel Orientation="Horizontal">
@@ -31,12 +31,13 @@
                   </ListBox.ItemTemplate>
                 </ListBox>
                 </ScrollViewer>
+                <ScrollViewer MaxHeight = "500">
                 <ListBox ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedSurvey}"
                          IsVisible="{Binding !VisibleCollection}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                   <ListBox.ItemTemplate>
                     <DataTemplate>
                       <Border BorderBrush="Gray" BorderThickness="3" CornerRadius="5" Margin="5" Padding="10" Background="#FFF">
-                        <StackPanel>
+                        <StackPanel Width="500">
                           <TextBlock Text="{Binding SurveyName}" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
                           <TextBlock Text="{Binding SurveyID}" Margin="0,0,0,10"/>
                           <StackPanel Orientation="Horizontal">
@@ -49,6 +50,7 @@
                     </DataTemplate>
                   </ListBox.ItemTemplate>
                 </ListBox>
+                </ScrollViewer>
               </StackPanel>
               <Button Content="Main Menu"
                       Command="{Binding ChangeView}"
@@ -62,17 +64,3 @@
             </DockPanel>
 
 </UserControl>
-
-<!--
-<StackPanel HorizontalAlignment=""
-                          VerticalAlignment="Center"
-                          Spacing="25">
-                  <Button Command="{Binding ChangeView}"
-                          CommandParameter="MainMenu">
-                    Go back
-                  </Button>
-                  
-                <TextBlock Margin="0.5"> Select a survey or create a new </TextBlock>
-
-              </StackPanel>
--->

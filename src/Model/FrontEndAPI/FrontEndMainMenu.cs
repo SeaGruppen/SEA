@@ -1,7 +1,7 @@
 namespace Model.FrontEndAPI;
-using Database;
+using DatabaseModule;
 using Survey;
-using UserValidation;
+using UserValidationModule;
 
 internal class FrontEndMainMenu : IFrontEndMainMenu {
 
@@ -30,7 +30,7 @@ internal class FrontEndMainMenu : IFrontEndMainMenu {
         if (superUserValidator.ValidateSuperUser(username, password)) {
             List<SurveyWrapper>? surveyWrappers = db.GetSurveyWrapperForSuperUser(username);
             if (surveyWrappers == null) {
-                return null;
+                return new List<IModifySurveyWrapper>();
             }
             List<IModifySurveyWrapper> result = new List<IModifySurveyWrapper>(surveyWrappers.Cast<IModifySurveyWrapper>().ToList());
             return result;

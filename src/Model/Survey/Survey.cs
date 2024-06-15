@@ -15,7 +15,7 @@ internal class Survey : IReadOnlySurvey, IModifySurvey {
     public IReadOnlyList<MultiQuestion> SurveyQuestions => surveyQuestions;
 
     [JsonInclude]
-    int nextMultiQuestionId = 0;
+    private int nextMultiQuestionId = 0;
 
     private int current = -1;
 

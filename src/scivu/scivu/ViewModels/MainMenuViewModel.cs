@@ -91,7 +91,7 @@ public class MainMenuViewModel : ViewModelBase
         var file = await FileExplorer.OpenSurveyAsync();
         if (file != null)
         {
-            var path = file.Path.ToString();
+            var path = file.Path.AbsolutePath.ToString();;
             if (_client.ImportSurveyWrapper(path))
             {
                 return;

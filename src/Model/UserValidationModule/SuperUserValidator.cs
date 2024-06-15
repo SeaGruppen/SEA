@@ -1,5 +1,5 @@
 ﻿
-namespace Model.UserValidation;
+namespace Model.UserValidationModule;
 
 using Model.Utilities;
 using System.Collections.Generic;
@@ -8,14 +8,14 @@ using System.Text;
 
 internal class SuperUserValidator : ISuperUserValidator {
     // Created for testing purposes. Contains hashed passwords.
-    public static IReadOnlyDictionary<string, string> SuperUserCredentials => superUserCredentials;
+    internal static IReadOnlyDictionary<string, string> SuperUserCredentials => superUserCredentials;
 
     private static Dictionary<string, string> superUserCredentials;
 
-    // Made public for testing purposes
-    public static string UserCredentialsFilePath;
+    // Made internal for testing purposes
+    internal static string UserCredentialsFilePath;
 
-    public SuperUserValidator() {
+    internal SuperUserValidator() {
         string userCredentialsDirectoryPath;
 
         string? projectPath = FileIO.GetProjectPath();

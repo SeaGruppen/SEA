@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Model.Database;
+using Model.DatabaseModule;
 using Model.FrontEndAPI;
 using Moq;
 
@@ -7,16 +7,16 @@ namespace Tests.Backend.FrontEndAPI
 {
     internal class FrontEndMainMenuTests
     {
-        //private Fixture _fixture;
+        // private Fixture _fixture;
 
-        //public FrontEndMainMenuTests() 
-        //{
+        // public FrontEndMainMenuTests() 
+        // {
         //    _fixture = new Fixture();
-        //}
+        // }
 
-        //[Test]
-        //public void TestExportResults()
-        //{
+        // [Test]
+        // public void TestExportResults()
+        // {
         //    var _fixture = new Fixture();
         //    var databaseMock = Mock.Of<IDatabase>();
         //    var databaseMockObject = Mock.Get(databaseMock).Object;
@@ -27,7 +27,7 @@ namespace Tests.Backend.FrontEndAPI
         //    var res = sut.ExportResults(1, "path");
 
         //    Assert.IsFalse(res);
-        //}
+        // }
     }
 }
 
