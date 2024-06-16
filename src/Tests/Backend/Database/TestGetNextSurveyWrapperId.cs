@@ -1,3 +1,4 @@
+namespace Tests.Backend.Database;
 using Model.DatabaseModule;
 using Model.Survey;
 using Model.Answer;
