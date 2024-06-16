@@ -18,5 +18,5 @@ internal interface IDatabase {
     bool StoreResults(List<Result> results);
     bool StoreResult(IResult result);
     List<int> GetAllSurveyWrapperIds();
-    int GetNextUserId();
+    uint GetNextUserId();
 }

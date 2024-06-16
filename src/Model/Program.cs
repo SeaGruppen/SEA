@@ -7,7 +7,6 @@ using UserValidationModule;
 using Result;
 using Answer;
 using StatisticsModule;
-using Model.DatabaseModule;
 
 internal class Program {
     private static void Main(string[] args) {
@@ -77,6 +76,7 @@ internal class Program {
     }
 
     private static void AskIfDeleteCurrentDatabase() {
+        #nullable disable
         Console.WriteLine("Do you want to delete the old database? (Y)es, (N)o");
         string input = Console.ReadLine();
 
@@ -106,11 +106,12 @@ internal class Program {
                 file.Delete();
             }
 
-            Console.WriteLine("Old database and usercredentials deleted deleted.");
+            Console.WriteLine("Old database and usercredentials deleted.");
         }
         else {
             Console.WriteLine("Old database not deleted.");
         }
+        #nullable restore
     }
 
     private static void AddResultsToSurveyWrapper(IStatistics statisticsModule, int surveyWrapper, int surveyId) {
