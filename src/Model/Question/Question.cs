@@ -17,7 +17,7 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     private string text;
     [JsonInclude]
     private Answer answer;
-    private string localProjectPath;
+    private string? localProjectPath;
 
     public string ReadOnlyCaption => caption;
 
@@ -51,7 +51,7 @@ public class Question : IReadOnlyQuestion, IModifyQuestion {
     }
 
     private string GetLocalPicturePath() {
-        if (string.IsNullOrEmpty(picture)) {
+        if (string.IsNullOrEmpty(picture) || string.IsNullOrEmpty(localProjectPath)) {
             return picture;
         }
         return Path.Combine(localProjectPath, picture);

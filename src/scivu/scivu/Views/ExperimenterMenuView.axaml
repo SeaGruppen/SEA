@@ -42,12 +42,6 @@
               </TextBlock>
               <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding AverageCompletionRate, StringFormat='Average Completion rate: {0}%'}">
               </TextBlock>
-              <TextBlock Grid.Row="2" Grid.Column="2">
-                Placeholder
-              </TextBlock>
-              <TextBlock Grid.Row="2" Grid.Column="4">
-                Placeholder
-              </TextBlock>
       </Grid>
 
 

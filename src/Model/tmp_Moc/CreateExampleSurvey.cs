@@ -6,7 +6,7 @@ using Factory;
 using FrontEndAPI;
 using Model.Utilities;
     public class CreateExampleSurvey {
-
+        #nullable disable
         private static IFrontEndSuperUser superuserMenu = FrontEndFactory.CreateSuperUserMenu();
         // private string projectPath => FileIO.GetProjectPath();
         public static int CreateSurveyWrapper(string superUser, string surveyWrapperName) {
@@ -108,4 +108,5 @@ using Model.Utilities;
             superuserMenu.StoreSurveyWrapperInDatabase(surveyWrapper);
             return surveyWrapper.SurveyWrapperId;
         }
+        #nullable enable
     }

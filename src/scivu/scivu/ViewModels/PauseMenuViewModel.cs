@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using Model.FrontEndAPI;
 using ReactiveUI;
 using scivu.Model;
 using Model.Survey;
-using scivu.ViewModels;
 
 namespace scivu.ViewModels;
 
