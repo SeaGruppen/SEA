@@ -323,9 +323,9 @@ internal class Database : IDatabase {
         return result;
     }
 
-    public uint GetNextUserId() {
+    public int GetNextUserId() {
         Guid guid = Guid.NewGuid();
-        uint result = (uint) guid.GetHashCode();
+        int result = guid.GetHashCode();
         return result;
     }
 }

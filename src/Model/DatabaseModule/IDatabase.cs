@@ -168,6 +168,6 @@ internal interface IDatabase {
     /// <summary>
     /// Returns a hash of a GUID
     /// </summary>
-    /// <returns>uint</returns>
-    uint GetNextUserId();
+    /// <returns>int</returns>
+    int GetNextUserId();
 }

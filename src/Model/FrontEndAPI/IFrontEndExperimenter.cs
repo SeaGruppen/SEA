@@ -14,7 +14,7 @@ public interface IFrontEndExperimenter {
     /// Request next user id.
     /// </summary>
     /// <returns>uint</returns>
-    uint GetNextUserId();
+    int GetNextUserId();
 
     /// <summary>
     /// Export results related to a SurveyWrapper to the path given as input. It returns true if the export was successful, false otherwise.
