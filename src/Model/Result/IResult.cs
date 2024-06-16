@@ -1,7 +1,6 @@
 ﻿namespace Model.Result;
 using Answer;
-public interface IResult
-{
+public interface IResult {
     /// <summary>
     /// Get the type of the answer
     /// </summary>
