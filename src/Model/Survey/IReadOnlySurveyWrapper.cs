@@ -2,13 +2,25 @@ namespace Model.Survey;
 
 public interface IReadOnlySurveyWrapper {
 
-    // List<SurveyA,SurveyB>
+    /// <summary>
+    /// Gets survey version based on index
+    /// </summary>
+    /// <param name="index">Index of survey version to get</param>
+    /// <returns>Returns survey version if index is valid, otherwise null</returns>
+    IReadOnlySurvey? TryGetReadOnlySurveyVersion(int index);
 
-    IReadOnlySurvey? TryGetReadOnlySurveyVersion(int index); // Return survey index'
+    /// <summary>
+    /// Returns the number of versions
+    /// </summary>
+    int GetVersionCount();
 
-    int GetVersionCount(); // Return number of versions
-
+    /// <summary>
+    /// Returns the survey wrapper name
+    /// </summary>
     string SurveyWrapperName { get; }
-    int SurveyWrapperId { get; }
 
+    /// <summary>
+    /// Returns the nsurvey wrapper id
+    /// </summary>
+    int SurveyWrapperId { get; }
 }
