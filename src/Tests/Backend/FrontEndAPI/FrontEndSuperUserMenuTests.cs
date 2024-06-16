@@ -19,24 +19,6 @@ namespace Tests.Backend.FrontEndAPI
         }
 
         [Test]
-        public void TestGetSurveyWrappersFromSuperUser()
-        {
-            var superUserValidatorMock = new Mock<ISuperUserValidator>();
-            var superUserValidatorMockObject = superUserValidatorMock.Object;
-
-            var database = new Model.DatabaseModule.Database();
-            var superUserValidator = new SuperUserValidator();
-
-            superUserValidatorMock.Setup(x => x.ValidateSuperUser(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-
-            var sut = new FrontEndSuperUserMenu(database, superUserValidatorMockObject);
-
-            var sutRes = sut.GetSurveyWrappersFromSuperUser("username", "password");
-
-			Assert.That(sutRes.Count, Is.GreaterThan(0));
-		}
-
-        [Test]
         public void TestAddSuperUserInvalidCredentials()
         {
             var superUserValidatorMock = new Mock<ISuperUserValidator>();

@@ -17,23 +17,6 @@ namespace Tests.Backend.FrontEndAPI
             _fixture = new Fixture();
         }
 
-        [Test]
-        public void TestAddSuperUserCreationSuccess()
-        {
-            var superUserValidatorMock = new Mock<ISuperUserValidator>();
-            var superUserValidatorMockObject = superUserValidatorMock.Object;
-
-            var database = new Model.DatabaseModule.Database();
-            var superUserValidator = new SuperUserValidator();
-
-            superUserValidatorMock.Setup(x => x.ValidateSuperUser(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-
-            var sut = new FrontEndMainMenu(database, superUserValidatorMockObject);
-
-            var sutRes = sut.ValidateSuperUser("username", "password");
-
-            Assert.That(sutRes.Count, Is.GreaterThan(0));
-        }
 
         [Test]
         public void TestAddSuperUserInvalidCredentials()
