@@ -10,6 +10,7 @@ public static class ErrorDiagnostics
     static ErrorDiagnostics()
     {
         Errors[ErrorDiagnosticsID.ERR_PinCodeNotFound] = "PIN does not match any survey.";
+        Errors[ErrorDiagnosticsID.ERR_PinCodeNotFoundLockscreen] = "PIN does match current survey.";
         Errors[ErrorDiagnosticsID.ERR_InvalidLogin] = "Invalid username or password";
         Errors[ErrorDiagnosticsID.ERR_ScaleRangeNotInt] = "Range must consist of integers";
         Errors[ErrorDiagnosticsID.ERR_ScaleRangeInvalid] = $"Range must be [a,b] where {SharedConstants.ScaleMinimumValue}<a<b";
