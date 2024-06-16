@@ -226,7 +226,7 @@ internal class Database : IDatabase {
         List<Result> results = new List<Result>();
         try {
             using (StreamReader reader = new StreamReader(resultsPath, Encoding.UTF8)) {
-                string line;
+                string? line;
                 while ((line = reader.ReadLine()) != null) {
                     Result result;
                     try {
@@ -301,7 +301,10 @@ internal class Database : IDatabase {
         }
         List<SurveyWrapper> surveyWrapperList = new List<SurveyWrapper>();
         foreach (int surveyWrapperId in creatorDict[superUserName]) {
-            surveyWrapperList.Add(GetSurveyWrapper(surveyWrapperId));
+            SurveyWrapper? surveyWrapper = GetSurveyWrapper(surveyWrapperId);
+            if (surveyWrapper != null) {
+                surveyWrapperList.Add(surveyWrapper);
+            }
         }
         return surveyWrapperList;
     }
@@ -320,9 +323,9 @@ internal class Database : IDatabase {
         return result;
     }
 
-    public int GetNextUserId() {
+    public uint GetNextUserId() {
         Guid guid = Guid.NewGuid();
-        int result = guid.GetHashCode();
+        uint result = (uint) guid.GetHashCode();
         return result;
     }
 }
