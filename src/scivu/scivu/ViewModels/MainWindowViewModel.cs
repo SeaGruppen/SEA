@@ -36,7 +36,7 @@ public class MainWindowViewModel : ViewModelBase
 
         _contentViewModel = new MainMenuViewModel(ChangeViewTo, _mainMenuClient);
 
-        _superUserClient= FrontEndFactory.CreateSuperUserMenu();
+        _superUserClient = FrontEndFactory.CreateSuperUserMenu();
     }
 
     public ViewModelBase ContentViewModel
@@ -53,7 +53,7 @@ public class MainWindowViewModel : ViewModelBase
         switch (vm)
         {
             case "TakeSurvey" when arg is IReadOnlySurveyWrapper survey:
-                _surveyTaker.StartNewSurvey(survey, 42);
+                _surveyTaker.StartNewSurvey(survey, _experimenterClient.GetNextUserId());
                 ContentViewModel = _surveyTaker;
                 break;
             case "ExperimenterMenu" when arg is IReadOnlySurveyWrapper survey:
@@ -72,7 +72,7 @@ public class MainWindowViewModel : ViewModelBase
                 ContentViewModel = new SuperUserMenuViewModel(ChangeViewTo, _superUserClient, username, password);
                 break;
             case "SurveySelectMenu" when arg is (IModifySurveyWrapper surveyWrapper, string username, string password):
-                ContentViewModel = new SelectSurveyMenuViewModel(ChangeViewTo,surveyWrapper, username,password);
+                ContentViewModel = new SelectSurveyMenuViewModel(ChangeViewTo, surveyWrapper, username, password);
                 break;
             default:
                 throw new ArgumentException($"Invalid view model `{vm}` with invalid argument `{arg}`");
