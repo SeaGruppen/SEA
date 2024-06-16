@@ -18,7 +18,7 @@ namespace Tests.Backend.FrontEndAPI
         }
 
         [Test]
-        public void TestAddSuperUser()
+        public void TestAddSuperUserCreationSuccess()
         {
             var superUserValidatorMock = new Mock<ISuperUserValidator>();
             var superUserValidatorMockObject = superUserValidatorMock.Object;
