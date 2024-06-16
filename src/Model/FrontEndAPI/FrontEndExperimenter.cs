@@ -13,7 +13,7 @@ internal class FrontEndExperimenter : IFrontEndExperimenter {
         databaseService.StoreResult(answer);   
     }
     
-    public int GetNextUserId() {
+    public uint GetNextUserId() {
         return databaseService.GetNextUserId();
     }
     

@@ -8,13 +8,14 @@ using System.Text.Json.Serialization;
 /// </summary>
 
 internal class MultiQuestionConverter : JsonConverter<MultiQuestion> {
-    public override MultiQuestion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
+    public override MultiQuestion Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
         var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(ref reader, options);
+        #nullable disable
         var multiQuestion = new MultiQuestion(dict["MultiQuestionId"].GetString());
         multiQuestion.NextQuestionId = dict["NextQuestionId"].GetInt32();
         multiQuestion.questions = JsonSerializer.Deserialize<List<Question>>(dict["Questions"].GetRawText(), options);
         return multiQuestion;
+        #nullable restore
     }
 
     public override void Write(Utf8JsonWriter writer, MultiQuestion value, JsonSerializerOptions options)
