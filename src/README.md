@@ -6,13 +6,18 @@ password: 123456
 
 Example survey pincode: 
 
-## Start Program
+## Start program through executeable.
+*The executeable is made for a the x64 chip, if an amd processor is used, a release will need to be build for that, or use *Start Program through VSCode/Terminal**
+Double click the 'scivu' executeable file in the zipfolder.
+*Debugging hint: if you get permissions denied, you may need to enter "privacy & security" and 'Open Anyway' 
+
+## Start Program through VSCode/terminal
 Open terminal at : /SEA/src/scivu/scivu/ \
 Enter command 'dotnet run'
 A new window will open in which the program is run. 
 
-
-## Run experiment:
+## Use cases:
+### Run experiment:
 *Do 'Start Program'
 There are one survey with two versions in it in the database. \
 The survey is loaded by clicking "Experimenter Login"\
@@ -24,12 +29,24 @@ Take survey, click "next"/"finish" when done with a set of questions\
 *After you have clicked finish, you will reach a lock screen.*\
 Reenter *pin code* to pick next experimentee or exit to experimenter start screen.
 
-## Import Survey
+### Create new sample survey
+Enter folder "/SEA/src/Model/" in terminal\
+run "dotnet run"\
+*You will get a prompt if you want to delete the old database*\
+click "n" if you want to keep the example survey that this version was cloned with.\
+*A new survey will be generated and you will be asked if you want to generate artificial results for it*\
+Click 'y' to generate 100 artificial results answering 0-all answers.
 
+### Add SuperUser
+Do *Start Program*:\
+click "Create Super User"\
+add User name and password, both are strings.\
+Note: *You cannot create a user that already exist*
 
-## Create new sample survey
-Enter folder /SEA/src/Model/ in terminal\
-run "dotnet run"
-*You will get a prompt if you want to delete the old database*
-click "No" if you want to keep the example survey that this version was cloned with.
-A new survey will be generated aswell as some 
+### Login to Super User Menu:
+Do *Start Program*\
+click 'Super User Login'\
+enter username and pincode. Default user is in the top of the README
+
+### Modify Survey
+This part of the GUI is not working. It is possible to do using the backend commands, the same way that SEA\src\Model\tmp_Moc\CreateExampleSurvey.cs does it.
