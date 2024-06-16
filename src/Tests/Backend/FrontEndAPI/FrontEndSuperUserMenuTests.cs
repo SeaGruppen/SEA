@@ -55,7 +55,7 @@ namespace Tests.Backend.FrontEndAPI
         }
 
 		[Test]
-		public void TestAddSuperUserInvalidCredentialsResult()
+		public void TestGetSurveyWrappersFromSuperUserInvalidCredentialsResult()
 		{
 			var superUserValidatorMock = new Mock<ISuperUserValidator>();
 			var superUserValidatorMockObject = superUserValidatorMock.Object;
