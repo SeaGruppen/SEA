@@ -4,8 +4,7 @@ IDE used for this project: VSCode
 current super user in the database:
 username: Sippo
 password: 123456
-
-Example survey pincode: 
+Example survey pincode: 996042
 
 ## Start program through executeable.
 *The executeable is made for a the x64 chip, if an amd processor is used, a release will need to be build for that, or use *Start Program through VSCode/Terminal**
@@ -16,6 +15,17 @@ Double click the 'scivu' executeable file in the zipfolder.
 Open terminal at : /SEA/src/scivu/scivu/ \
 Enter command 'dotnet run'
 A new window will open in which the program is run. 
+
+
+## Make own executeable for Mac osx-64:
+Open /SEA/src/scivu/scivu/ in the terminal \
+Write "dotnet publish --configuration Release --runtime osx-x64 --self-contained --output ./publish"
+You will get a new 'publish' inside the /SEA/src/scivu/scivu/ folder.\
+Inside it there are two important executeables: \
+    *backend* which creates the example survey and results\
+    *scivu* which runs the app\
+The program is dependent on this folder structure to get 'assets' for the example survey and for the database which are both placed inside /src.\
+A test survey already exist with the pincode mentioned above, while *backend* can add new surveys of the same type (with new ids) and potentially with new mock results.\
 
 ## Use cases:
 ### Run experiment:
@@ -51,3 +61,8 @@ enter username and pincode. Default user is in the top of the README
 
 ### Modify Survey
 This part of the GUI is not working. It is possible to do using the backend commands, the same way that SEA\src\Model\tmp_Moc\CreateExampleSurvey.cs does it.
+
+
+## Running tests:
+Open /SEA/src/Test/ in the terminal\
+write "dotnet test"
