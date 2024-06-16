@@ -16,7 +16,6 @@ Open terminal at : /SEA/src/scivu/scivu/ \
 Enter command 'dotnet run'
 A new window will open in which the program is run. 
 
-
 ## Make own executeable for Mac osx-64:
 Open /SEA/src/scivu/scivu/ in the terminal \
 Write "dotnet publish --configuration Release --runtime osx-x64 --self-contained --output ./publish"
@@ -26,6 +25,11 @@ Inside it there are two important executeables: \
     *scivu* which runs the app\
 The program is dependent on this folder structure to get 'assets' for the example survey and for the database which are both placed inside /src.\
 A test survey already exist with the pincode mentioned above, while *backend* can add new surveys of the same type (with new ids) and potentially with new mock results.\
+
+# Build/Publish program yourself through terminal
+Open Termianl at /SEA/src/scivu/scivu/
+Enter command 'dotnet publish --configuration Release --runtime osx-x64 --self-contained --output ./publish' to publish project for osx in folder called publish.
+
 
 ## Use cases:
 ### Run experiment:
@@ -66,3 +70,4 @@ This part of the GUI is not working. It is possible to do using the backend comm
 ## Running tests:
 Open /SEA/src/Test/ in the terminal\
 write "dotnet test"
+
