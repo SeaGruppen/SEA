@@ -30,8 +30,7 @@ internal class Program {
 
     }
 
-    private static void CheckHowManySurveyWrappersSippoHasNow(IFrontEndSuperUser SUMenu, int TestSurvey)
-    {
+    private static void CheckHowManySurveyWrappersSippoHasNow(IFrontEndSuperUser SUMenu, int TestSurvey) {
         System.Console.WriteLine($"New survey created for Sippo to test on!: SurveyWrapperId = {TestSurvey}");
         List<IModifySurveyWrapper>? randomUserSurveyWrappers1 = SUMenu.GetSurveyWrappersFromSuperUser("Sippo", "123456");
         if (randomUserSurveyWrappers1 != null)
@@ -53,9 +52,9 @@ internal class Program {
             System.Console.WriteLine("Sippo has no surveyWrappers");
     }
 
-    private static void AddSippoToUserCredentials(ISuperUserValidator superUserValidator, IFrontEndMainMenu mainMenu)
-    {
+    private static void AddSippoToUserCredentials(ISuperUserValidator superUserValidator, IFrontEndMainMenu mainMenu) {
         // Check if Sippo exist as super user
+        System.Console.WriteLine("Checking if Sippo is already in the database.");
         if (!superUserValidator.ValidateSuperUser("Sippo", "123456"))
             // Add Sippo as super user
             System.Console.WriteLine($"Adding Sippo to SuperUsers went well: {mainMenu.AddSuperUser("Sippo", "123456")}");
@@ -115,27 +114,40 @@ internal class Program {
     }
 
     private static void AddResultsToSurveyWrapper(IStatistics statisticsModule, int surveyWrapper, int surveyId) {
-        System.Console.WriteLine("Adding results to the TestSurvey");
-        IFrontEndExperimenter experimenter = FrontEndFactory.CreateExperimenterMenu();
 
-        Random random = new Random();
+        Console.WriteLine("Do you want to add some artificial results for the survey? (Y)es, (N)o");
+        string? input = Console.ReadLine();
+        if (input == null) {
+            System.Console.WriteLine("No input detected, not adding results.");
+            System.Console.WriteLine("Your test survey is now ready to be tested on, and has id: " + surveyWrapper);
+            return;
+        }
+        if (input.Equals("Y", StringComparison.OrdinalIgnoreCase)) {
+            System.Console.WriteLine("Adding results to the TestSurvey");
+            IFrontEndExperimenter experimenter = FrontEndFactory.CreateExperimenterMenu();
 
-        List<string> resultAnswered = ["Hund", "Kat"]; // Random answer to the questions
-        for (int k = 0; k < 50; k++) {
-            for (int surveyVersion = 0; surveyVersion < 2; surveyVersion++) {
-                for (int i = 0; i < 2; i++) {
-                    int jtop = random.Next(4);
-                    for (int j = 0; j < jtop; j++) {
-                        IResult result = FrontEndFactory.CreateResult(surveyWrapper.ToString() + "." + surveyVersion.ToString(), $"{surveyWrapper}.{surveyVersion}.{i}.{j}", AnswerType.Text, k, resultAnswered);
-                        experimenter.StoreResultFromQuestion(result);
+            Random random = new Random();
+
+            List<string> resultAnswered = ["Hund", "Kat"]; // Random answer to the questions
+            for (int k = 0; k < 50; k++) {
+                for (int surveyVersion = 0; surveyVersion < 2; surveyVersion++) {
+                    for (int i = 0; i < 2; i++) {
+                        int jtop = random.Next(4);
+                        for (int j = 0; j < jtop; j++) {
+                            IResult result = FrontEndFactory.CreateResult(surveyWrapper.ToString() + "." + surveyVersion.ToString(), $"{surveyWrapper}.{surveyVersion}.{i}.{j}", AnswerType.Text, k, resultAnswered);
+                            experimenter.StoreResultFromQuestion(result);
+                        }
                     }
                 }
             }
+            // Check if the random generated results are not messed up
+            System.Console.WriteLine($"Number of questions in TestSurvey {surveyWrapper}: {statisticsModule.NumberOfQuestionsInSurvey(surveyWrapper.ToString() + ".0")}");
+            System.Console.WriteLine($"Number of started surveys in TestSurvey {surveyWrapper}: {statisticsModule.StartedSurveysInWrapper(surveyWrapper)}");
+            System.Console.WriteLine($"Number of finished surveys in TestSurvey {surveyWrapper}: {statisticsModule.FinishedSurveysInWrapper(surveyWrapper)}");
+            System.Console.WriteLine($"AverageCompletionRate in TestSurvey {surveyWrapper}: {statisticsModule.AverageCompletionRateSurveyWrapper(surveyWrapper)}");
+        } else {
+            System.Console.WriteLine("No results added to the TestSurvey");
         }
-        // Check if the random generated results are not messed up
-        System.Console.WriteLine($"Number of questions in TestSurvey {surveyWrapper}: {statisticsModule.NumberOfQuestionsInSurvey(surveyWrapper.ToString() + ".0")}");
-        System.Console.WriteLine($"Number of started surveys in TestSurvey {surveyWrapper}: {statisticsModule.StartedSurveysInWrapper(surveyWrapper)}");
-        System.Console.WriteLine($"Number of finished surveys in TestSurvey {surveyWrapper}: {statisticsModule.FinishedSurveysInWrapper(surveyWrapper)}");
-        System.Console.WriteLine($"AverageCompletionRate in TestSurvey {surveyWrapper}: {statisticsModule.AverageCompletionRateSurveyWrapper(surveyWrapper)}");
+        System.Console.WriteLine("Your test survey is now ready to be tested on, and has id: " + surveyWrapper);
     }
 }
