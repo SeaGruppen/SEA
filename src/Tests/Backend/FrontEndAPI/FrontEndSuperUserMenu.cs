@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using Model.DatabaseModule;
 using Model.FrontEndAPI;
 using Model.Survey;
@@ -8,11 +8,11 @@ using System.Xml.Serialization;
 
 namespace Tests.Backend.FrontEndAPI
 {
-    internal class FrontEndMainMenuTests
+    internal class FrontEndSuperUserMenuTests
     {
         private Fixture _fixture;
 
-        public FrontEndMainMenuTests()
+        public FrontEndSuperUserMenuTests()
         {
             _fixture = new Fixture();
         }
@@ -20,8 +20,6 @@ namespace Tests.Backend.FrontEndAPI
         [Test]
         public void TestAddSuperUser()
         {
-            //var databaseMock = Mock.Of<IDatabase>();
-            //var databaseMockObject = Mock.Get(databaseMock).Object;
             var superUserValidatorMock = new Mock<ISuperUserValidator>();
             var superUserValidatorMockObject = superUserValidatorMock.Object;
 
@@ -30,18 +28,16 @@ namespace Tests.Backend.FrontEndAPI
 
             superUserValidatorMock.Setup(x => x.ValidateSuperUser(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
-            var sut = new FrontEndMainMenu(database, superUserValidatorMockObject);
+            var sut = new FrontEndSuperUserMenu(database, superUserValidatorMockObject);
 
-            var sutRes = sut.ValidateSuperUser("username", "password");
+            var sutRes = sut.GetSurveyWrappersFromSuperUser("username", "password");
 
-            Assert.That(sutRes, Is.EqualTo(new List<IModifySurveyWrapper>()));
+            Assert.That(sutRes, Is.EqualTo(null));
         }
 
         [Test]
         public void TestAddSuperUserInvalidCredentials()
         {
-            //var databaseMock = Mock.Of<IDatabase>();
-            //var databaseMockObject = Mock.Get(databaseMock).Object;
             var superUserValidatorMock = new Mock<ISuperUserValidator>();
             var superUserValidatorMockObject = superUserValidatorMock.Object;
 
@@ -50,9 +46,9 @@ namespace Tests.Backend.FrontEndAPI
 
             superUserValidatorMock.Setup(x => x.ValidateSuperUser(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
 
-            var sut = new FrontEndMainMenu(database, superUserValidatorMockObject);
+            var sut = new FrontEndSuperUserMenu(database, superUserValidatorMockObject);
 
-            var sutRes = sut.ValidateSuperUser("username", "password");
+            var sutRes = sut.GetSurveyWrappersFromSuperUser("username", "password");
 
             Assert.That(sutRes, Is.EqualTo(null));
         }
