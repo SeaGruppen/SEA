@@ -66,15 +66,34 @@ internal interface IDatabase {
     SurveyWrapper? GetSurveyWrapper(int surveyWrapperId);
 
     /// <summary>
+    /// Loads and returns a list of all the SWs created by the user
+    /// </summary>
+    /// <remarks>
+    /// If no SWs have been registered as belonging to the user, null is returned.
+    /// </remarks>
+    /// <param name="username">the id of the user requesting all their SWs.</param>
+    /// <returns>List<SurveyWrapper></returns>
+    List<SurveyWrapper>? GetSurveyWrapperForSuperUser(string username);
+
+    /// <summary>
+    /// Zips the SW database folder (including its .json file and its assets) indicated by the id and saves the .zip file to the provided path. 
+    /// </summary>
+    /// <remarks>
+    /// If the SW doesn't exist or if the .zip file already exists, it returns false. Otherwise, it returns true.
+    /// </remarks>
+    /// <param name="surveyWrapperId">The id of the SW to export.</param>
+    /// <param name="path">The path to export the SW to.</param>
+    /// <returns>bool</returns>
+    bool ExportSurveyWrapper(int surveyWrapperid,string path);
+
+    /// <summary>
     /// 
     /// </summary>
     /// <remarks>
     /// 
     /// </remarks>
-    /// <param name="username">the id of the user requesting all their SWs.</param>
-    /// <returns>List<SurveyWrapper></returns>
-    List<SurveyWrapper>? GetSurveyWrapperForSuperUser(string username);
-    bool ExportSurveyWrapper(int surveyWrapperid,string path);
+    /// <param name="path">The path to import the SW from.</param>
+    /// <returns>bool</returns>
     bool ImportSurveyWrapper(string path);
     string TryStorePicture(int surveyWrapperId, string path);
     string StorePictureOverwrite(int surveyWrapperId, string path);
