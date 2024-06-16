@@ -1,4 +1,5 @@
 IDE used for this project: VSCode
+.NET version required to compile this project: 8.0
 
 current super user in the database:
 username: Sippo
