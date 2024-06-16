@@ -322,11 +322,13 @@ internal class Database : IDatabase {
         }
         return result;
     }
-
     public int GetNextUserId() {
         Guid guid = Guid.NewGuid();
         int result = guid.GetHashCode();
-        return result;
+        if (result == int.MinValue) {
+            result = int.MaxValue;
+        }
+        return Math.Abs(result);
     }
 }
 
