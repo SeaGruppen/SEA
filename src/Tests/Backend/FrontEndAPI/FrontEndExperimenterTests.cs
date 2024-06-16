@@ -19,7 +19,7 @@ namespace Tests.Backend.FrontEndAPI
 		}
 
 		[Test]
-		public void TestAddSuperUser()
+		public void TestExportResults()
 		{
 			var database = new Model.DatabaseModule.Database();
 
