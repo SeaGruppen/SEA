@@ -19,7 +19,7 @@ internal interface IDatabase {
     int GetNextSurveyWrapperID(string superUserName);
     
     /// <summary>
-    ///  Stores a SurveyWrapper in the database. 
+    /// Stores a SurveyWrapper in the database. 
     /// </summary>
     /// <remarks>
     /// It uses the SW id to find the correct dir to store it in. 
@@ -76,10 +76,12 @@ internal interface IDatabase {
     List<SurveyWrapper>? GetSurveyWrapperForSuperUser(string username);
 
     /// <summary>
-    /// Zips the SW database folder (including its .json file and its assets) indicated by the id and saves the .zip file to the provided path. 
+    /// Zips the SW database folder (including its .json file and its assets) 
+    /// indicated by the id and saves the .zip file to the provided path. 
     /// </summary>
     /// <remarks>
-    /// If the SW doesn't exist or if the .zip file already exists, it returns false. Otherwise, it returns true.
+    /// If the SW doesn't exist or if the .zip file already exists, it returns 
+    ///false. Otherwise, it returns true.
     /// </remarks>
     /// <param name="surveyWrapperId">The id of the SW to export.</param>
     /// <param name="path">The path to export the SW to.</param>
@@ -87,19 +89,85 @@ internal interface IDatabase {
     bool ExportSurveyWrapper(int surveyWrapperid,string path);
 
     /// <summary>
-    /// 
+    /// Imports a zipped SurveyWrapper (the SW folder containing its .json file 
+    /// and its assets) into the database and returns true upon succes.
     /// </summary>
     /// <remarks>
-    /// 
+    /// If a SurveyWrapper with that id already exists in the database, it will
+    /// not be overwritten and false is returned.
     /// </remarks>
-    /// <param name="path">The path to import the SW from.</param>
+    /// <param name="path">The path to the SW zip file.</param>
     /// <returns>bool</returns>
     bool ImportSurveyWrapper(string path);
+
+    /// <summary>
+    /// Copies the picture on the given path into the assets folder of the SW 
+    /// with the given id in the database and returns a relative path to the 
+    /// picture now stored in assets.  
+    /// </summary>
+    /// <remarks>
+    /// If a picture of that filename already exists in the assets folder, it 
+    /// is not overwritten and an exception is thrown.
+    /// </remarks>
+    /// <param name="surveyWrapperId">The id of the SW that should store the 
+    /// picture</param>
+    /// <param name="path">The path to the picture to be stored </param>
+    /// <returns>string</returns>
     string TryStorePicture(int surveyWrapperId, string path);
+
+    /// <summary>
+    /// Copies the picture on the given path into the assets folder of the SW 
+    /// with the given id in the database and returns a relative path to the 
+    /// picture now stored in assets.  
+    /// </summary>
+    /// <remarks>
+    /// If a picture of that filename already exists in the assets folder, 
+    /// it is overwritten.
+    /// </remarks>
+    /// <param name="surveyWrapperId">The id of the SW that should store 
+    /// the picture</param>
+    /// <param name="path">The path to the picture to be stored </param>
+    /// <returns>string</returns>
     string StorePictureOverwrite(int surveyWrapperId, string path);
+
+    /// <summary>
+    /// Goes through all results for a SurveyWrapper and returns the final ones in a list.  
+    /// </summary>
+    /// <remarks>
+    /// If the same user has answered a Survey more than once, only the latest 
+    /// (ie final) results are returned in the list. The intermediate results 
+    //continue to  exist in the database. 
+    /// </remarks>
+    /// <param name="id">The id of the SW for which the results are returned</param>
+    /// <returns>List<Result></returns>
     List<Result> GetSurveyWrapperResults(int id);
+
+    /// <summary>
+    /// Takes a list of Results, stores them in the database and returns true on success.
+    /// </summary>
+    /// <param name="results"></param>
+    /// <returns>bool</returns>
     bool StoreResults(List<Result> results);
+
+    /// <summary>
+    /// Take a Result, stores it in the database and returns true on success.
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns>bool</returns>
     bool StoreResult(IResult result);
+
+
+    /// <summary>
+    /// Returns a list of all the ids for which there are SurveyWrappers 
+    /// stored in the database.
+    /// </summary>
+    /// <param name></param>
+    /// <returns>bool</returns>
     List<int> GetAllSurveyWrapperIds();
+
+    /// <summary>
+    /// Returns a hash of a GUID
+    /// </summary>
+    /// <returns>uint</returns>
     uint GetNextUserId();
 }
