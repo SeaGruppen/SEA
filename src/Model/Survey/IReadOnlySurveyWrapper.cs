@@ -3,12 +3,19 @@ namespace Model.Survey;
 public interface IReadOnlySurveyWrapper {
 
     /// <summary>
-    /// Returns the survey wrapper name
+    /// Gets a read-only Survey from the index of a surveyWrapper
     /// </summary>
-    string SurveyWrapperName { get; }
+    /// <param name="index">Index of survey version to get</param>
+    /// <returns>Returns survey version if index is valid, otherwise null</returns>
+    IReadOnlySurvey? TryGetReadOnlySurveyVersion(int index); // Return survey index'
 
     /// <summary>
-    /// Returns the nsurvey wrapper id
+    /// Get the number of survey versions that this surveyWrapper has
     /// </summary>
+    /// <returns>Number of survey versions</returns>
+    int GetVersionCount(); // Return number of versions
+
+    string SurveyWrapperName { get; }
     int SurveyWrapperId { get; }
+
 }
