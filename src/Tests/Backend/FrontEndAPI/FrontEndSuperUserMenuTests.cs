@@ -4,6 +4,7 @@ using Model.FrontEndAPI;
 using Model.Survey;
 using Model.UserValidationModule;
 using Moq;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Tests.Backend.FrontEndAPI
@@ -32,8 +33,8 @@ namespace Tests.Backend.FrontEndAPI
 
             var sutRes = sut.GetSurveyWrappersFromSuperUser("username", "password");
 
-            Assert.That(sutRes, Is.EqualTo(null));
-        }
+			Assert.That(sutRes.Count, Is.GreaterThan(0));
+		}
 
         [Test]
         public void TestAddSuperUserInvalidCredentials()
@@ -52,6 +53,25 @@ namespace Tests.Backend.FrontEndAPI
 
             Assert.That(sutRes, Is.EqualTo(null));
         }
-    }
+
+		[Test]
+		public void TestAddSuperUserInvalidCredentialsResult()
+		{
+			var superUserValidatorMock = new Mock<ISuperUserValidator>();
+			var superUserValidatorMockObject = superUserValidatorMock.Object;
+
+			var database = new Model.DatabaseModule.Database();
+			var superUserValidator = new SuperUserValidator();
+
+			superUserValidatorMock.Setup(x => x.ValidateSuperUser(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+
+			var sut = new FrontEndSuperUserMenu(database, superUserValidatorMockObject);
+
+			var sutRes = sut.GetSurveyWrappersFromSuperUser("username", "password");
+		    sut.CreateSurveyWrapper("username", "surveywrapper");
+
+			Assert.That(sutRes, Is.EqualTo(null));
+		}
+	}
 }
 

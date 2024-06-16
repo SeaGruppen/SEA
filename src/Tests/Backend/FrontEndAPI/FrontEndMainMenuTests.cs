@@ -20,8 +20,6 @@ namespace Tests.Backend.FrontEndAPI
         [Test]
         public void TestAddSuperUser()
         {
-            //var databaseMock = Mock.Of<IDatabase>();
-            //var databaseMockObject = Mock.Get(databaseMock).Object;
             var superUserValidatorMock = new Mock<ISuperUserValidator>();
             var superUserValidatorMockObject = superUserValidatorMock.Object;
 
@@ -34,14 +32,12 @@ namespace Tests.Backend.FrontEndAPI
 
             var sutRes = sut.ValidateSuperUser("username", "password");
 
-            Assert.That(sutRes, Is.EqualTo(new List<IModifySurveyWrapper>()));
+            Assert.That(sutRes.Count, Is.GreaterThan(0));
         }
 
         [Test]
         public void TestAddSuperUserInvalidCredentials()
         {
-            //var databaseMock = Mock.Of<IDatabase>();
-            //var databaseMockObject = Mock.Get(databaseMock).Object;
             var superUserValidatorMock = new Mock<ISuperUserValidator>();
             var superUserValidatorMockObject = superUserValidatorMock.Object;
 
