@@ -61,7 +61,7 @@ public interface IFrontEndSuperUser {
     /// <param name="SurveyWrapperId">Id of survey wrapper associated with
     /// <param name="filePath">Filepath of file to store picture</param>
     /// <param name="optionalPrefix">Optial prefix for file name</param>
-    void StorePicture(int SurveyWrapperId, string filePath, string optionalPrefix)
+    void StorePicture(int SurveyWrapperId, string filePath, string optionalPrefix);
 
     /// <summary>
     /// Validates super user credentials and gets their survey wrappers
