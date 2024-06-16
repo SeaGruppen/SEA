@@ -167,7 +167,8 @@ internal class Statistics : IStatistics{
                 if (surveyIdFromResult == surveyId) {
                     results.Add(result);
                 } 
-            } catch (ArgumentException) {
+            } catch (ArgumentException ex) when (ex.ParamName == "subElement") {
+                continue;
                 // QuestinId is invalid, it doesn't contain a valid surveyId
             }
         }

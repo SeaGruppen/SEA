@@ -76,7 +76,7 @@ public class PauseMenuViewModel : ViewModelBase
                 return;
             }
 
-            ErrorMessage = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.ERR_PinCodeNotFound);
+            ErrorMessage = ErrorDiagnostics.GetErrorMessage(ErrorDiagnosticsID.ERR_PinCodeNotFoundLockscreen);
         }
     }
 }

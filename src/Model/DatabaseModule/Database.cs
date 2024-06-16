@@ -237,23 +237,28 @@ internal class Database : IDatabase {
                     }
                     bool newestResult = true;
                     // Check if the result is for the correct surveyWrapper, and is newest
-                    if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.QuestionId) == surveyWrapperId) {
-                        // Go through all results and remove intermediate results
-                        foreach (Result r in results) {
-                            if (r.UserId == result.UserId && r.QuestionId == result.QuestionId) {
-                                // If r is older than result, remove r
-                                if (r.CreationTime <= result.CreationTime) {
-                                    results.Remove(r);
-                                    break;
-                                } else {
-                                    newestResult = false;
-                                    break;
+                    try {
+                        if (ExtractSurveyDetails.TryGetSurveyWrapperId(result.QuestionId) == surveyWrapperId) {
+                            // Go through all results and remove intermediate results
+                            foreach (Result r in results) {
+                                if (r.UserId == result.UserId && r.QuestionId == result.QuestionId) {
+                                    // If r is older than result, remove r
+                                    if (r.CreationTime <= result.CreationTime) {
+                                        results.Remove(r);
+                                        break;
+                                    } else {
+                                        newestResult = false;
+                                        break;
+                                    }
                                 }
                             }
+                            if (newestResult) {
+                                results.Add(result);
+                            }
                         }
-                        if (newestResult) {
-                            results.Add(result);
-                        }
+                    } catch (ArgumentException ex) when (ex.ParamName == "subElement") {
+                        // Skip result if it doesn't contain a valid surveyId
+                        continue;
                     }
                 }
             }
@@ -322,11 +327,13 @@ internal class Database : IDatabase {
         }
         return result;
     }
-
-    public uint GetNextUserId() {
+    public int GetNextUserId() {
         Guid guid = Guid.NewGuid();
-        uint result = (uint) guid.GetHashCode();
-        return result;
+        int result = guid.GetHashCode();
+        if (result == int.MinValue) {
+            result = int.MaxValue;
+        }
+        return Math.Abs(result);
     }
 }
 

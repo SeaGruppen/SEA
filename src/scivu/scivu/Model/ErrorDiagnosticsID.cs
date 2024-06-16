@@ -2,6 +2,7 @@ namespace scivu.Model;
 
 public enum ErrorDiagnosticsID
 {
+    ERR_PinCodeNotFoundLockscreen,
     ERR_PinCodeNotFound,
     ERR_InvalidLogin,
 
